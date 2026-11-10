@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GCI Brand Guide</title>
+<style>
+  @font-face { font-family: "Newsreader"; src: url("fonts/Newsreader-Variable.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+  @font-face { font-family: "Newsreader"; src: url("fonts/Newsreader-Italic-Variable.woff2") format("woff2"); font-weight: 200 800; font-style: italic; }
+  @font-face { font-family: "Geist"; src: url("fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; }
+  @font-face { font-family: "Geist Mono"; src: url("fonts/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; }
+
+  :root {
+    --obsidian: #050507; --carbon: #0b0c10; --graphite: #14161c;
+    --hairline: rgb(255 255 255 / 0.08); --hairline-strong: rgb(255 255 255 / 0.16);
+    --titanium: #c9ced6; --titanium-dim: #8a919c; --steel: #737b88;
+    --gold: #c8a24a; --gold-bright: #e0b25c; --cyan: #5fd4e6; --crimson: #d8473f;
+    --display: "Newsreader", Georgia, serif;
+    --sans: "Geist", system-ui, sans-serif;
+    --mono: "Geist Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--obsidian); }
+  body { width: 1600px; background: var(--obsidian); color: var(--titanium); font-family: var(--sans); -webkit-font-smoothing: antialiased; padding: 28px; }
+
+  .sheet { position: relative; border: 1px solid var(--hairline); padding: 64px 72px 56px; }
+  .tick { position: absolute; width: 14px; height: 14px; border-color: rgb(200 162 74 / 0.75); border-style: solid; border-width: 0; }
+  .tick.tl { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+  .tick.tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
+  .tick.bl { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
+  .tick.br { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .label { font-family: var(--mono); font-size: 12px; line-height: 1.45; letter-spacing: 0.16em; text-transform: uppercase; color: var(--steel); }
+  .bullet::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 11px; background: var(--gold); }
+  .dim { color: var(--titanium-dim); } .ti { color: var(--titanium); } .gd { color: var(--gold); } .gb { color: var(--gold-bright); } .cy { color: var(--cyan); }
+
+  header.top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--hairline); }
+  h1 { font-family: var(--display); font-weight: 300; font-size: 104px; line-height: 0.98; letter-spacing: -0.022em; margin-top: 52px; }
+  h1 em { color: var(--gold-bright); }
+  .lede { margin-top: 26px; max-width: 760px; font-size: 19px; line-height: 1.6; color: var(--titanium-dim); }
+
+  section { margin-top: 68px; padding-top: 22px; border-top: 1px solid var(--hairline); }
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; }
+  h2 { font-family: var(--display); font-weight: 300; font-size: 40px; line-height: 1.1; letter-spacing: -0.014em; color: var(--titanium); margin-top: 10px; }
+  .note { font-size: 15px; line-height: 1.6; color: var(--titanium-dim); max-width: 560px; }
+
+  /* 01 wordmark */
+  .marks { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 16px; }
+  .mark { height: 250px; border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: center; position: relative; }
+  .mark .cap { position: absolute; left: 16px; bottom: 13px; }
+  .wm { font-family: var(--mono); letter-spacing: 0.22em; text-transform: uppercase; display: inline-flex; align-items: center; }
+  .wm i { display: inline-block; background: var(--gold); }
+  .wm.xl { font-size: 62px; color: var(--titanium); } .wm.xl i { width: 34px; height: 34px; margin-right: 26px; }
+  .wm.md { font-size: 30px; } .wm.md i { width: 17px; height: 17px; margin-right: 14px; }
+  .mark.light { background: var(--titanium); border-color: var(--titanium); } .mark.light .wm { color: var(--obsidian); } .mark.light .cap { color: #4a4f58; }
+  .lockup { text-align: left; }
+  .lockup .wm { color: var(--titanium); }
+  .lockup p { margin-top: 12px; }
+
+  /* 02 colour */
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .sw { border: 1px solid var(--hairline); }
+  .sw .chip { height: 132px; position: relative; }
+    .sw .meta { padding: 14px 16px 16px; border-top: 1px solid var(--hairline); min-height: 160px; }
+  .sw .name { font-size: 17px; color: var(--titanium); font-weight: 500; }
+  .sw .hex { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; color: var(--titanium-dim); margin-top: 3px; text-transform: uppercase; }
+  .sw .role { font-size: 13.5px; line-height: 1.5; color: var(--titanium-dim); margin-top: 9px; }
+  .ratio { margin-top: 30px; }
+  .ratio .bar { display: flex; height: 26px; border: 1px solid var(--hairline); }
+  .ratio .legend { display: flex; margin-top: 9px; }
+  .ratio .legend div { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel); }
+
+  /* 03 type */
+  .faces { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 16px; }
+  .face { border: 1px solid var(--hairline); padding: 26px 28px 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; }
+  .face .big { line-height: 1; color: var(--titanium); }
+  .face .spec { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--hairline); }
+  .face .fname { font-size: 19px; color: var(--titanium); font-weight: 500; }
+  .face .use { font-size: 14px; line-height: 1.55; color: var(--titanium-dim); margin-top: 6px; }
+  .glyphs { font-size: 21px; line-height: 1.5; color: var(--titanium-dim); margin-top: 18px; word-break: break-all; }
+  table.scale { width: 100%; border-collapse: collapse; margin-top: 26px; }
+  table.scale td, table.scale th { text-align: left; padding: 15px 14px 15px 0; border-bottom: 1px solid var(--hairline); vertical-align: baseline; }
+  table.scale th { font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--steel); padding-top: 0; }
+  table.scale td.spec { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; color: var(--titanium-dim); white-space: nowrap; }
+  table.scale td.role { font-size: 14px; color: var(--titanium-dim); white-space: nowrap; width: 190px; }
+
+  /* 04 elements */
+  .els { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .el { border: 1px solid var(--hairline); padding: 22px 24px 20px; min-height: 236px; display: flex; flex-direction: column; justify-content: space-between; }
+  .el .stage { flex: 1; display: flex; align-items: center; }
+  .el .cap { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--hairline); font-size: 13.5px; line-height: 1.5; color: var(--titanium-dim); }
+  .el .cap b { color: var(--titanium); font-weight: 500; }
+  .panel { background: linear-gradient(180deg, rgb(20 22 28 / 0.78), rgb(11 12 16 / 0.86)); border: 1px solid var(--hairline); border-radius: 2px; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05); padding: 18px 20px; width: 100%; }
+  .chamfer { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
+  .btn-solid { background: var(--titanium); color: var(--obsidian); padding: 13px 20px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+  .btn-line { border: 1px solid rgb(200 162 74 / 0.6); border-radius: 2px; padding: 16px 20px; width: 100%; display: flex; justify-content: space-between; position: relative; overflow: hidden; }
+  .btn-line::before { content: ""; position: absolute; inset: 0 55% 0 0; background: rgb(200 162 74 / 0.25); }
+  .btn-line span { position: relative; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--hairline); width: 100%; }
+  .row:first-child { border-top: 1px solid var(--hairline); }
+  .row .pn { font-family: var(--display); font-weight: 300; font-size: 22px; color: var(--titanium); line-height: 1.15; }
+  .numeral { font-family: var(--display); font-weight: 300; font-size: 112px; line-height: 0.85; color: var(--gold); }
+  .callout { position: relative; margin-left: 20px; height: 96px; width: 100%; }
+  .callout .dot { position: absolute; left: 0; bottom: 6px; width: 7px; height: 7px; border: 1px solid var(--cyan); border-radius: 50%; }
+  .callout .line { position: absolute; left: 4px; bottom: 9px; width: 60px; height: 1px; background: linear-gradient(90deg, var(--cyan), rgb(95 212 230 / 0.25)); transform-origin: 0 0; transform: rotate(-52deg); }
+  .callout .tag { position: absolute; left: 46px; top: 0; border-left: 1px solid rgb(95 212 230 / 0.6); padding: 4px 0 4px 12px; }
+
+  /* 05 forms */
+  .forms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .form { border: 1px solid var(--hairline); }
+  .form canvas { display: block; width: 100%; aspect-ratio: 1 / 1; }
+  .form .meta { padding: 12px 16px 14px; border-top: 1px solid var(--hairline); }
+  .form .fn { font-size: 16px; color: var(--titanium); margin-top: 4px; }
+
+  /* 06 rules */
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--hairline); }
+  .rule { padding: 22px 24px 24px; border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+  .rule:nth-child(3n) { border-right: 0; } .rule:nth-last-child(-n+3) { border-bottom: 0; }
+  .rule h3 { font-family: var(--display); font-weight: 300; font-size: 24px; line-height: 1.15; color: var(--titanium); margin-top: 10px; }
+  .rule p { font-size: 14.5px; line-height: 1.6; color: var(--titanium-dim); margin-top: 8px; }
+
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i>
+
+  <header class="top">
+    <span class="label bullet ti" style="letter-spacing:.22em">GCI</span>
+    <span class="label">Brand guide · Version 0.1 · As built, November 2026</span>
+    <span class="label">Restricted · Internal reference</span>
+  </header>
+
+  <h1>Global Confederation<br>of Industries. <em>Brand guide.</em></h1>
+  <p class="lede">The visual system exactly as it is used in the first draft of the institutional briefing portal: one dark field, one luminous form, hairline instrumentation. This sheet records what exists today, not a finished identity.</p>
+
+  <!-- 01 -->
+  <section>
+    <div class="sec-head">
+      <div><p class="label bullet dim">01 / Wordmark</p><h2>Interim wordmark</h2></div>
+      <p class="note">GCI has no logo yet. The portal uses a gold square followed by the initials in Geist Mono, uppercase, tracked at 0.22em. Keep clear space of one square on every side.</p>
+    </div>
+    <div class="marks">
+      <div class="mark"><span class="wm xl"><i></i>GCI</span><span class="label cap">Primary · on obsidian</span></div>
+      <div class="mark light"><span class="wm md"><i></i>GCI</span><span class="label cap">Reversed · on titanium</span></div>
+      <div class="mark">
+        <div class="lockup"><span class="wm md"><i></i>GCI</span><p class="label">Global Confederation of Industries</p></div>
+        <span class="label cap">Lockup with full name</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <div class="sec-head">
+      <div><p class="label bullet dim">02 / Colour</p><h2>Ten tokens, three accents</h2></div>
+      <p class="note">Near-black field, cool metallic text. Gold marks authority, cyan marks instrumentation, crimson appears once (the legal warning). Contrast ratios are measured against obsidian.</p>
+    </div>
+    <div class="swatches" id="swatches"></div>
+    <div class="ratio">
+      <div class="bar">
+        <div style="flex:78;background:linear-gradient(90deg,var(--obsidian),var(--carbon) 50%,var(--graphite))"></div>
+        <div style="flex:15;background:var(--titanium)"></div>
+        <div style="flex:5;background:var(--gold)"></div>
+        <div style="flex:1.5;background:var(--cyan)"></div>
+        <div style="flex:.5;background:var(--crimson)"></div>
+      </div>
+      <div class="legend">
+        <div style="flex:78">Field · obsidian, carbon, graphite</div>
+        <div style="flex:15">Text · titanium</div>
+        <div style="flex:7;white-space:nowrap">Accents (indicative proportion)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <div class="sec-head">
+      <div><p class="label bullet dim">03 / Typography</p><h2>Three faces, three jobs</h2></div>
+      <p class="note">An editorial serif for statements, a clean grotesque for reading, a monospace for instrumentation. All three are open-licensed and self-hosted.</p>
+    </div>
+    <div class="faces">
+      <div class="face">
+        <div class="big" style="font-family:var(--display);font-weight:300;font-size:86px;letter-spacing:-0.022em;line-height:.98">The upstream layer <em>of national autonomy.</em></div>
+        <div class="spec"><p class="label gd">Display</p><p class="fname">Newsreader · Light 300, roman and italic</p><p class="use">Headlines, thesis statements, council titles, numerals. Tracking −0.022em at large sizes. Italic or gold for one emphasised word, never both in one line.</p></div>
+      </div>
+      <div class="face">
+        <div>
+          <div class="big" style="font-size:66px;font-weight:400;letter-spacing:-0.02em">Aa Gg 0123</div>
+          <p style="font-size:17px;line-height:1.6;color:var(--titanium-dim);margin-top:20px">An apex public-private execution platform operating alongside Union Ministries and State Agencies.</p>
+        </div>
+        <div class="spec"><p class="label gd">Text</p><p class="fname">Geist · Regular 400, Medium 500</p><p class="use">Body copy, descriptors, list rows. 17px / 1.6 for body, 15px and 13px for supporting text.</p></div>
+      </div>
+      <div class="face">
+        <div>
+          <div class="big" style="font-family:var(--mono);font-size:50px;letter-spacing:.04em">03.IV / 05</div>
+          <p class="label bullet dim" style="margin-top:24px;font-size:13px">03 / Councils</p>
+          <p class="label" style="margin-top:10px;font-size:13px">Restricted · Preliminary institutional briefing</p>
+        </div>
+        <div class="spec"><p class="label gd">Mono</p><p class="fname">Geist Mono · Regular 400</p><p class="use">Labels, indices, classification strips, buttons. Always uppercase, 11px, tracked 0.16em.</p></div>
+      </div>
+    </div>
+    <table class="scale">
+      <tr><th>Role</th><th>Specimen</th><th>Face · weight</th><th>Size · line height · tracking</th></tr>
+      <tr><td class="role">Hero headline</td><td style="font-family:var(--display);font-weight:300;font-size:58px;line-height:1;letter-spacing:-0.022em">Restricted Briefing</td><td class="spec">Newsreader 300</td><td class="spec">42–108px · 0.98 · −0.022em</td></tr>
+      <tr><td class="role">Section headline</td><td style="font-family:var(--display);font-weight:300;font-size:42px;line-height:1.03;letter-spacing:-0.02em">The Six Governing Councils</td><td class="spec">Newsreader 300</td><td class="spec">34–72px · 1.03 · −0.02em</td></tr>
+      <tr><td class="role">Council title</td><td style="font-family:var(--display);font-weight:300;font-size:30px;line-height:1.1;letter-spacing:-0.012em">Cyber Security &amp; Sovereign Defense</td><td class="spec">Newsreader 300</td><td class="spec">26–38px · 1.1 · −0.012em</td></tr>
+      <tr><td class="role">Body</td><td style="font-size:17px;line-height:1.6;color:var(--titanium-dim)">Six autonomous councils govern critical tech pillars.</td><td class="spec">Geist 400</td><td class="spec">17px · 1.6 · 0</td></tr>
+      <tr><td class="role">Supporting</td><td style="font-size:15px;line-height:1.55;color:var(--titanium-dim)">Harvesting battery-grade lithium from brines in hours.</td><td class="spec">Geist 400</td><td class="spec">15px / 13px · 1.6 · 0</td></tr>
+      <tr><td class="role">Label</td><td><span class="label bullet dim">04 / Risk mitigation</span></td><td class="spec">Geist Mono 400</td><td class="spec">11px · 1.4 · 0.16em · uppercase</td></tr>
+    </table>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <div class="sec-head">
+      <div><p class="label bullet dim">04 / Elements</p><h2>Instrumentation</h2></div>
+      <p class="note">Sharp corners (2px at most), 1px hairlines, no drop shadows, no decorative gradients. Panels are tinted fills with a specular top edge, not blurred glass.</p>
+    </div>
+    <div class="els">
+      <div class="el"><div class="stage"><div><p class="label bullet dim">03 / Councils</p><p class="label" style="margin-top:14px"><span class="cy">10</span> programmes</p></div></div><p class="cap"><b>Section label.</b> Gold square, number, slash, name. Counts in cyan.</p></div>
+      <div class="el"><div class="stage"><div class="panel"><p class="label gd">Mandate 01</p><p style="font-family:var(--display);font-weight:300;font-size:24px;line-height:1.15;margin-top:10px">Zero-Discharge Closed-Loop Mandates</p></div></div><p class="cap"><b>Panel.</b> Graphite-to-carbon tint, hairline border, 2px radius.</p></div>
+      <div class="el"><div class="stage" style="gap:18px;flex-direction:column;align-items:flex-start;justify-content:center"><span class="btn-solid chamfer">Index <span style="opacity:.6;margin-left:6px">/33</span></span><div class="btn-line"><span class="label gb">Hold to acknowledge</span><span class="label gd">055</span></div></div><p class="cap"><b>Actions.</b> Chamfered solid for the primary control; gold outline with fill for confirmation.</p></div>
+      <div class="el"><div class="stage"><div style="width:100%"><div class="row"><span class="pn">Direct Lithium Extraction</span><span class="label gd">/I.01</span></div><div class="row"><span class="pn">Targeted Exosome Drug Delivery</span><span class="label gd">/IV.03</span></div></div></div><p class="cap"><b>Index row.</b> Serif name, mono reference at right, hairline rules.</p></div>
+      <div class="el"><div class="stage" style="gap:26px"><span class="numeral">IV</span><div><p class="label dim">Council IV</p><p class="label" style="margin-top:12px;border:1px solid var(--hairline-strong);padding:7px 10px;display:inline-block" >Associated domain <span class="gd" style="margin:0 6px">/</span> Ministry</p></div></div><p class="cap"><b>Council numeral.</b> Roman, Newsreader Light, gold. Domain tag in a hairline box.</p></div>
+      <div class="el"><div class="stage"><div class="callout"><i class="dot"></i><i class="line"></i><div class="tag"><p class="label cy">/III.02</p><p class="label ti" style="margin-top:4px">Quantum key distribution</p></div></div></div><p class="cap"><b>Callout.</b> Cyan ring, leader line and rule; pinned to a point on the form.</p></div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <div class="sec-head">
+      <div><p class="label bullet dim">05 / The form</p><h2>One lattice, eight states</h2></div>
+      <p class="note">The brand's only image is a single cloud of particles that reshapes itself. Each form below is drawn from the same generated data the portal uses. Titanium points, a gold core, cyan at the outer edge.</p>
+    </div>
+    <div class="forms" id="forms"></div>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <div class="sec-head">
+      <div><p class="label bullet dim">06 / Rules</p><h2>How it behaves</h2></div>
+      <p class="note">The principles the first draft was built on.</p>
+    </div>
+    <div class="rules">
+      <div class="rule"><p class="label gd">A</p><h3>One luminous object</h3><p>A single form on a dark field. No stock imagery, no illustration, no second focal point.</p></div>
+      <div class="rule"><p class="label gd">B</p><h3>Accents are rationed</h3><p>Gold for authority, cyan for instruments, crimson once. No per-section colour themes.</p></div>
+      <div class="rule"><p class="label gd">C</p><h3>No invented telemetry</h3><p>Numbers on screen are true ones only: 6 councils, 33 programmes, section index, scroll progress.</p></div>
+      <div class="rule"><p class="label gd">D</p><h3>Text holds still</h3><p>Copy swaps in place in a fixed column. The form moves; the words do not travel.</p></div>
+      <div class="rule"><p class="label gd">E</p><h3>Long holds, short moves</h3><p>Scrolling mostly rotates the form. Large transitions are used three times in the whole page.</p></div>
+      <div class="rule"><p class="label gd">F</p><h3>One thread</h3><p>A thin gold strand of particles runs through every section, so the page reads as one journey.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="label">Global Confederation of Industries</span>
+    <span class="label">Fonts: Newsreader, Geist, Geist Mono (SIL Open Font License)</span>
+    <span class="label">GCI brand guide v0.1</span>
+  </footer>
+</div>
+
+<script src="forms.js"></script>
+<script>
+  // Colour swatches, with contrast against obsidian computed from the actual values.
+  const lum = (hex) => {
+    const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  const tokens = [
+    ["Obsidian", "#050507", "Page and canvas background.", null],
+    ["Carbon", "#0B0C10", "Raised planes, the index drawer.", null],
+    ["Graphite", "#14161C", "Panel tint.", null],
+    ["Titanium", "#C9CED6", "Primary text, headlines.", "text"],
+    ["Titanium Dim", "#8A919C", "Secondary text, descriptors.", "text"],
+    ["Steel", "#737B88", "Mono micro-labels.", "text"],
+    ["Gold", "#C8A24A", "Authority: numerals, bullets, references.", "text"],
+    ["Gold Bright", "#E0B25C", "Emphasis word, hover, active state.", "text"],
+    ["Cyan", "#5FD4E6", "Instruments: counts, callouts, focus ring.", "text"],
+    ["Crimson", "#D8473F", "The legal warning only.", "text"],
+  ];
+  const host = document.getElementById("swatches");
+  for (const [name, hex, role, kind] of tokens) {
+    const ratio = contrast(hex, "#050507");
+    const el = document.createElement("div");
+    el.className = "sw";
+    el.innerHTML =
+      `<div class="chip" style="background:${hex}"></div>` +
+      `<div class="meta"><p class="name">${name}</p><p class="hex">${hex}</p><p class="role">${role}</p>` +
+      (kind ? `<p class="label" style="margin-top:10px">Contrast <span class="cy">${ratio.toFixed(1)} : 1</span></p>` : `<p class="label" style="margin-top:10px">Surface</p>`) +
+      `</div>`;
+    host.appendChild(el);
+  }
+
+  // The eight lattice forms, plotted from the portal's own generated point data.
+  const forms = [
+    ["State 00", "Apex node", "Gate, hero, thesis"],
+    ["State 01", "Diamond-cubic lattice", "Council I · Materials"],
+    ["State 02", "Photonic layer stack", "Council II · AI & Compute"],
+    ["State 03", "Geodesic shield", "Council III · Cyber & Defense"],
+    ["State 04", "Double helix", "Council IV · Foresight & Labs"],
+    ["State 05", "Ledger terraces", "Council V · Economic Stability"],
+    ["State 06", "Corridor globe", "Council VI · Trade & Diplomacy"],
+    ["State 07", "Closed loop", "Risk mitigation"],
+  ];
+  const palette = ["224,178,92", "214,219,226", "95,212,230"];
+  const grid = document.getElementById("forms");
+  forms.forEach(([state, name, use], k) => {
+    const card = document.createElement("div");
+    card.className = "form";
+    const canvas = document.createElement("canvas");
+    const S = 720;
+    canvas.width = S; canvas.height = S;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#050507"; ctx.fillRect(0, 0, S, S);
+    ctx.globalCompositeOperation = "lighter";
+    const pts = window.FORMS[k];
+    for (let i = 0; i < pts.length; i += 3) {
+      const x = (pts[i] / 1000) * S, y = (pts[i + 1] / 1000) * S, c = pts[i + 2];
+      ctx.fillStyle = `rgba(${palette[c]},${c === 0 ? 0.55 : 0.36})`;
+      ctx.beginPath(); ctx.arc(x, y, c === 0 ? 1.5 : 1.2, 0, 6.2832); ctx.fill();
+    }
+    card.appendChild(canvas);
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.innerHTML = `<p class="label gd">${state}</p><p class="fn">${name}</p><p class="label" style="margin-top:6px">${use}</p>`;
+    card.appendChild(meta);
+    grid.appendChild(card);
+  });
+
+  document.fonts.ready.then(() => { document.documentElement.dataset.h = String(document.documentElement.scrollHeight); });
+</script>
+</body>
+</html>
