@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+@theme {
+  --color-obsidian: #050507;
+  --color-carbon: #0b0c10;
+  --color-graphite: #14161c;
+  --color-hairline: rgb(255 255 255 / 0.08);
+  --color-hairline-strong: rgb(255 255 255 / 0.16);
+  --color-titanium: #c9ced6;
+  --color-titanium-dim: #8a919c;
+  --color-steel: #737b88;
+  --color-gold: #c8a24a;
+  --color-gold-bright: #e0b25c;
+  --color-cyan: #5fd4e6;
+  --color-crimson: #d8473f;
+
+  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --radius-sharp: 2px;
+}
+
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+html {
+  background: var(--color-obsidian);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-obsidian);
+  color: var(--color-titanium);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgb(200 162 74 / 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+/* Mono micro-label used across the instrumentation. */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-steel);
+}
+
+.bullet::before {
+  content: "";
+  display: inline-block;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-right: 0.625rem;
+  background: var(--color-gold);
+  vertical-align: 0.02em;
+}
+
+/* Tinted panel with a specular hairline. No blur, so it stays cheap. */
+.panel {
+  background: linear-gradient(180deg, rgb(20 22 28 / 0.78), rgb(11 12 16 / 0.86));
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sharp);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+
+/* Chamfered corner, as on the frame chrome. */
+.chamfer {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+
+/* Pointer-tracked spotlight plus a travelling border beam on focus or hover. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--spot-x, 50%) var(--spot-y, 0%),
+    rgb(200 162 74 / 0.13),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.spotlight:hover::before,
+.spotlight:focus-within::before {
+  opacity: 1;
+}
+
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 300deg,
+    rgb(224 178 92 / 0.9) 345deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.spotlight:hover::after,
+.spotlight:focus-within::after {
+  opacity: 1;
+  animation: beam 3.2s linear infinite;
+}
+
+@keyframes beam {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+
+/* Leader line for labels pinned to the lattice. */
+.callout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: opacity 0.25s linear;
+}
+
+.callout-dot {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--color-cyan);
+  border-radius: 50%;
+}
+
+.callout-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  width: 56px;
+  background: linear-gradient(90deg, var(--color-cyan), rgb(95 212 230 / 0.25));
+  transform-origin: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight:hover::after,
+  .spotlight:focus-within::after {
+    animation: none;
+  }
+}
