@@ -12,7 +12,7 @@ import Gate from "./sections/Gate";
 import Hero from "./sections/Hero";
 import Legal from "./sections/Legal";
 import Thesis from "./sections/Thesis";
-import Callouts from "./ui/Callouts";
+import Callouts, { GalaxyLabels } from "./ui/Callouts";
 import Chrome from "./ui/Chrome";
 import IndexDrawer from "./ui/IndexDrawer";
 
@@ -85,6 +85,7 @@ export default function Experience() {
         <Gate />
         <Chrome />
         <Callouts />
+        <GalaxyLabels />
 
         <main className="relative z-10">
           <Hero />

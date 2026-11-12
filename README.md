@@ -2,6 +2,8 @@
 
 Single-page, scroll-driven briefing for the Global Confederation of Industries.
 First draft. Dark, particle-based 3D, generated entirely in code (no model files).
+The opening image is a six-arm galaxy (one arm per council) with wireframe lobes for
+public mandate and institutional capital; it resolves into each council's form.
 
 ## Run
 
@@ -29,7 +31,9 @@ control must replace it before any public deployment. The page is marked
 | `lib/quality.ts` | Particle count and resolution per device tier. |
 | `components/canvas/` | The lattice: eight generated shapes, shaders, scene. |
 | `components/sections/` | Gate, Hero, Thesis, Councils, ESG, Legal. |
-| `components/ui/` | Frame and bars, callout labels, index drawer, text effects. |
+| `components/ui/` | Frame and bars, callout and galaxy labels, logo mark, index drawer, text effects. |
+| `brand/gci-brand-kit.png` | Brand kit v1.0 as one image. Source: `brand/brand-guide.html`. |
+| `brand/logo/` | Logo files (SVG, text outlined): mark in colour, gold, white and black; horizontal and stacked lockups for dark and light grounds; favicon. |
 
 ## Stack
 

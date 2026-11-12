@@ -20,6 +20,8 @@ export const frame = {
   lenis: null as Lenis | null,
   /** DOM nodes the canvas positions each frame (callout labels pinned to the lattice). */
   callouts: [] as (HTMLElement | null)[],
+  /** Labels pinned to the galaxy in the hero. */
+  galaxyLabels: [] as (HTMLElement | null)[],
 };
 
 /** Councils section layout, in viewport heights. Shared by the DOM and the canvas. */

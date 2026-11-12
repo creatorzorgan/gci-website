@@ -13,6 +13,7 @@ import {
   sectionY,
   useUI,
 } from "@/lib/store";
+import { GciMark } from "./Logo";
 import { Scramble } from "./text";
 
 type Stop = {
@@ -116,10 +117,12 @@ export default function Chrome() {
       </div>
 
       <header className="fixed inset-x-3 top-3 z-30 flex h-14 items-center justify-between gap-4 border-b border-hairline bg-[rgb(5_5_7/0.88)] px-4 sm:px-6">
-        <a href="#apex" className="flex items-baseline gap-3" aria-label={`${entity.name}, back to top`}>
-          <span className="label bullet text-[0.8125rem] tracking-[0.22em] text-titanium">
+        <a href="#apex" className="flex items-center gap-3" aria-label={`${entity.name}, back to top`}>
+          <GciMark size={30} />
+          <span className="font-display text-[1.3rem] leading-none tracking-[0.14em] text-titanium">
             {entity.short}
           </span>
+          <span aria-hidden className="hidden h-5 w-px bg-hairline-strong md:block" />
           <span className="label hidden text-steel md:inline">{entity.name}</span>
         </a>
         <p className="label hidden text-steel xl:block">{entity.classification}</p>

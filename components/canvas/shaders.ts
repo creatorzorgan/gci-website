@@ -31,6 +31,7 @@ export const latticeVertex = /* glsl */ `
   const vec3 GOLD = vec3(0.90, 0.70, 0.30);
   const vec3 TITANIUM = vec3(0.80, 0.83, 0.88);
   const vec3 CYAN = vec3(0.37, 0.83, 0.90);
+  const vec3 CREAM = vec3(0.93, 0.88, 0.80);
 
   vec3 target(int i) {
     if (i == 1) return aT1;
@@ -61,7 +62,7 @@ export const latticeVertex = /* glsl */ `
     float turbulence = sin(m * 3.14159);
     p += n * (0.42 * turbulence * (1.0 - uCalm) + 0.006 * (1.0 - uCalm));
 
-    // Fracture: the six facets of the apex node drift apart as separate wedges.
+    // Fracture: the galaxy splits into six sectors that drift apart (fragmented silos).
     float wedge = floor((atan(p.z, p.x) + 3.14159) / 1.0472);
     float wa = (wedge + 0.5) * 1.0472 - 3.14159;
     vec3 wdir = vec3(cos(wa), (mod(wedge, 2.0) - 0.5) * 0.55, sin(wa));
@@ -95,8 +96,11 @@ export const latticeVertex = /* glsl */ `
     gl_PointSize = size * uPixelRatio / max(0.5, -mv.z);
 
     float radius = length(mix(a, b, m));
-    vec3 color = mix(GOLD, TITANIUM, smoothstep(0.15, 0.95, radius));
-    color = mix(color, CYAN, smoothstep(1.45, 2.3, radius) * 0.45);
+    // The galaxy (form 0) is warm: a gold core fading to cream, with almost no cyan edge.
+    float galaxy = (uFrom == 0 ? 1.0 - m : 0.0) + (uTo == 0 ? m : 0.0);
+    vec3 outer = mix(TITANIUM, CREAM, galaxy);
+    vec3 color = mix(GOLD, outer, smoothstep(0.12 + galaxy * 0.1, 0.95 + galaxy * 0.35, radius));
+    color = mix(color, CYAN, smoothstep(1.45, 2.3, radius) * 0.45 * (1.0 - galaxy * 0.85));
     // A few gold motes everywhere keep the accent present in every form.
     color = mix(color, GOLD, step(0.965, aSeed.y) * 0.85);
     vColor = color;
@@ -147,5 +151,30 @@ export const threadVertex = /* glsl */ `
     vColor = vec3(0.92, 0.72, 0.32);
     float ends = smoothstep(0.0, 0.12, t) * smoothstep(1.0, 0.88, t);
     vAlpha = uBright * ends * (0.35 + 0.65 * aSeed.x);
+  }
+`;
+
+/** Eclipse ring at the core: a thin bright annulus with a soft halo, always facing the camera. */
+export const ringVertex = /* glsl */ `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+export const ringFragment = /* glsl */ `
+  uniform float uOpacity;
+  uniform float uTime;
+  varying vec2 vUv;
+
+  void main() {
+    float d = length(vUv - 0.5) * 2.0;
+    float ring = exp(-pow((d - 0.42) / 0.028, 2.0));
+    float halo = exp(-pow((d - 0.42) / 0.16, 2.0)) * 0.32;
+    float corona = smoothstep(1.0, 0.42, d) * step(0.42, d) * 0.08;
+    float shimmer = 0.92 + 0.08 * sin(uTime * 1.3 + atan(vUv.y - 0.5, vUv.x - 0.5) * 6.0);
+    vec3 color = mix(vec3(0.88, 0.70, 0.36), vec3(1.0, 0.94, 0.82), ring);
+    gl_FragColor = vec4(color, (ring + halo + corona) * shimmer * uOpacity);
   }
 `;

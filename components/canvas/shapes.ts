@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 /**
  * Eight target forms for the particle lattice, generated in code.
- * 0 apex node · 1 diamond-cubic lattice · 2 photonic layer stack · 3 geodesic shield
+ * 0 galaxy · 1 diamond-cubic lattice · 2 photonic layer stack · 3 geodesic shield
  * 4 double helix · 5 ledger terraces · 6 corridor globe · 7 closed loop
  */
 
@@ -32,31 +32,107 @@ function set(out: Float32Array, i: number, x: number, y: number, z: number) {
   out[i * 3 + 2] = z;
 }
 
-/** 0. Six-faceted crystal: hexagonal belt with pyramidal caps and a bright core. */
-function apex(n: number, r: Rand) {
+/**
+ * 0. Six-arm spiral galaxy: a bright core (the apex node), six arms (one per council),
+ * a thin disc between them and a sparse halo. Lies in the x-z plane.
+ */
+export const GALAXY = { arms: 6, r0: 0.22, rMax: 2.15, wind: 1.35 };
+
+function galaxy(n: number, r: Rand) {
   const out = new Float32Array(n * 3);
-  const R = 1.12;
-  const H = 1.72;
-  const belt = 0.62;
-  const step = Math.PI / 3;
+  const { arms, r0, rMax, wind } = GALAXY;
+  // Star clusters strung along each arm give the arms their bright knots.
+  const cr = mulberry32(33);
+  const clusters: number[][] = [];
+  for (let k = 0; k < arms; k++)
+    for (let j = 0; j < 7; j++) {
+      const t = 0.18 + cr() * 0.78;
+      const rad = r0 + t * (rMax - r0);
+      const th = (k * TAU) / arms + Math.log(rad / r0) * wind + (cr() - 0.5) * 0.12;
+      clusters.push([Math.cos(th) * rad, Math.sin(th) * rad, 0.03 + cr() * 0.05]);
+    }
   for (let i = 0; i < n; i++) {
     const u = r();
-    if (u < 0.1) {
-      const k = 0.2;
-      set(out, i, gauss(r) * k, gauss(r) * k * 1.6, gauss(r) * k);
-      continue;
+    if (u < 0.12) {
+      // Bulge: dense and slightly flattened.
+      const rad = Math.pow(r(), 1.9) * 0.46;
+      const z = r() * 2 - 1;
+      const ph = r() * TAU;
+      const s = Math.sqrt(1 - z * z);
+      set(out, i, Math.cos(ph) * s * rad, z * rad * 0.6, Math.sin(ph) * s * rad);
+    } else if (u < 0.17) {
+      const c = clusters[Math.floor(r() * clusters.length)];
+      set(out, i, c[0] + gauss(r) * c[2], gauss(r) * 0.02, c[1] + gauss(r) * c[2]);
+    } else if (u < 0.74) {
+      const arm = Math.floor(r() * arms);
+      const t = Math.pow(r(), 0.85);
+      const rad = r0 + t * (rMax - r0);
+      const th = (arm * TAU) / arms + Math.log(rad / r0) * wind;
+      const spread = 0.06 + 0.17 * t;
+      set(
+        out,
+        i,
+        Math.cos(th) * rad + gauss(r) * spread,
+        gauss(r) * (0.05 * (1 - t) + 0.014),
+        Math.sin(th) * rad + gauss(r) * spread,
+      );
+    } else if (u < 0.94) {
+      // Disc between the arms, falling off with radius.
+      const rad = Math.min(rMax * 1.08, -Math.log(1 - r() * 0.97) * 0.6 + 0.12);
+      const th = r() * TAU;
+      set(out, i, Math.cos(th) * rad, gauss(r) * 0.03, Math.sin(th) * rad);
+    } else {
+      const z = r() * 2 - 1;
+      const ph = r() * TAU;
+      const s = Math.sqrt(1 - z * z);
+      const rad = 0.7 + r() * 2.1;
+      set(out, i, Math.cos(ph) * s * rad, z * rad * 0.42, Math.sin(ph) * s * rad);
     }
-    let th = r() * TAU;
-    if (u < 0.42) th = Math.round(th / step) * step;
-    let y = (r() * 2 - 1) * H;
-    if (u > 0.86) y = (r() < 0.5 ? -1 : 1) * belt;
-    const ay = Math.abs(y);
-    const taper = ay < belt ? 1 : 1 - (ay - belt) / (H - belt);
-    const seg = (((th % step) + step) % step) - step / 2;
-    const rad = ((R * Math.cos(step / 2)) / Math.cos(seg)) * taper;
-    set(out, i, Math.cos(th) * rad, y, Math.sin(th) * rad);
   }
   return out;
+}
+
+/** A point on the leading edge of one galaxy arm, in the form's own space. */
+export function armPoint(arm: number, t: number) {
+  const { arms, r0, rMax, wind } = GALAXY;
+  const rad = r0 + t * (rMax - r0);
+  const th = (arm * TAU) / arms + Math.log(rad / r0) * wind;
+  return new THREE.Vector3(Math.cos(th) * rad, 0, Math.sin(th) * rad);
+}
+
+/**
+ * Wireframe lobe above and below the core: latitude rings and meridians of an
+ * ellipsoid whose lower pole sits on the core.
+ */
+export function buildLobeGeometry(rx: number, ry: number, rings = 9, meridians = 14, seg = 72) {
+  const pts: number[] = [];
+  const add = (x1: number, y1: number, z1: number, x2: number, y2: number, z2: number) => {
+    pts.push(x1, y1, z1, x2, y2, z2, x1, -y1, z1, x2, -y2, z2);
+  };
+  const at = (phi: number, th: number): [number, number, number] => [
+    Math.cos(th) * Math.sin(phi) * rx,
+    ry - Math.cos(phi) * ry,
+    Math.sin(th) * Math.sin(phi) * rx,
+  ];
+  for (let k = 1; k < rings; k++) {
+    const phi = (k / rings) * Math.PI;
+    for (let j = 0; j < seg; j++) {
+      const a = at(phi, (j / seg) * TAU);
+      const b = at(phi, ((j + 1) / seg) * TAU);
+      add(...a, ...b);
+    }
+  }
+  for (let m = 0; m < meridians; m++) {
+    const th = (m / meridians) * TAU;
+    for (let j = 0; j < seg / 2; j++) {
+      const a = at((j / (seg / 2)) * Math.PI, th);
+      const b = at(((j + 1) / (seg / 2)) * Math.PI, th);
+      add(...a, ...b);
+    }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+  return geometry;
 }
 
 /** 1. Diamond-cubic atomic lattice cropped to an octahedron: atoms plus bonds. */
@@ -355,7 +431,7 @@ function loop(n: number, r: Rand) {
 }
 
 export function buildLatticeGeometry(count: number) {
-  const builders = [apex, diamond, chip, shield, helix, terraces, globe, loop];
+  const builders = [galaxy, diamond, chip, shield, helix, terraces, globe, loop];
   const geometry = new THREE.BufferGeometry();
   builders.forEach((build, index) => {
     const data = build(count, mulberry32(1000 + index * 97));

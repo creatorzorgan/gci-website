@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { entity, legal } from "@/content/briefing";
 import { useUI } from "@/lib/store";
+import { GciMark } from "../ui/Logo";
 
 const HOLD_MS = 900;
 const SESSION_KEY = "gci-clearance";
@@ -79,7 +80,12 @@ export default function Gate() {
             exit={{ y: -14, opacity: 0, scale: 0.985, transition: { duration: 0.5 } }}
           >
             <div className="flex items-center justify-between gap-4 border-b border-hairline pb-4">
-              <span className="label bullet text-titanium-dim">{entity.short}</span>
+              <span className="flex items-center gap-2.5">
+                <GciMark size={26} />
+                <span className="font-display text-[1.15rem] leading-none tracking-[0.14em] text-titanium">
+                  {entity.short}
+                </span>
+              </span>
               <span className="label text-right">{entity.classification}</span>
             </div>
 
