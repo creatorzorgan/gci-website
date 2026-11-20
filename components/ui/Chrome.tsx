@@ -2,13 +2,16 @@
 
 import { motion, useMotionValue, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
-import { councils, entity, programmeCount } from "@/content/briefing";
+import { councils, entity, initiativeCount } from "@/content/briefing";
 import {
-  COUNCIL_SEG_FRAC,
   COUNCILS_INTRO_FRAC,
+  DIVISION_FRAC,
+  PINNED_COUNCILS_MIN_W,
   clamp01,
   councilProgress,
+  councilSpan,
   frame,
+  pageTop,
   scrollToY,
   sectionY,
   useUI,
@@ -32,17 +35,17 @@ function getStops(): Stop[] {
   return [
     { label: "01 / Apex node", start: 0, target: r.hero.top },
     {
-      label: "02 / Thesis · Definition",
+      label: "02 / Founding vision",
       start: r.thesis.top - vh * 0.5,
       target: sectionY("thesis", 0.17),
     },
     {
-      label: "02 / Thesis · Contrast",
+      label: "02 / Founding vision · Contrast",
       start: sectionY("thesis", 0.32),
       target: sectionY("thesis", 0.48),
     },
     {
-      label: "02 / Thesis · Outcomes",
+      label: "02 / Founding vision · Commons",
       start: sectionY("thesis", 0.655),
       target: sectionY("thesis", 0.9),
     },
@@ -51,23 +54,32 @@ function getStops(): Stop[] {
       start: r.councils.top - vh * 0.5,
       target: sectionY("councils", COUNCILS_INTRO_FRAC * 0.4),
     },
-    // Each council's chapter starts where its text swaps in (see councilAt).
-    ...councils.map((c, k) => ({
-      label: `03.${c.numeral} / ${c.label}`,
-      start: sectionY(
-        "councils",
-        k === 0 ? COUNCILS_INTRO_FRAC * 0.8 : COUNCILS_INTRO_FRAC + (k - 0.1) * COUNCIL_SEG_FRAC,
-      ),
-      target: sectionY("councils", councilProgress(k)),
-    })),
+    // Pinned layout: each council's chapter starts where its text swaps in (see divisionAt).
+    // Stacked layout: each council is an article in the page.
+    ...councils.map((c, k) => {
+      const label = `03.${c.numeral} / ${c.label}`;
+      const top = frame.vw < PINNED_COUNCILS_MIN_W ? pageTop(`council-${c.key}`) : null;
+      if (top !== null) return { label, start: top - vh * 0.5, target: top - 96 };
+      return {
+        label,
+        start: sectionY(
+          "councils",
+          k === 0 ? COUNCILS_INTRO_FRAC * 0.8 : councilSpan(k).start - 0.1 * DIVISION_FRAC,
+        ),
+        target: sectionY("councils", councilProgress(k)),
+      };
+    }),
     {
-      label: "04 / Risk mitigation",
+      label: "04 / Stewardship",
       start: r.esg.top - vh * 0.5,
       target: sectionY("esg", 0.62),
     },
-    { label: "05 / Legal notice", start: r.legal.top - vh * 0.6, target: r.legal.top + vh * 0.3 },
+    { label: "05 / Statutory governance", start: r.legal.top - vh * 0.6, target: r.legal.top + vh * 0.3 },
   ];
 }
+
+/** Charter Part V.1: identity bar segments, revealed as the header gets wider. */
+const IDENTITY_SHOW = ["hidden md:inline", "hidden lg:inline", "hidden 2xl:inline"];
 
 export default function Chrome() {
   const cleared = useUI((s) => s.cleared);
@@ -117,21 +129,31 @@ export default function Chrome() {
       </div>
 
       <header className="fixed inset-x-3 top-3 z-30 flex h-14 items-center justify-between gap-4 border-b border-hairline bg-[rgb(5_5_7/0.88)] px-4 sm:px-6">
-        <a href="#apex" className="flex items-center gap-3" aria-label={`${entity.name}, back to top`}>
+        <a
+          href="#apex"
+          className="flex min-w-0 items-center gap-3"
+          aria-label={`${entity.name}, back to top`}
+        >
           <GciMark size={30} />
           <span className="font-display text-[1.3rem] leading-none tracking-[0.14em] text-titanium">
             {entity.short}
           </span>
           <span aria-hidden className="hidden h-5 w-px bg-hairline-strong md:block" />
-          <span className="label hidden text-steel md:inline">{entity.name}</span>
+          <span className="label hidden min-w-0 truncate text-steel md:inline">
+            {entity.identityBar.map((part, i) => (
+              <span key={part} className={IDENTITY_SHOW[i]}>
+                {i > 0 && <span className="mx-2.5 text-gold/70">|</span>}
+                {part}
+              </span>
+            ))}
+          </span>
         </a>
-        <p className="label hidden text-steel xl:block">{entity.classification}</p>
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="label chamfer bg-titanium px-4 py-2.5 text-obsidian transition-colors hover:bg-gold-bright"
+          className="label chamfer shrink-0 bg-titanium px-4 py-2.5 text-obsidian transition-colors hover:bg-gold-bright"
         >
-          Index <span className="ml-1.5 opacity-60">/{programmeCount}</span>
+          Index <span className="ml-1.5 opacity-60">/{initiativeCount}</span>
         </button>
       </header>
 
@@ -144,7 +166,7 @@ export default function Chrome() {
           <Scramble text={label} />
         </p>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 sm:gap-3">
           <button
             type="button"
             onClick={() => step(-1)}
@@ -153,7 +175,7 @@ export default function Chrome() {
           >
             Prev
           </button>
-          <span aria-hidden className="relative block h-px w-16 bg-hairline-strong sm:w-28">
+          <span aria-hidden className="relative hidden h-px w-16 bg-hairline-strong min-[420px]:block sm:w-28">
             <motion.span
               className="absolute inset-0 origin-left bg-gold"
               style={{ scaleX: fill }}

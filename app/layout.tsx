@@ -12,9 +12,9 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "GCI — Restricted Institutional Briefing",
+  title: "GCI — Institutional Briefing Portal",
   description:
-    "Global Confederation of Industries. Preliminary institutional briefing portal. Restricted access.",
+    "Global Confederation of Industries (GCI). Apex public-private execution platform, Republic of India. Institutional briefing portal; restricted access.",
   // Confidential briefing: keep it out of search indexes and caches.
   robots: {
     index: false,

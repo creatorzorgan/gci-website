@@ -174,7 +174,16 @@ function Lattice({ count }: { count: number }) {
     // On narrow screens the text sits over the form, so it is held back once past the hero.
     const pastHero =
       !!frame.ranges.thesis && frame.y > frame.ranges.thesis.top - frame.vh * 0.5;
-    const bright = s.bright * (narrow ? (pastHero ? 0.5 : 0.8) : 1) * (0.28 + 0.72 * s.boot);
+    // Below 1280 px the councils are a stacked list over the form, so it is held back there too.
+    const r = frame.ranges;
+    const stackedCouncils =
+      frame.vw < 1280 &&
+      !!r.councils &&
+      !!r.esg &&
+      frame.y > r.councils.top - frame.vh * 0.5 &&
+      frame.y < r.esg.top - frame.vh * 0.5;
+    const held = narrow ? (pastHero ? 0.34 : 0.8) : stackedCouncils ? 0.45 : 1;
+    const bright = s.bright * held * (0.28 + 0.72 * s.boot);
 
     u.uTime.value += dt * (1 - calm * 0.85);
     u.uFrom.value = directive.from;
@@ -202,7 +211,7 @@ function Lattice({ count }: { count: number }) {
     g.scale.setScalar(scale);
     // Offsets only apply where there is room beside the text.
     // On narrow screens the form sits above the hero headline, then returns to centre.
-    s.lift = damp(s.lift, narrow && !pastHero ? 1.15 : 0, 3.2, dt);
+    s.lift = damp(s.lift, narrow && !pastHero ? 1.42 : 0, 3.2, dt);
     g.position.set(narrow ? 0 : s.ox * aspectScale, narrow ? s.lift : s.oy, 0);
     g.rotation.x = s.tilt - s.py * 0.07;
     g.updateMatrixWorld();
@@ -211,8 +220,10 @@ function Lattice({ count }: { count: number }) {
     const gm = directive.from === 0 ? 1 - directive.mix : directive.to === 0 ? directive.mix : 0;
     const galaxy =
       gm * gm * (1 - s.fracture) * (1 - directive.collapse) * (1 - directive.warp) * s.boot;
-    outerMaterial.opacity = galaxy * 0.24 * Math.min(1, s.bright * 1.2);
-    innerMaterial.opacity = galaxy * 0.15 * Math.min(1, s.bright * 1.2);
+    // On phones the lobes cross the hero text; keep them as a faint outline there.
+    const lobeLevel = narrow ? 0.45 : 1;
+    outerMaterial.opacity = galaxy * 0.24 * lobeLevel * Math.min(1, s.bright * 1.2);
+    innerMaterial.opacity = galaxy * 0.15 * lobeLevel * Math.min(1, s.bright * 1.2);
     ringMaterial.uniforms.uOpacity.value = galaxy * s.ring;
     ringMaterial.uniforms.uTime.value = u.uTime.value;
     if (lobes.current) lobes.current.rotation.y = rot * 0.25;
@@ -232,7 +243,7 @@ function Lattice({ count }: { count: number }) {
 
     // Pin the callout labels to points on the form (HTML, positioned from 3D).
     const showCallouts =
-      ui.activeCouncil >= 0 && !narrow && directive.collapse < 0.01 && directive.warp < 0.05;
+      ui.activeCouncil >= 0 && frame.vw >= 1280 && directive.collapse < 0.01 && directive.warp < 0.05;
     const sway = Math.sin(rot * 0.6) * 0.55;
     const cs = Math.cos(sway);
     const sn = Math.sin(sway);

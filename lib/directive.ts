@@ -1,8 +1,10 @@
 import {
   COUNCIL_COUNT,
-  COUNCIL_SEG_FRAC,
+  COUNCIL_MORPH_VH,
   COUNCILS_INTRO_FRAC,
+  COUNCILS_PIN_VH,
   clamp01,
+  councilSpan,
   frame,
   sectionProgress,
   smoothstep,
@@ -69,7 +71,7 @@ function boundaryWarp(y: number, top: number, vh: number) {
 }
 
 const WARP = 0.9;
-const COUNCIL_SCALE = 0.68;
+const COUNCIL_SCALE = 0.64;
 
 export function computeDirective(d: Directive) {
   const y = frame.y;
@@ -134,13 +136,17 @@ export function computeDirective(d: Directive) {
       d.tilt = 0.5 - 0.2 * d.mix;
       d.ring = 0.3 * (1 - d.mix);
     } else {
-      const f = (c - COUNCILS_INTRO_FRAC) / COUNCIL_SEG_FRAC;
-      const k = Math.min(COUNCIL_COUNT - 1, Math.floor(f));
-      const local = f - k;
+      // Councils span different numbers of divisions; the form holds through all of a
+      // council's divisions and morphs to the next council over its last few viewports.
+      let k = 0;
+      while (k < COUNCIL_COUNT - 1 && c >= councilSpan(k + 1).start) k++;
+      const span = councilSpan(k);
+      const localVh = (c - span.start) * COUNCILS_PIN_VH;
+      const lengthVh = span.length * COUNCILS_PIN_VH;
       d.from = k + 1;
       if (k < COUNCIL_COUNT - 1) {
         d.to = k + 2;
-        d.mix = smoothstep(0.8, 1, local);
+        d.mix = smoothstep(lengthVh - COUNCIL_MORPH_VH, lengthVh, localVh);
       } else {
         d.to = d.from;
       }
@@ -170,5 +176,9 @@ export function computeDirective(d: Directive) {
     d.flow *= 1 - d.collapse;
     d.offsetX *= 1 - d.collapse;
     d.offsetY = d.offsetY * (1 - d.collapse) + 0.95 * d.collapse;
+    // The statute is long reading; once it fills the screen the horizon fades away
+    // so it never runs through the text.
+    const reading = smoothstep(0.15, 0.55, (y - r.legal.top) / vh);
+    d.bright *= 1 - reading;
   }
 }

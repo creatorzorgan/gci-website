@@ -28,14 +28,20 @@ export default function Hero() {
   return (
     <section ref={ref} id="apex" aria-label="Apex node" className="relative h-[200vh]">
       <div
-        className={`sticky top-0 flex h-screen flex-col justify-end px-6 pt-24 pb-28 transition-opacity duration-700 sm:px-10 lg:px-16 ${
+        className={`sticky top-0 flex h-screen flex-col justify-end px-6 pt-24 pb-28 max-lg:[@media(max-height:720px)]:pb-[5.25rem] transition-opacity duration-700 sm:px-10 lg:px-16 ${
           cleared ? "opacity-100" : "opacity-0"
         }`}
       >
-        <motion.div style={{ opacity: exitOpacity, y: exitY }} className="max-w-[60rem]">
+        {/* Small screens: the form sits behind the text, so a fade keeps the copy legible. */}
+        <motion.div
+          aria-hidden
+          style={{ opacity: exitOpacity }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[78%] bg-[linear-gradient(0deg,rgb(5_5_7/0.94)_0%,rgb(5_5_7/0.82)_55%,rgb(5_5_7/0)_100%)] lg:hidden"
+        />
+        <motion.div style={{ opacity: exitOpacity, y: exitY }} className="relative max-w-[60rem]">
           <p className="label bullet text-titanium-dim">01 / Apex node</p>
 
-          <h1 className="mt-5 font-display text-[clamp(2.6rem,7.4vw,6.75rem)] leading-[0.98] font-light tracking-[-0.022em]">
+          <h1 className="mt-5 font-display text-[clamp(2.6rem,7.4vw,6.75rem)] leading-[0.98] font-light tracking-[-0.022em] max-lg:[@media(max-height:720px)]:mt-3 max-lg:[@media(max-height:720px)]:text-[2.15rem]">
             <TypeOn text={hero.headline[0]} progress={typed} from={0} to={0.46} className="block" />
             <TypeOn
               text={hero.headline[1]}
@@ -47,19 +53,19 @@ export default function Hero() {
           </h1>
 
           <motion.div style={{ opacity: supporting }}>
-            <p className="mt-7 max-w-[34rem] text-[1.0625rem] leading-relaxed text-titanium-dim">
+            <p className="mt-7 max-w-[34rem] text-[1.0625rem] leading-relaxed text-titanium-dim max-lg:[@media(max-height:720px)]:mt-4 max-lg:[@media(max-height:720px)]:text-[0.9375rem]">
               {hero.lede}
             </p>
-            <p className="label mt-6 text-titanium-dim">
-              {entity.name} <span className="mx-2 text-gold">/</span> {entity.legalContext}
+            <p className="label mt-6 text-titanium-dim max-lg:[@media(max-height:720px)]:mt-3">
+              {entity.name} <span className="mx-2 text-gold">/</span> {entity.structure}
             </p>
 
-            <div className="mt-9 border-t border-hairline pt-4">
-              <p className="label">Prepared for</p>
-              <ul className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1.5">
-                {entity.audience.map((name) => (
-                  <li key={name} className="label text-titanium-dim">
-                    {name}
+            <div className="mt-9 border-t border-hairline pt-4 max-lg:[@media(max-height:720px)]:mt-4 max-lg:[@media(max-height:720px)]:pt-3">
+              <p className="label">Institutional counterparts</p>
+              <ul className="mt-2.5 flex max-w-[52rem] flex-wrap gap-x-5 gap-y-1.5">
+                {entity.counterparts.map((c) => (
+                  <li key={c.short} className="label text-titanium-dim" title={c.full}>
+                    {c.short}
                   </li>
                 ))}
               </ul>

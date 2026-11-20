@@ -1,10 +1,8 @@
 "use client";
 
-import { councils } from "@/content/briefing";
+import { councils, divisions, firstDivision, pad } from "@/content/briefing";
 import { frame, useUI } from "@/lib/store";
 import { Scramble } from "./text";
-
-const pad = (n: number) => String(n).padStart(2, "0");
 
 /**
  * Instrument-style labels pinned to points on the lattice.
@@ -12,15 +10,17 @@ const pad = (n: number) => String(n).padStart(2, "0");
  */
 export default function Callouts() {
   const active = useUI((s) => s.activeCouncil);
+  const activeDivision = useUI((s) => s.activeDivision);
   const selected = useUI((s) => s.selected);
 
   const index = Math.max(0, active);
   const council = councils[index];
-  const row = selected[index] ?? 0;
-  const programme = council.programmes[row];
+  const g = activeDivision < 0 ? firstDivision[index] : activeDivision;
+  const division = divisions[g];
+  const initiative = division.initiatives[selected[g] ?? 0];
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-20 hidden lg:block" aria-hidden>
+    <div className="pointer-events-none fixed inset-0 z-20 hidden xl:block" aria-hidden>
       <div
         className="callout"
         ref={(el) => {
@@ -29,12 +29,12 @@ export default function Callouts() {
       >
         <span className="callout-dot" />
         <span className="callout-line" style={{ transform: "rotate(-122deg)" }} />
-        <div className="absolute right-[30px] bottom-[48px] w-[13rem] border-r border-cyan/60 bg-[rgb(5_5_7/0.72)] py-1 pr-3 pl-2 text-right">
+        <div className="absolute right-[30px] bottom-[48px] w-[13rem] border-r border-cyan/60 bg-[rgb(5_5_7/0.9)] py-1 pr-3 pl-2 text-right">
           <p className="label text-cyan">
-            /{council.numeral}.{pad(row + 1)}
+            {division.code} / {pad(initiative.n)}
           </p>
           <p className="label mt-1 text-titanium">
-            <Scramble text={programme.name} />
+            <Scramble text={initiative.name} />
           </p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default function Callouts() {
       >
         <span className="callout-dot" />
         <span className="callout-line" style={{ transform: "rotate(58deg)" }} />
-        <div className="absolute top-[48px] left-[30px] w-[11rem] border-l border-cyan/60 bg-[rgb(5_5_7/0.72)] py-1 pr-2 pl-3">
+        <div className="absolute top-[48px] left-[30px] w-[11rem] border-l border-cyan/60 bg-[rgb(5_5_7/0.9)] py-1 pr-2 pl-3">
           <p className="label text-cyan">Form {pad(index + 1)} / 06</p>
           <p className="label mt-1 text-titanium">
             <Scramble text={council.form} />
@@ -70,8 +70,9 @@ type GalaxyLabel = {
 
 /** Labels on the galaxy in the hero. Same order as the anchors in the scene. */
 const GALAXY_LABELS: GalaxyLabel[] = [
-  { title: "Apex node", sub: "Central cabinet · six councils", dx: 52, dy: -58, dir: 1 },
-  { title: "Public mandate", sub: "Union Ministries · State Agencies", dx: -44, dy: -40, dir: -1 },
+  // Wording kept clear of governmental terms (charter Part IV, 1.2).
+  { title: "Apex node", sub: "Central Secretariat · six councils", dx: 52, dy: -58, dir: 1 },
+  { title: "Public counterparts", sub: "Union Ministries · State Secretariats", dx: -44, dy: -40, dir: -1 },
   { title: "Institutional capital", sub: "Non-debt · infrastructure", dx: -30, dy: 46, dir: -1 },
 ];
 

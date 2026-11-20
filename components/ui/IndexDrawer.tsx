@@ -2,12 +2,10 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef } from "react";
-import { councils, programmeCount } from "@/content/briefing";
-import { councilProgress, scrollToY, sectionY, useUI } from "@/lib/store";
+import { councils, divisions, firstDivision, initiativeCount, pad } from "@/content/briefing";
+import { divisionY, scrollToY, useUI } from "@/lib/store";
 
-const pad = (n: number) => String(n).padStart(2, "0");
-
-/** Every programme with its full wording, for readers who want to scan the whole brief. */
+/** Every initiative with its full wording, grouped by council and division. */
 export default function IndexDrawer() {
   const open = useUI((s) => s.drawerOpen);
   const setOpen = useUI((s) => s.setDrawerOpen);
@@ -23,11 +21,11 @@ export default function IndexDrawer() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, setOpen]);
 
-  const jump = (k: number) => {
+  const jump = (g: number) => {
     setOpen(false);
     // Wait a frame so scroll is unlocked before moving.
     requestAnimationFrame(() =>
-      requestAnimationFrame(() => scrollToY(sectionY("councils", councilProgress(k)))),
+      requestAnimationFrame(() => scrollToY(divisionY(g))),
     );
   };
 
@@ -47,7 +45,7 @@ export default function IndexDrawer() {
             key="drawer"
             role="dialog"
             aria-modal="true"
-            aria-label="Programme index"
+            aria-label="Initiative index"
             data-lenis-prevent
             className="fixed inset-y-0 right-0 z-50 w-full max-w-[46rem] overflow-y-auto border-l border-hairline-strong bg-carbon"
             initial={{ x: "100%" }}
@@ -57,9 +55,10 @@ export default function IndexDrawer() {
           >
             <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-hairline bg-carbon px-6 py-5 sm:px-9">
               <div>
-                <p className="label bullet text-titanium-dim">Programme index</p>
+                <p className="label bullet text-titanium-dim">Initiative index</p>
                 <p className="label mt-1.5">
-                  <span className="text-cyan">{programmeCount}</span> programmes ·{" "}
+                  <span className="text-cyan">{initiativeCount}</span> initiatives ·{" "}
+                  <span className="text-cyan">{divisions.length}</span> divisions ·{" "}
                   <span className="text-cyan">{pad(councils.length)}</span> councils
                 </p>
               </div>
@@ -76,42 +75,48 @@ export default function IndexDrawer() {
             <div className="px-6 pb-20 sm:px-9">
               {councils.map((council, k) => (
                 <section key={council.key} aria-label={`Council ${council.numeral}`} className="pt-12">
-                  <div className="flex items-end justify-between gap-6">
-                    <div>
-                      <p className="label text-gold">Council {council.numeral}</p>
-                      <h2 className="mt-2 font-display text-[1.75rem] leading-[1.12] font-light text-titanium">
-                        {council.title}
-                      </h2>
-                      {council.domain && (
-                        <p className="label mt-2.5">Associated domain / {council.domain}</p>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => jump(k)}
-                      className="label hidden shrink-0 border-b border-hairline-strong pb-1 text-titanium-dim transition-colors hover:text-gold-bright lg:block"
-                    >
-                      View
-                    </button>
-                  </div>
+                  <p className="label text-gold">Council {council.numeral}</p>
+                  <h2 className="mt-2 font-display text-[1.75rem] leading-[1.12] font-light text-titanium">
+                    {council.title}
+                  </h2>
+                  <p className="mt-2.5 text-[0.875rem] leading-snug text-titanium-dim italic">
+                    {council.directorate}
+                  </p>
 
-                  <ol className="mt-6 border-t border-hairline">
-                    {council.programmes.map((programme, i) => (
-                      <li key={programme.name} className="border-b border-hairline py-5">
-                        <div className="flex items-baseline justify-between gap-5">
-                          <h3 className="font-display text-[1.375rem] leading-[1.16] font-light text-titanium">
-                            {programme.name}
+                  {council.divisions.map((d, i) => (
+                    <div key={d.code} className="mt-8">
+                      <div className="flex items-end justify-between gap-6 border-b border-hairline-strong pb-2.5">
+                        <div>
+                          <p className="label text-gold">Division {d.code}</p>
+                          <h3 className="mt-1 text-[1rem] leading-snug font-medium text-titanium">
+                            {d.title}
                           </h3>
-                          <span className="label shrink-0 text-gold">
-                            /{council.numeral}.{pad(i + 1)}
-                          </span>
                         </div>
-                        <p className="mt-2 max-w-[36rem] text-[0.9375rem] leading-relaxed text-titanium-dim">
-                          {programme.full}
-                        </p>
-                      </li>
-                    ))}
-                  </ol>
+                        <button
+                          type="button"
+                          onClick={() => jump(firstDivision[k] + i)}
+                          className="label shrink-0 border-b border-hairline-strong pb-1 text-titanium-dim transition-colors hover:text-gold-bright"
+                        >
+                          View
+                        </button>
+                      </div>
+                      <ol>
+                        {d.initiatives.map((item) => (
+                          <li key={item.n} className="border-b border-hairline py-5">
+                            <div className="flex items-baseline justify-between gap-5">
+                              <h4 className="font-display text-[1.3rem] leading-[1.16] font-light text-titanium">
+                                {item.name}
+                              </h4>
+                              <span className="label shrink-0 text-gold">/{pad(item.n)}</span>
+                            </div>
+                            <p className="mt-2 max-w-[38rem] text-[0.9375rem] leading-relaxed text-titanium-dim">
+                              {item.body}
+                            </p>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  ))}
                 </section>
               ))}
             </div>
