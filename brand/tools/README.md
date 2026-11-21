@@ -38,15 +38,28 @@ bun run brand/tools/export_forms.ts brand/forms.js
 
 ## Rendering the brand kit image
 
-`brand/brand-guide.html` is the source of `brand/gci-brand-kit.png`. Render it with headless
-Chrome at 1600 px wide and device scale factor 2. The page sets `data-h` on `<html>` to its full
-height once fonts load; use that as the window height. Example (Git Bash):
+`brand/brand-guide.html` is the source of `brand/gci-brand-kit.png` (v2.0: navy palette and seal).
+The page is over 10,000 px tall, so a single headless screenshot at 2x drops tiles. Render it in
+slices over the DevTools protocol and stitch them (needs Node 22+ and Python with Pillow):
 
 ```bash
-"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu --hide-scrollbars --allow-file-access-from-files --virtual-time-budget=8000 --force-device-scale-factor=2 --window-size=1600,8319 --screenshot="C:/Projects/Clients/GCI/brand/gci-brand-kit.png" "file:///C:/Projects/Clients/GCI/brand/brand-guide.html"
+node brand/tools/render_kit.mjs "file:///C:/Projects/Clients/GCI/brand/brand-guide.html" <slice-dir>
 ```
 
-The four images in `brand/imagery/` are screenshots of the live page at 1440 x 900, downscaled to 800 px.
+Then paste the `slice*.png` files top to bottom into one 3200 px wide PNG.
+
+## Portal frames for the kit
+
+`brand/imagery/` holds frames of the live portal: desktop at 1440 x 900 (saved at 1000 px wide)
+and phone at 390 x 844 (`m*.jpg`). With the dev server running on port 3000:
+
+```bash
+node brand/tools/capture_frames.mjs <out-dir>
+```
+
+```bash
+node brand/tools/capture_frames.mjs <out-dir> mobile
+```
 
 ## `build_seal.py`: GCI seal, shield and lockups (November 2026)
 

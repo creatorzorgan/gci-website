@@ -2,19 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>GCI Brand Guide</title>
+<title>GCI Brand Kit</title>
 <style>
   @font-face { font-family: "Newsreader"; src: url("fonts/Newsreader-Variable.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
   @font-face { font-family: "Newsreader"; src: url("fonts/Newsreader-Italic-Variable.woff2") format("woff2"); font-weight: 200 800; font-style: italic; }
   @font-face { font-family: "Geist"; src: url("fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; }
   @font-face { font-family: "Geist Mono"; src: url("fonts/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; }
+  @font-face { font-family: "Cinzel"; src: url("fonts/Cinzel-Variable.ttf") format("truetype"); font-weight: 400 900; }
 
+  /* Kiran's institutional palette (website.pdf, November 2026), plus three supporting tokens. */
   :root {
-    --obsidian: #050507; --carbon: #0b0c10; --graphite: #14161c;
-    --hairline: rgb(255 255 255 / 0.08); --hairline-strong: rgb(255 255 255 / 0.16);
-    --titanium: #c9ced6; --titanium-dim: #8a919c; --steel: #737b88;
-    --gold: #c8a24a; --gold-bright: #e0b25c; --cyan: #5fd4e6; --crimson: #d8473f;
+    --obsidian: #070b14; --carbon: #0f172a; --graphite: #172036;
+    --hairline: rgb(148 163 184 / 0.14); --hairline-strong: rgb(148 163 184 / 0.28);
+    --titanium: #e2e8f0; --titanium-dim: #a3b1c4; --steel: #94a3b8;
+    --gold: #d4af37; --gold-bright: #e6c55c; --amber: #f59e0b; --crimson: #d8473f;
+    --ivory: #f7f3ea;
     --display: "Newsreader", Georgia, serif;
+    --classical: "Cinzel", "Trajan Pro", serif;
     --sans: "Geist", system-ui, sans-serif;
     --mono: "Geist Mono", ui-monospace, monospace;
   }
@@ -23,7 +27,7 @@
   body { width: 1600px; background: var(--obsidian); color: var(--titanium); font-family: var(--sans); -webkit-font-smoothing: antialiased; padding: 28px; }
 
   .sheet { position: relative; border: 1px solid var(--hairline); padding: 64px 72px 56px; }
-  .tick { position: absolute; width: 14px; height: 14px; border-color: rgb(200 162 74 / 0.75); border-style: solid; border-width: 0; }
+  .tick { position: absolute; width: 14px; height: 14px; border-color: rgb(212 175 55 / 0.8); border-style: solid; border-width: 0; }
   .tick.tl { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
   .tick.tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
   .tick.bl { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
@@ -31,36 +35,65 @@
 
   .label { font-family: var(--mono); font-size: 12px; line-height: 1.45; letter-spacing: 0.16em; text-transform: uppercase; color: var(--steel); }
   .bullet::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 11px; background: var(--gold); }
-  .dim { color: var(--titanium-dim); } .ti { color: var(--titanium); } .gd { color: var(--gold); } .gb { color: var(--gold-bright); } .cy { color: var(--cyan); }
+  .dim { color: var(--titanium-dim); } .ti { color: var(--titanium); } .gd { color: var(--gold); } .gb { color: var(--gold-bright); } .am { color: var(--amber); }
 
-  header.top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--hairline); }
+  header.top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 22px; border-bottom: 1px solid var(--hairline); }
   h1 { font-family: var(--display); font-weight: 300; font-size: 104px; line-height: 0.98; letter-spacing: -0.022em; margin-top: 52px; }
   h1 em { color: var(--gold-bright); }
-  .lede { margin-top: 26px; max-width: 760px; font-size: 19px; line-height: 1.6; color: var(--titanium-dim); }
+  .lede { margin-top: 26px; max-width: 820px; font-size: 19px; line-height: 1.6; color: var(--titanium-dim); }
 
   section { margin-top: 68px; padding-top: 22px; border-top: 1px solid var(--hairline); }
-  .sec-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; }
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; gap: 40px; }
   h2 { font-family: var(--display); font-weight: 300; font-size: 40px; line-height: 1.1; letter-spacing: -0.014em; color: var(--titanium); margin-top: 10px; }
-  .note { font-size: 15px; line-height: 1.6; color: var(--titanium-dim); max-width: 560px; }
+  .note { font-size: 15px; line-height: 1.6; color: var(--titanium-dim); max-width: 600px; }
 
-  /* 01 wordmark */
-  .marks { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 16px; }
-  .mark { height: 250px; border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: center; position: relative; }
-  .mark .cap { position: absolute; left: 16px; bottom: 13px; }
-  .wm { font-family: var(--mono); letter-spacing: 0.22em; text-transform: uppercase; display: inline-flex; align-items: center; }
-  .wm i { display: inline-block; background: var(--gold); }
-  .wm.xl { font-size: 62px; color: var(--titanium); } .wm.xl i { width: 34px; height: 34px; margin-right: 26px; }
-  .wm.md { font-size: 30px; } .wm.md i { width: 17px; height: 17px; margin-right: 14px; }
-  .mark.light { background: var(--titanium); border-color: var(--titanium); } .mark.light .wm { color: var(--obsidian); } .mark.light .cap { color: #4a4f58; }
-  .lockup { text-align: left; }
-  .lockup .wm { color: var(--titanium); }
-  .lockup p { margin-top: 12px; }
+  /* 01 logo */
+  .logo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .lg { border: 1px solid var(--hairline); position: relative; display: flex; align-items: center; justify-content: center; padding: 44px 30px 58px; }
+  .lg .cap { position: absolute; left: 16px; bottom: 14px; right: 16px; }
+  .lg-primary { grid-row: 1 / span 2; min-height: 640px; background: radial-gradient(60% 55% at 50% 48%, rgb(212 175 55 / 0.08), transparent 70%), var(--obsidian); }
+  .lg-light { background: var(--ivory); border-color: var(--ivory); }
+  .lg-light .cap { color: #5b6473; }
+  .lockups { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin-top: 16px; }
+  .anatomy { display: grid; grid-template-columns: 720px 1fr; gap: 16px; margin-top: 16px; }
+  .ana-figure { border: 1px solid var(--hairline); display: flex; align-items: center; padding: 26px 30px; }
+  .ana-wrap { position: relative; width: 600px; height: 380px; }
+  .ana-wrap img { position: absolute; left: 0; top: 0; }
+  .ana-wrap .tag { position: absolute; left: 412px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--titanium); }
+  .ana-wrap .lead { position: absolute; height: 1px; background: linear-gradient(90deg, var(--amber), rgb(245 158 11 / 0.3)); }
+  .ana-wrap .lead::before { content: ""; position: absolute; left: -3px; top: -3px; width: 7px; height: 7px; border: 1px solid var(--amber); border-radius: 50%; background: var(--obsidian); }
+  .ana-text { border: 1px solid var(--hairline); padding: 30px 32px; }
+  .ana-text dl { margin-top: 14px; display: grid; grid-template-columns: 150px 1fr; row-gap: 15px; column-gap: 16px; }
+  .ana-text dt { font-family: var(--display); font-weight: 300; font-size: 23px; color: var(--titanium); line-height: 1.15; }
+  .ana-text dd { font-size: 15px; line-height: 1.55; color: var(--titanium-dim); padding-top: 3px; }
+  .rules-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .lg.tall { min-height: 290px; }
+  .clear { position: relative; padding: 24px; outline: 1px dashed rgb(245 158 11 / 0.6); }
+  .clear::before { content: "x"; position: absolute; left: 50%; top: 4px; transform: translateX(-50%); font-family: var(--mono); font-size: 12px; color: var(--amber); }
+  .clear img { display: block; outline: 1px solid var(--hairline); }
+  .sizes { display: flex; align-items: flex-end; gap: 22px; }
+  .sizes div { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .variants { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; }
+  .variants .v { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 6px 12px; border: 1px solid var(--hairline); }
+  .donts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
+  .dont { border: 1px solid var(--hairline); }
+  .dstage { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .dstage::after { content: ""; position: absolute; width: 160px; height: 2px; background: var(--crimson); transform: rotate(-35deg); opacity: .85; }
+  .dont p { padding: 12px 16px 14px; border-top: 1px solid var(--hairline); font-size: 14px; line-height: 1.5; color: var(--titanium-dim); }
+  .dont b { color: var(--titanium); font-weight: 500; }
+  .lawful { margin-top: 16px; border: 1px solid rgb(216 71 63 / 0.45); border-left: 3px solid var(--crimson); padding: 22px 26px; display: grid; grid-template-columns: 260px 1fr; gap: 26px; }
+  .lawful h3 { font-family: var(--display); font-weight: 300; font-size: 26px; line-height: 1.15; }
+  .lawful ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
+  .lawful li { font-size: 14.5px; line-height: 1.5; color: var(--titanium-dim); padding-left: 16px; position: relative; }
+  .lawful li::before { content: ""; position: absolute; left: 0; top: 9px; width: 7px; height: 1px; background: var(--crimson); }
+  .lawful li b { color: var(--titanium); font-weight: 500; }
 
   /* 02 colour */
   .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
   .sw { border: 1px solid var(--hairline); }
   .sw .chip { height: 132px; position: relative; }
-    .sw .meta { padding: 14px 16px 16px; border-top: 1px solid var(--hairline); min-height: 160px; }
+  .sw .chip .client { position: absolute; left: 12px; top: 12px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; padding: 4px 7px; background: rgb(7 11 20 / .78); color: var(--gold); border: 1px solid rgb(212 175 55 / .5); }
+  .sw .meta { padding: 14px 16px 16px; border-top: 1px solid var(--hairline); min-height: 168px; }
   .sw .name { font-size: 17px; color: var(--titanium); font-weight: 500; }
   .sw .hex { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; color: var(--titanium-dim); margin-top: 3px; text-transform: uppercase; }
   .sw .role { font-size: 13.5px; line-height: 1.5; color: var(--titanium-dim); margin-top: 9px; }
@@ -70,13 +103,12 @@
   .ratio .legend div { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel); }
 
   /* 03 type */
-  .faces { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 16px; }
-  .face { border: 1px solid var(--hairline); padding: 26px 28px 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; }
+  .faces { display: grid; grid-template-columns: 1.15fr 1.2fr 1fr 1fr; gap: 16px; }
+  .face { border: 1px solid var(--hairline); padding: 26px 26px 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 430px; }
   .face .big { line-height: 1; color: var(--titanium); }
   .face .spec { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--hairline); }
-  .face .fname { font-size: 19px; color: var(--titanium); font-weight: 500; }
+  .face .fname { font-size: 18px; color: var(--titanium); font-weight: 500; }
   .face .use { font-size: 14px; line-height: 1.55; color: var(--titanium-dim); margin-top: 6px; }
-  .glyphs { font-size: 21px; line-height: 1.5; color: var(--titanium-dim); margin-top: 18px; word-break: break-all; }
   table.scale { width: 100%; border-collapse: collapse; margin-top: 26px; }
   table.scale td, table.scale th { text-align: left; padding: 15px 14px 15px 0; border-bottom: 1px solid var(--hairline); vertical-align: baseline; }
   table.scale th { font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; color: var(--steel); padding-top: 0; }
@@ -85,24 +117,31 @@
 
   /* 04 elements */
   .els { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .el { border: 1px solid var(--hairline); padding: 22px 24px 20px; min-height: 236px; display: flex; flex-direction: column; justify-content: space-between; }
+  .el { border: 1px solid var(--hairline); padding: 22px 24px 20px; min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; }
   .el .stage { flex: 1; display: flex; align-items: center; }
   .el .cap { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--hairline); font-size: 13.5px; line-height: 1.5; color: var(--titanium-dim); }
   .el .cap b { color: var(--titanium); font-weight: 500; }
-  .panel { background: linear-gradient(180deg, rgb(20 22 28 / 0.78), rgb(11 12 16 / 0.86)); border: 1px solid var(--hairline); border-radius: 2px; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05); padding: 18px 20px; width: 100%; }
+  .panel { background: linear-gradient(180deg, rgb(23 32 54 / 0.8), rgb(15 23 42 / 0.9)); border: 1px solid var(--hairline); border-radius: 2px; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05); padding: 18px 20px; width: 100%; }
   .chamfer { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
-  .btn-solid { background: var(--titanium); color: var(--obsidian); padding: 13px 20px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
-  .btn-line { border: 1px solid rgb(200 162 74 / 0.6); border-radius: 2px; padding: 16px 20px; width: 100%; display: flex; justify-content: space-between; position: relative; overflow: hidden; }
-  .btn-line::before { content: ""; position: absolute; inset: 0 55% 0 0; background: rgb(200 162 74 / 0.25); }
-  .btn-line span { position: relative; }
-  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--hairline); width: 100%; }
+  .btn-amber { background: var(--amber); color: var(--obsidian); padding: 13px 20px; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; }
+  .btn-hold { background: var(--amber); border-radius: 2px; padding: 17px 20px; width: 100%; display: flex; justify-content: space-between; position: relative; overflow: hidden; font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--obsidian); font-weight: 500; }
+  .btn-hold::before { content: ""; position: absolute; inset: 0 45% 0 0; background: rgb(7 11 20 / 0.25); }
+  .btn-hold span { position: relative; }
+  .pill { display: inline-block; border-radius: 999px; background: rgb(245 158 11 / .15); color: var(--amber); font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; padding: 4px 10px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--hairline); width: 100%; }
   .row:first-child { border-top: 1px solid var(--hairline); }
-  .row .pn { font-family: var(--display); font-weight: 300; font-size: 22px; color: var(--titanium); line-height: 1.15; }
-  .numeral { font-family: var(--display); font-weight: 300; font-size: 112px; line-height: 0.85; color: var(--gold); }
+  .row .pn { font-size: 16px; color: var(--titanium); line-height: 1.3; }
+  .plus { position: relative; width: 12px; height: 12px; flex: none; }
+  .plus::before, .plus::after { content: ""; position: absolute; background: var(--gold); }
+  .plus::before { left: 0; top: 5.5px; width: 12px; height: 1px; } .plus::after { left: 5.5px; top: 0; width: 1px; height: 12px; }
+  .plus.open::after { display: none; }
   .callout { position: relative; margin-left: 20px; height: 96px; width: 100%; }
-  .callout .dot { position: absolute; left: 0; bottom: 6px; width: 7px; height: 7px; border: 1px solid var(--cyan); border-radius: 50%; }
-  .callout .line { position: absolute; left: 4px; bottom: 9px; width: 60px; height: 1px; background: linear-gradient(90deg, var(--cyan), rgb(95 212 230 / 0.25)); transform-origin: 0 0; transform: rotate(-52deg); }
-  .callout .tag { position: absolute; left: 46px; top: 0; border-left: 1px solid rgb(95 212 230 / 0.6); padding: 4px 0 4px 12px; }
+  .callout .dot { position: absolute; left: 0; bottom: 6px; width: 7px; height: 7px; border: 1px solid var(--amber); border-radius: 50%; }
+  .callout .line { position: absolute; left: 4px; bottom: 9px; width: 60px; height: 1px; background: linear-gradient(90deg, var(--amber), rgb(245 158 11 / 0.2)); transform-origin: 0 0; transform: rotate(-52deg); }
+  .callout .tag { position: absolute; left: 46px; top: 0; border-left: 1px solid rgb(245 158 11 / 0.6); background: rgb(7 11 20 / .9); padding: 4px 10px 4px 12px; }
+  .blueprint { width: 100%; height: 130px; border-top: 1px solid rgb(212 175 55 / .4); background-color: rgb(15 23 42 / 0.55);
+    background-image: linear-gradient(90deg, transparent calc(70% - 0.5px), rgb(212 175 55 / 0.45) 70%, transparent calc(70% + 0.5px)), linear-gradient(rgb(148 163 184 / 0.09) 1px, transparent 1px), linear-gradient(90deg, rgb(148 163 184 / 0.09) 1px, transparent 1px);
+    background-size: 100% 100%, 22px 22px, 22px 22px; padding: 16px 18px; }
 
   /* 05 forms */
   .forms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -111,54 +150,26 @@
   .form .meta { padding: 12px 16px 14px; border-top: 1px solid var(--hairline); }
   .form .fn { font-size: 16px; color: var(--titanium); margin-top: 4px; }
 
-  /* 06 rules */
-  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--hairline); }
-  .rule { padding: 22px 24px 24px; border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
-  .rule:nth-child(3n) { border-right: 0; } .rule:nth-last-child(-n+3) { border-bottom: 0; }
-  .rule h3 { font-family: var(--display); font-weight: 300; font-size: 24px; line-height: 1.15; color: var(--titanium); margin-top: 10px; }
-  .rule p { font-size: 14.5px; line-height: 1.6; color: var(--titanium-dim); margin-top: 8px; }
-
-
-  /* 01 logo */
-  .logo-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; }
-  .lg { border: 1px solid var(--hairline); position: relative; display: flex; align-items: center; justify-content: center; padding: 50px 30px 56px; }
-  .lg .cap { position: absolute; left: 16px; bottom: 13px; right: 16px; }
-  .lg-primary { grid-column: 1; grid-row: 1 / span 2; min-height: 500px; }
-  .lg-light { background: var(--titanium); border-color: var(--titanium); }
-  .lg-light .cap { color: #4a4f58; }
-  .anatomy { display: grid; grid-template-columns: 720px 1fr; gap: 16px; margin-top: 16px; }
-  .ana-figure { border: 1px solid var(--hairline); display: flex; align-items: center; justify-content: flex-start; padding: 24px 30px; }
-  .ana-wrap { position: relative; width: 520px; height: 380px; }
-  .ana-wrap img { position: absolute; left: 0; top: 0; }
-  .ana-wrap .tag { position: absolute; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--titanium); }
-  .ana-wrap .lead { position: absolute; height: 1px; background: linear-gradient(90deg, var(--cyan), rgb(95 212 230 / 0.3)); }
-  .ana-wrap .lead::before { content: ""; position: absolute; left: -3px; top: -3px; width: 7px; height: 7px; border: 1px solid var(--cyan); border-radius: 50%; background: var(--obsidian); }
-  .ana-text { border: 1px solid var(--hairline); padding: 30px 32px; }
-  .ana-text dl { margin-top: 14px; display: grid; grid-template-columns: 130px 1fr; row-gap: 16px; column-gap: 16px; }
-  .ana-text dt { font-family: var(--display); font-weight: 300; font-size: 24px; color: var(--titanium); line-height: 1.15; }
-  .ana-text dd { font-size: 15px; line-height: 1.55; color: var(--titanium-dim); padding-top: 3px; }
-  .rules-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
-  .lg.tall { min-height: 280px; }
-  .clear { position: relative; padding: 26px; outline: 1px dashed rgb(95 212 230 / 0.6); }
-  .clear::before { content: "x"; position: absolute; left: 50%; top: 4px; transform: translateX(-50%); font-family: var(--mono); font-size: 12px; color: var(--cyan); }
-  .clear img { display: block; outline: 1px solid rgb(255 255 255 / 0.08); }
-  .sizes { display: flex; align-items: flex-end; gap: 22px; }
-  .sizes div { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-  .variants { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; }
-  .variants .v { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 6px 12px; border: 1px solid var(--hairline); }
-  .donts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px; }
-  .dont { border: 1px solid var(--hairline); }
-  .dstage { height: 150px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  .dstage::after { content: ""; position: absolute; width: 150px; height: 2px; background: var(--crimson); transform: rotate(-35deg); opacity: .85; }
-  .dont p { padding: 12px 16px 14px; border-top: 1px solid var(--hairline); font-size: 14px; color: var(--titanium-dim); }
-  .dont b { color: var(--titanium); font-weight: 500; }
-
   /* 06 imagery */
   .imagery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .imagery figure { border: 1px solid var(--hairline); margin: 0; }
   .imagery figure.wide { grid-column: 1 / -1; }
   .imagery img { display: block; width: 100%; }
   .imagery figcaption { padding: 12px 16px; border-top: 1px solid var(--hairline); }
+  .phones { display: grid; grid-template-columns: repeat(3, 1fr) 1.2fr; gap: 16px; margin-top: 16px; align-items: stretch; }
+  .phones figure { border: 1px solid var(--hairline); margin: 0; padding: 22px 22px 0; display: flex; flex-direction: column; align-items: center; }
+  .phones figure img { width: 300px; border: 1px solid var(--hairline-strong); border-radius: 18px; }
+  .phones figcaption { align-self: stretch; margin-top: 18px; padding: 12px 0 14px; border-top: 1px solid var(--hairline); }
+  .phones .why { border: 1px solid var(--hairline); padding: 26px 28px; }
+  .phones .why h3 { font-family: var(--display); font-weight: 300; font-size: 28px; line-height: 1.15; margin-top: 10px; }
+  .phones .why p { font-size: 15px; line-height: 1.6; color: var(--titanium-dim); margin-top: 12px; }
+
+  /* 07 rules */
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--hairline); }
+  .rule { padding: 22px 24px 24px; border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+  .rule:nth-child(3n) { border-right: 0; } .rule:nth-last-child(-n+3) { border-bottom: 0; }
+  .rule h3 { font-family: var(--display); font-weight: 300; font-size: 24px; line-height: 1.15; color: var(--titanium); margin-top: 10px; }
+  .rule p { font-size: 14.5px; line-height: 1.6; color: var(--titanium-dim); margin-top: 8px; }
 
   footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; }
 </style>
@@ -168,101 +179,116 @@
   <i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i>
 
   <header class="top">
-    <img src="logo/gci-logo-horizontal.svg" height="40" alt="GCI">
-    <span class="label">Brand kit · Version 1.0 · November 2026</span>
+    <img src="logo/gci-lockup.svg" height="64" alt="GCI">
+    <span class="label">Brand kit · Version 2.0 · November 2026</span>
     <span class="label">Restricted · Internal reference</span>
   </header>
 
   <h1>Global Confederation<br>of Industries. <em>Brand kit.</em></h1>
-  <p class="lede">One system drawn from one image: a galaxy seen edge-on, its disc crossed by two fields above and below, meeting at a bright core. The mark, the briefing portal and every surface below come from that picture of an apex node holding public mandate and private capital in one plane.</p>
+  <p class="lede">Deep navy and brushed imperial gold. An institutional seal drawn from the client's references, and one luminous form, the galaxy, that carries the briefing portal. Everything below is what the portal uses today.</p>
 
   <!-- 01 -->
   <section>
     <div class="sec-head">
-      <div><p class="label bullet dim">01 / Logo</p><h2>The apex mark</h2></div>
-      <p class="note">An edge-on disc crossed by two lobes, meeting at a gold core. It is the opening frame of the portal reduced to four strokes. Use the supplied files only; never redraw or retype it.</p>
+      <div><p class="label bullet dim">01 / Logo</p><h2>The GCI seal</h2></div>
+      <p class="note">A round institutional seal: the name in classical capitals, a laurel wreath, six stars for the six governing councils, and a shield holding the apex mark. A compact shield and two lockups cover every other size. Use the supplied files; never redraw or retype them.</p>
     </div>
     <div class="logo-grid">
-      <div class="lg lg-primary"><img src="logo/gci-logo-horizontal.svg" height="150" alt=""><span class="label cap">Primary · horizontal lockup on obsidian</span></div>
-      <div class="lg lg-light"><img src="logo/gci-logo-horizontal-light.svg" height="96" alt=""><span class="label cap">Light · on titanium or paper</span></div>
-      <div class="lg"><img src="logo/gci-logo-stacked.svg" height="250" alt=""><span class="label cap">Stacked · square formats</span></div>
+      <div class="lg lg-primary"><img src="logo/gci-seal.svg" width="500" height="500" alt=""><span class="label cap">Primary · seal on Deep Obsidian Navy</span></div>
+      <div class="lg lg-light" style="min-height:312px"><img src="logo/gci-seal-light.svg" width="230" height="230" alt=""><span class="label cap">Light · on ivory, paper and letterhead</span></div>
+      <div class="lg" style="min-height:312px"><img src="logo/gci-shield.svg" width="150" height="170" alt=""><span class="label cap">Compact shield · header, app icon, below 64 px</span></div>
+    </div>
+    <div class="lockups">
+      <div class="lg" style="min-height:250px"><img src="logo/gci-lockup.svg" height="150" alt=""><span class="label cap">Lockup · seal, wordmark and India rule, on navy</span></div>
+      <div class="lg lg-light" style="min-height:250px"><img src="logo/gci-lockup-light.svg" height="112" alt=""><span class="label cap">Lockup · light</span></div>
     </div>
 
     <div class="anatomy">
       <div class="ana-figure">
         <div class="ana-wrap">
-          <img src="logo/gci-mark.svg" width="380" height="380" alt="">
-          <span class="tag" style="left:404px;top:186px">Core</span><i class="lead" style="left:204px;top:196px;width:196px"></i>
-          <span class="tag" style="left:404px;top:58px">Upper lobe</span><i class="lead" style="left:228px;top:68px;width:172px"></i>
-          <span class="tag" style="left:404px;top:318px">Lower lobe</span><i class="lead" style="left:252px;top:328px;width:148px"></i>
-          <span class="tag" style="left:404px;top:150px">Disc</span><i class="lead" style="left:350px;top:160px;width:50px"></i>
+          <img src="logo/gci-seal.svg" width="380" height="380" alt="">
+          <span class="tag" style="top:38px">Inscription</span><i class="lead" style="left:262px;top:48px;width:142px"></i>
+          <span class="tag" style="top:106px">Six stars</span><i class="lead" style="left:241px;top:116px;width:163px"></i>
+          <span class="tag" style="top:165px">Apex mark</span><i class="lead" style="left:190px;top:175px;width:214px"></i>
+          <span class="tag" style="top:212px">Shield</span><i class="lead" style="left:221px;top:222px;width:183px"></i>
+          <span class="tag" style="top:262px">Laurel</span><i class="lead" style="left:262px;top:272px;width:142px"></i>
         </div>
       </div>
       <div class="ana-text">
         <p class="label gd">What it means</p>
         <dl>
-          <dt>Core</dt><dd>The apex node: the central cabinet coordinating macro-policy. Always gold.</dd>
-          <dt>Upper lobe</dt><dd>Public mandate: Union Ministries and State Agencies.</dd>
-          <dt>Lower lobe</dt><dd>Institutional capital: non-debt finance for strategic infrastructure.</dd>
-          <dt>Disc</dt><dd>The economy the councils act on, seen edge-on and passing in front of both lobes.</dd>
+          <dt>Inscription</dt><dd>"Global Confederation of Industries" above, "Republic of India" below, in Cinzel capitals.</dd>
+          <dt>Six stars</dt><dd>The six governing councils, in an arc above the shield.</dd>
+          <dt>Shield</dt><dd>The Central Secretariat that holds the councils together.</dd>
+          <dt>Apex mark</dt><dd>The economy seen edge-on, crossed by public counterparts and institutional capital, meeting at the gold apex node.</dd>
+          <dt>Laurel</dt><dd>Standing and recognition, after the client's seal reference.</dd>
         </dl>
-        <p class="label" style="margin-top:22px">Tilted 12° anticlockwise, as the galaxy is first seen in the portal.</p>
       </div>
     </div>
 
     <div class="rules-row">
       <div class="lg tall">
-        <div class="clear"><img src="logo/gci-mark.svg" width="150" height="150" alt=""></div>
-        <span class="label cap">Clear space: x on every side, where x = twice the core diameter</span>
+        <div class="clear"><img src="logo/gci-seal.svg" width="150" height="150" alt=""></div>
+        <span class="label cap">Clear space: x on every side, where x = one tenth of the seal's diameter</span>
       </div>
       <div class="lg tall">
         <div class="sizes">
-          <div><img src="logo/gci-mark.svg" width="72" height="72" alt=""><p class="label">72 px</p></div>
-          <div><img src="logo/gci-mark.svg" width="40" height="40" alt=""><p class="label">40 px</p></div>
-          <div><img src="logo/gci-mark.svg" width="24" height="24" alt=""><p class="label">24 px min</p></div>
-          <div><img src="logo/gci-favicon.svg" width="32" height="32" alt=""><p class="label">Favicon</p></div>
-          <div><img src="logo/gci-favicon.svg" width="16" height="16" alt=""><p class="label">16 px</p></div>
+          <div><img src="logo/gci-seal.svg" width="110" height="110" alt=""><p class="label">110 px</p></div>
+          <div><img src="logo/gci-seal.svg" width="64" height="64" alt=""><p class="label">64 px min</p></div>
+          <div><img src="logo/gci-shield.svg" width="36" height="41" alt=""><p class="label">Shield</p></div>
+          <div><img src="logo/gci-favicon-seal.svg" width="32" height="32" alt=""><p class="label">Favicon</p></div>
+          <div><img src="logo/gci-favicon-seal.svg" width="16" height="16" alt=""><p class="label">16 px</p></div>
         </div>
-        <span class="label cap">Minimum: mark 24 px on screen, 8 mm in print. Smaller than that, use the favicon.</span>
+        <span class="label cap">Seal at 64 px or more (20 mm in print). Smaller, use the shield or the favicon.</span>
       </div>
       <div class="lg tall">
         <div class="variants">
-          <div class="v" style="background:var(--obsidian)"><img src="logo/gci-mark.svg" width="70" height="70" alt=""><p class="label">Colour</p></div>
-          <div class="v" style="background:var(--carbon)"><img src="logo/gci-mark-gold.svg" width="70" height="70" alt=""><p class="label">Gold</p></div>
-          <div class="v" style="background:var(--graphite)"><img src="logo/gci-mark-white.svg" width="70" height="70" alt=""><p class="label">White</p></div>
-          <div class="v" style="background:var(--titanium)"><img src="logo/gci-mark-black.svg" width="70" height="70" alt=""><p class="label" style="color:#4a4f58">Black</p></div>
+          <div class="v" style="background:var(--obsidian)"><img src="logo/gci-seal.svg" width="76" height="76" alt=""><p class="label">Navy</p></div>
+          <div class="v" style="background:var(--ivory)"><img src="logo/gci-seal-light.svg" width="76" height="76" alt=""><p class="label" style="color:#5b6473">Ivory</p></div>
+          <div class="v" style="background:var(--carbon)"><img src="logo/gci-shield.svg" width="60" height="68" alt=""><p class="label">Shield</p></div>
+          <div class="v" style="background:var(--ivory)"><img src="logo/gci-shield-light.svg" width="60" height="68" alt=""><p class="label" style="color:#5b6473">Shield light</p></div>
         </div>
-        <span class="label cap">One-colour versions for foil, embossing and single-ink print.</span>
+        <span class="label cap">Gold on navy, or deep gold on ivory. Nothing else.</span>
       </div>
     </div>
 
     <div class="donts">
-      <div class="dont"><div class="dstage"><img src="logo/gci-mark.svg" width="96" height="96" style="transform:scaleX(1.45)" alt=""></div><p><b>Do not stretch</b> or squash the mark.</p></div>
-      <div class="dont"><div class="dstage"><img src="logo/gci-mark.svg" width="96" height="96" style="filter:hue-rotate(150deg) saturate(2)" alt=""></div><p><b>Do not recolour</b> outside gold, titanium and obsidian.</p></div>
-      <div class="dont"><div class="dstage"><img src="logo/gci-mark.svg" width="96" height="96" style="filter:drop-shadow(0 0 14px #e0b25c) drop-shadow(0 0 6px #fff)" alt=""></div><p><b>Do not add</b> glows, shadows or bevels.</p></div>
-      <div class="dont"><div class="dstage"><img src="logo/gci-mark.svg" width="96" height="96" style="transform:rotate(55deg)" alt=""></div><p><b>Do not rotate</b> it away from its 12° tilt.</p></div>
+      <div class="dont"><div class="dstage"><img src="logo/gci-seal.svg" width="110" height="110" style="transform:scaleX(1.45)" alt=""></div><p><b>Do not stretch</b> or squash the seal.</p></div>
+      <div class="dont"><div class="dstage"><img src="logo/gci-seal.svg" width="110" height="110" style="filter:hue-rotate(150deg) saturate(2)" alt=""></div><p><b>Do not recolour</b> outside gold, navy and ivory.</p></div>
+      <div class="dont"><div class="dstage"><img src="logo/gci-seal.svg" width="110" height="110" style="filter:drop-shadow(0 0 16px #e6c55c) drop-shadow(0 0 6px #fff)" alt=""></div><p><b>Do not add</b> glows, bevels or 3D effects.</p></div>
+      <div class="dont"><div class="dstage"><img src="logo/gci-seal.svg" width="110" height="110" style="transform:rotate(38deg)" alt=""></div><p><b>Do not rotate</b> or set the inscription on a slant.</p></div>
+    </div>
+
+    <div class="lawful">
+      <div><p class="label" style="color:var(--crimson)">Never on GCI material</p><h3>Marks a private body may not use</h3></div>
+      <ul>
+        <li><b>The State Emblem of India</b> (Lion Capital) or "Satyameva Jayate": State Emblem of India (Prohibition of Improper Use) Act, 2005.</li>
+        <li><b>The Ashoka Chakra, the national flag or a map of India</b> as part of the mark.</li>
+        <li><b>Any foreign royal or state arms</b>, such as the British royal coat of arms.</li>
+        <li><b>The ® symbol</b> until the mark is registered (Trade Marks Act, 1999, s.107). Use ™ or nothing.</li>
+      </ul>
     </div>
   </section>
 
   <!-- 02 -->
   <section>
     <div class="sec-head">
-      <div><p class="label bullet dim">02 / Colour</p><h2>Ten tokens, three accents</h2></div>
-      <p class="note">Near-black field, cool metallic text. Gold marks authority, cyan marks instrumentation, crimson appears once (the legal warning). Contrast ratios are measured against obsidian.</p>
+      <div><p class="label bullet dim">02 / Colour</p><h2>Navy field, imperial gold</h2></div>
+      <p class="note">The client's six-token palette, marked below, with three supporting tokens. Gold marks authority, amber marks action and status, crimson is held in reserve. Contrast ratios are measured against Deep Obsidian Navy.</p>
     </div>
     <div class="swatches" id="swatches"></div>
     <div class="ratio">
       <div class="bar">
         <div style="flex:78;background:linear-gradient(90deg,var(--obsidian),var(--carbon) 50%,var(--graphite))"></div>
-        <div style="flex:15;background:var(--titanium)"></div>
+        <div style="flex:14;background:var(--titanium)"></div>
         <div style="flex:5;background:var(--gold)"></div>
-        <div style="flex:1.5;background:var(--cyan)"></div>
+        <div style="flex:2.5;background:var(--amber)"></div>
         <div style="flex:.5;background:var(--crimson)"></div>
       </div>
       <div class="legend">
-        <div style="flex:78">Field · obsidian, carbon, graphite</div>
-        <div style="flex:15">Text · titanium</div>
-        <div style="flex:7;white-space:nowrap">Accents (indicative proportion)</div>
+        <div style="flex:78">Field · obsidian navy, midnight slate, graphite</div>
+        <div style="flex:14">Text · platinum</div>
+        <div style="flex:8;white-space:nowrap">Accents (indicative)</div>
       </div>
     </div>
   </section>
@@ -270,54 +296,58 @@
   <!-- 03 -->
   <section>
     <div class="sec-head">
-      <div><p class="label bullet dim">03 / Typography</p><h2>Three faces, three jobs</h2></div>
-      <p class="note">An editorial serif for statements, a clean grotesque for reading, a monospace for instrumentation. All three are open-licensed and self-hosted.</p>
+      <div><p class="label bullet dim">03 / Typography</p><h2>Four faces, four jobs</h2></div>
+      <p class="note">Classical capitals for the seal and wordmark, an editorial serif for statements, a clean grotesque for reading, a monospace for labels. All four are open-licensed and self-hosted.</p>
     </div>
     <div class="faces">
       <div class="face">
-        <div class="big" style="font-family:var(--display);font-weight:300;font-size:86px;letter-spacing:-0.022em;line-height:.98">The upstream layer <em>of national autonomy.</em></div>
-        <div class="spec"><p class="label gd">Display</p><p class="fname">Newsreader · Light 300, roman and italic</p><p class="use">Headlines, thesis statements, council titles, numerals. Tracking −0.022em at large sizes. Italic or gold for one emphasised word, never both in one line.</p></div>
+        <div class="big" style="font-family:var(--classical);font-weight:600;font-size:64px;letter-spacing:.04em;line-height:1">GCI<br><span style="font-size:22px;letter-spacing:.3em;color:var(--gold)">INDIA</span></div>
+        <div class="spec"><p class="label gd">Classical</p><p class="fname">Cinzel · SemiBold 600, Bold 800</p><p class="use">The seal inscription and the GCI wordmark only. Never for headlines or body text.</p></div>
+      </div>
+      <div class="face">
+        <div class="big" style="font-family:var(--display);font-weight:300;font-size:64px;letter-spacing:-0.022em;line-height:.98">Upstream self-reliance. <em>Collective global growth.</em></div>
+        <div class="spec"><p class="label gd">Display</p><p class="fname">Newsreader · Light 300, roman and italic</p><p class="use">Headlines, council and division titles, numerals. Italic or gold for one emphasised word, never both.</p></div>
       </div>
       <div class="face">
         <div>
-          <div class="big" style="font-size:66px;font-weight:400;letter-spacing:-0.02em">Aa Gg 0123</div>
-          <p style="font-size:17px;line-height:1.6;color:var(--titanium-dim);margin-top:20px">An apex public-private execution platform operating alongside Union Ministries and State Agencies.</p>
+          <div class="big" style="font-size:58px;font-weight:400;letter-spacing:-0.02em">Aa Gg 72</div>
+          <p style="font-size:16px;line-height:1.6;color:var(--titanium-dim);margin-top:20px">An India-anchored, non-governmental public-private execution platform.</p>
         </div>
-        <div class="spec"><p class="label gd">Text</p><p class="fname">Geist · Regular 400, Medium 500</p><p class="use">Body copy, descriptors, list rows. 17px / 1.6 for body, 15px and 13px for supporting text.</p></div>
+        <div class="spec"><p class="label gd">Text</p><p class="fname">Geist · Regular 400, Medium 500</p><p class="use">Body copy, initiative names, charter clauses.</p></div>
       </div>
       <div class="face">
         <div>
-          <div class="big" style="font-family:var(--mono);font-size:50px;letter-spacing:.04em">03.IV / 05</div>
+          <div class="big" style="font-family:var(--mono);font-size:42px;letter-spacing:.04em">I-A / 09</div>
           <p class="label bullet dim" style="margin-top:24px;font-size:13px">03 / Councils</p>
-          <p class="label" style="margin-top:10px;font-size:13px">Restricted · Preliminary institutional briefing</p>
+          <p class="label" style="margin-top:10px;font-size:13px">Restricted · Institutional briefing portal</p>
         </div>
-        <div class="spec"><p class="label gd">Mono</p><p class="fname">Geist Mono · Regular 400</p><p class="use">Labels, indices, classification strips, buttons. Always uppercase, 11px, tracked 0.16em.</p></div>
+        <div class="spec"><p class="label gd">Mono</p><p class="fname">Geist Mono · Regular 400</p><p class="use">Labels, indices, buttons, the identity bar. Uppercase, 11px, tracked 0.16em.</p></div>
       </div>
     </div>
     <table class="scale">
       <tr><th>Role</th><th>Specimen</th><th>Face · weight</th><th>Size · line height · tracking</th></tr>
-      <tr><td class="role">Hero headline</td><td style="font-family:var(--display);font-weight:300;font-size:58px;line-height:1;letter-spacing:-0.022em">Restricted Briefing</td><td class="spec">Newsreader 300</td><td class="spec">42–108px · 0.98 · −0.022em</td></tr>
-      <tr><td class="role">Section headline</td><td style="font-family:var(--display);font-weight:300;font-size:42px;line-height:1.03;letter-spacing:-0.02em">The Six Governing Councils</td><td class="spec">Newsreader 300</td><td class="spec">34–72px · 1.03 · −0.02em</td></tr>
-      <tr><td class="role">Council title</td><td style="font-family:var(--display);font-weight:300;font-size:30px;line-height:1.1;letter-spacing:-0.012em">Cyber Security &amp; Sovereign Defense</td><td class="spec">Newsreader 300</td><td class="spec">26–38px · 1.1 · −0.012em</td></tr>
-      <tr><td class="role">Body</td><td style="font-size:17px;line-height:1.6;color:var(--titanium-dim)">Six autonomous councils govern critical tech pillars.</td><td class="spec">Geist 400</td><td class="spec">17px · 1.6 · 0</td></tr>
-      <tr><td class="role">Supporting</td><td style="font-size:15px;line-height:1.55;color:var(--titanium-dim)">Harvesting battery-grade lithium from brines in hours.</td><td class="spec">Geist 400</td><td class="spec">15px / 13px · 1.6 · 0</td></tr>
-      <tr><td class="role">Label</td><td><span class="label bullet dim">04 / Risk mitigation</span></td><td class="spec">Geist Mono 400</td><td class="spec">11px · 1.4 · 0.16em · uppercase</td></tr>
+      <tr><td class="role">Hero headline</td><td style="font-family:var(--display);font-weight:300;font-size:58px;line-height:1;letter-spacing:-0.022em">Upstream self-reliance.</td><td class="spec">Newsreader 300</td><td class="spec">34–108px · 0.98 · −0.022em</td></tr>
+      <tr><td class="role">Section headline</td><td style="font-family:var(--display);font-weight:300;font-size:42px;line-height:1.03;letter-spacing:-0.02em">The Six Governing Councils</td><td class="spec">Newsreader 300</td><td class="spec">32–68px · 1.04 · −0.02em</td></tr>
+      <tr><td class="role">Council title</td><td style="font-family:var(--display);font-weight:300;font-size:28px;line-height:1.12;letter-spacing:-0.012em">Post-Silicon Compute, Photonics, Physical AI</td><td class="spec">Newsreader 300</td><td class="spec">21–30px · 1.12 · −0.012em</td></tr>
+      <tr><td class="role">Body</td><td style="font-size:16px;line-height:1.6;color:var(--titanium-dim)">Every capability pairs national security with everyday household utility.</td><td class="spec">Geist 400</td><td class="spec">15–17px · 1.6 · 0</td></tr>
+      <tr><td class="role">Initiative name</td><td style="font-size:15px;line-height:1.35;color:var(--titanium)">Quantum Inertial Navigation (Quantum PNT)</td><td class="spec">Geist 400</td><td class="spec">14–15px · 1.35 · 0</td></tr>
+      <tr><td class="role">Label</td><td><span class="label bullet dim">04 / Stewardship</span></td><td class="spec">Geist Mono 400</td><td class="spec">11px · 1.4 · 0.16em · uppercase</td></tr>
     </table>
   </section>
 
   <!-- 04 -->
   <section>
     <div class="sec-head">
-      <div><p class="label bullet dim">04 / Elements</p><h2>Instrumentation</h2></div>
-      <p class="note">Sharp corners (2px at most), 1px hairlines, no drop shadows, no decorative gradients. Panels are tinted fills with a specular top edge, not blurred glass.</p>
+      <div><p class="label bullet dim">04 / Elements</p><h2>Interface</h2></div>
+      <p class="note">Sharp corners (2px at most), 1px hairlines, no drop shadows. Long charter text sits behind a plus, one tap away, so the page reads at a glance.</p>
     </div>
     <div class="els">
-      <div class="el"><div class="stage"><div><p class="label bullet dim">03 / Councils</p><p class="label" style="margin-top:14px"><span class="cy">10</span> programmes</p></div></div><p class="cap"><b>Section label.</b> Gold square, number, slash, name. Counts in cyan.</p></div>
-      <div class="el"><div class="stage"><div class="panel"><p class="label gd">Mandate 01</p><p style="font-family:var(--display);font-weight:300;font-size:24px;line-height:1.15;margin-top:10px">Zero-Discharge Closed-Loop Mandates</p></div></div><p class="cap"><b>Panel.</b> Graphite-to-carbon tint, hairline border, 2px radius.</p></div>
-      <div class="el"><div class="stage" style="gap:18px;flex-direction:column;align-items:flex-start;justify-content:center"><span class="btn-solid chamfer">Index <span style="opacity:.6;margin-left:6px">/33</span></span><div class="btn-line"><span class="label gb">Hold to acknowledge</span><span class="label gd">055</span></div></div><p class="cap"><b>Actions.</b> Chamfered solid for the primary control; gold outline with fill for confirmation.</p></div>
-      <div class="el"><div class="stage"><div style="width:100%"><div class="row"><span class="pn">Direct Lithium Extraction</span><span class="label gd">/I.01</span></div><div class="row"><span class="pn">Targeted Exosome Drug Delivery</span><span class="label gd">/IV.03</span></div></div></div><p class="cap"><b>Index row.</b> Serif name, mono reference at right, hairline rules.</p></div>
-      <div class="el"><div class="stage" style="gap:26px"><span class="numeral">IV</span><div><p class="label dim">Council IV</p><p class="label" style="margin-top:12px;border:1px solid var(--hairline-strong);padding:7px 10px;display:inline-block" >Associated domain <span class="gd" style="margin:0 6px">/</span> Ministry</p></div></div><p class="cap"><b>Council numeral.</b> Roman, Newsreader Light, gold. Domain tag in a hairline box.</p></div>
-      <div class="el"><div class="stage"><div class="callout"><i class="dot"></i><i class="line"></i><div class="tag"><p class="label cy">/III.02</p><p class="label ti" style="margin-top:4px">Quantum key distribution</p></div></div></div><p class="cap"><b>Callout.</b> Cyan ring, leader line and rule; pinned to a point on the form.</p></div>
+      <div class="el"><div class="stage"><div><p class="label bullet dim">03 / Councils</p><p class="label" style="margin-top:14px"><span class="am">06</span> councils · <span class="am">17</span> divisions · <span class="am">72</span> initiatives</p></div></div><p class="cap"><b>Section label.</b> Gold square, number, slash, name. True counts only, in amber.</p></div>
+      <div class="el"><div class="stage"><div class="panel" style="max-width:280px"><p class="label gd">Council IV</p><p style="font-family:var(--display);font-weight:300;font-size:22px;line-height:1.15;margin-top:8px">Bio, Agro &amp; Space</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px"><span class="pill">12 initiatives</span><span class="gd">→</span></div></div></div><p class="cap"><b>Council card.</b> Midnight Slate panel, gold label, amber count pill, arrow to the council.</p></div>
+      <div class="el"><div class="stage" style="gap:16px;flex-direction:column;align-items:flex-start;justify-content:center"><span class="btn-amber chamfer">Index <span style="opacity:.6;margin-left:6px">/72</span></span><div class="btn-hold"><span>Press and hold to acknowledge</span><span style="opacity:.7">055</span></div></div><p class="cap"><b>Primary actions.</b> Warm Amber Gold with navy text: the index and the access acknowledgment.</p></div>
+      <div class="el"><div class="stage"><div style="width:100%"><div class="row"><span><span class="label gd" style="margin-right:12px">37</span><span class="pn">Quantum Inertial Navigation</span></span><i class="plus"></i></div><div class="row"><span><span class="label gd" style="margin-right:12px">38</span><span class="pn">Air-Breathing VLEO Constellations</span></span><i class="plus open"></i></div><p style="font-size:13px;line-height:1.5;color:var(--titanium-dim);padding:10px 0 0 34px">Very Low Earth Orbit satellites that scoop atmospheric nitrogen…</p></div></div><p class="cap"><b>Disclosure row.</b> Charter number, name, plus. The full text opens on tap.</p></div>
+      <div class="el"><div class="stage"><div class="callout"><i class="dot"></i><i class="line"></i><div class="tag"><p class="label am">III-C / 37</p><p class="label ti" style="margin-top:4px">Quantum inertial navigation</p></div></div></div><p class="cap"><b>Callout.</b> Amber ring and leader, pinned to a point on the council's form.</p></div>
+      <div class="el"><div class="stage"><div class="blueprint"><p class="label ti">Statutory notice &amp; institutional governance</p><p class="label" style="margin-top:8px;font-size:10px">© 2026–2027 Global Confederation of Industries</p></div></div><p class="cap"><b>Blueprint footer.</b> Fine grid with one gold rule, after the client's mockup.</p></div>
     </div>
   </section>
 
@@ -325,7 +355,7 @@
   <section>
     <div class="sec-head">
       <div><p class="label bullet dim">05 / The form</p><h2>One galaxy, eight states</h2></div>
-      <p class="note">One cloud of particles that reshapes itself. It begins as the galaxy and resolves into one form per council. Each is drawn from the same generated data the portal uses.</p>
+      <p class="note">One cloud of particles that reshapes itself: the galaxy, one form per council, and a closed loop for stewardship. Plotted from the same generated data the portal uses.</p>
     </div>
     <div class="forms" id="forms"></div>
   </section>
@@ -333,14 +363,21 @@
   <!-- 06 -->
   <section>
     <div class="sec-head">
-      <div><p class="label bullet dim">06 / Imagery</p><h2>The galaxy, in use</h2></div>
-      <p class="note">Frames from the briefing portal. The galaxy is the only image the brand uses: edge-on beside the headline, opened out as the reader scrolls, split into six silos to show fragmentation, then resolved into each council's form.</p>
+      <div><p class="label bullet dim">06 / Imagery</p><h2>The portal, in use</h2></div>
+      <p class="note">Frames from the live briefing portal. The galaxy is the only image the brand uses: edge-on beside the headline, opened out as the reader scrolls, split into silos, then resolved into each council's form.</p>
     </div>
     <div class="imagery">
-      <figure class="wide"><img src="imagery/01-hero-galaxy.jpg" alt=""><figcaption class="label">Opening frame · edge-on, labelled like a scientific diagram</figcaption></figure>
+      <figure class="wide"><img src="imagery/01-hero-galaxy.jpg" alt=""><figcaption class="label">Opening frame · edge-on galaxy, labelled like a scientific diagram</figcaption></figure>
       <figure><img src="imagery/02-six-arms.jpg" alt=""><figcaption class="label">The camera rises · six arms, six councils</figcaption></figure>
-      <figure><img src="imagery/03-six-silos.jpg" alt=""><figcaption class="label">Thesis · the galaxy splits into six silos</figcaption></figure>
-      <figure><img src="imagery/04-council-materials.jpg" alt=""><figcaption class="label">An arm resolves into Council I</figcaption></figure>
+      <figure><img src="imagery/03-six-silos.jpg" alt=""><figcaption class="label">Founding vision · chambers of commerce versus GCI</figcaption></figure>
+      <figure><img src="imagery/05-council-materials.jpg" alt=""><figcaption class="label">Council I · division I-A</figcaption></figure>
+      <figure class="wide"><img src="imagery/04-council-cards.jpg" alt=""><figcaption class="label">Councils overview · six cards, after the client's mockup</figcaption></figure>
+    </div>
+    <div class="phones">
+      <figure><img src="imagery/m1-hero.jpg" alt=""><figcaption class="label">Phone · opening</figcaption></figure>
+      <figure><img src="imagery/m2-councils.jpg" alt=""><figcaption class="label">Phone · council cards</figcaption></figure>
+      <figure><img src="imagery/m3-stewardship.jpg" alt=""><figcaption class="label">Phone · stewardship</figcaption></figure>
+      <div class="why"><p class="label gd">Phones first</p><h3>Most readers open the link on a phone.</h3><p>On small screens the galaxy sits above the headline, councils become six cards, and every long passage opens on tap. Every layout is checked at 360 × 640 and 390 × 844 before it ships.</p></div>
     </div>
   </section>
 
@@ -351,67 +388,69 @@
       <p class="note">The principles the portal is built on.</p>
     </div>
     <div class="rules">
-      <div class="rule"><p class="label gd">A</p><h3>One luminous object</h3><p>The galaxy on a dark field. No stock imagery, no illustration, no second focal point.</p></div>
-      <div class="rule"><p class="label gd">B</p><h3>Accents are rationed</h3><p>Gold for authority, cyan for instruments, crimson once. No per-section colour themes.</p></div>
-      <div class="rule"><p class="label gd">C</p><h3>No invented telemetry</h3><p>Numbers on screen are true ones only: 6 councils, 33 programmes, section index, scroll progress.</p></div>
-      <div class="rule"><p class="label gd">D</p><h3>Text holds still</h3><p>Copy swaps in place in a fixed column. The form moves; the words do not travel.</p></div>
-      <div class="rule"><p class="label gd">E</p><h3>Long holds, short moves</h3><p>Scrolling mostly rotates the form. Large transitions are used three times in the whole page.</p></div>
-      <div class="rule"><p class="label gd">F</p><h3>One thread</h3><p>A thin gold strand of particles runs through every section, so the page reads as one journey.</p></div>
+      <div class="rule"><p class="label gd">A</p><h3>Navy, never black</h3><p>Deep Obsidian Navy is the field everywhere. One luminous object sits on it: the galaxy.</p></div>
+      <div class="rule"><p class="label gd">B</p><h3>Accents are rationed</h3><p>Gold for authority, amber for action and status, crimson held in reserve. No per-section colour themes.</p></div>
+      <div class="rule"><p class="label gd">C</p><h3>No invented telemetry</h3><p>Numbers on screen are true ones only: 6 councils, 17 divisions, 72 initiatives, section index, scroll progress.</p></div>
+      <div class="rule"><p class="label gd">D</p><h3>Design speaks first</h3><p>Names and numbers on screen, charter text one tap away. Every word of the charter stays on the site.</p></div>
+      <div class="rule"><p class="label gd">E</p><h3>Phones first</h3><p>Every change is checked on small phones, then tablet and desktop. Nothing runs under the header or bottom bar.</p></div>
+      <div class="rule"><p class="label gd">F</p><h3>Lawful marks only</h3><p>No national emblem, flag, map of India or foreign arms, and no ® until the mark is registered.</p></div>
     </div>
   </section>
 
   <footer>
     <span class="label">Global Confederation of Industries</span>
-    <span class="label">Fonts: Newsreader, Geist, Geist Mono (SIL Open Font License)</span>
-    <span class="label">GCI brand kit v1.0</span>
+    <span class="label">Fonts: Cinzel, Newsreader, Geist, Geist Mono (SIL Open Font License)</span>
+    <span class="label">GCI brand kit v2.0</span>
   </footer>
 </div>
 
 <script src="forms.js"></script>
 <script>
-  // Colour swatches, with contrast against obsidian computed from the actual values.
+  // Colour swatches, with contrast against Deep Obsidian Navy computed from the actual values.
+  const BG = "#070B14";
   const lum = (hex) => {
     const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
     return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
   };
   const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  // [name, hex, role, text?, client?]
   const tokens = [
-    ["Obsidian", "#050507", "Page and canvas background.", null],
-    ["Carbon", "#0B0C10", "Raised planes, the index drawer.", null],
-    ["Graphite", "#14161C", "Panel tint.", null],
-    ["Titanium", "#C9CED6", "Primary text, headlines.", "text"],
-    ["Titanium Dim", "#8A919C", "Secondary text, descriptors.", "text"],
-    ["Steel", "#737B88", "Mono micro-labels.", "text"],
-    ["Gold", "#C8A24A", "Authority: numerals, bullets, references.", "text"],
-    ["Gold Bright", "#E0B25C", "Emphasis word, hover, active state.", "text"],
-    ["Cyan", "#5FD4E6", "Instruments: counts, callouts, focus ring.", "text"],
-    ["Crimson", "#D8473F", "The legal warning only.", "text"],
+    ["Deep Obsidian Navy", "#070B14", "Page background and the top identity bar.", false, true],
+    ["Midnight Slate", "#0F172A", "Council cards, modals, the index drawer.", false, true],
+    ["Graphite", "#172036", "Raised panels and the top of panel tints.", false, false],
+    ["Platinum Alabaster", "#E2E8F0", "Serif headlines and body copy.", true, true],
+    ["Platinum Dim", "#A3B1C4", "Secondary text and descriptions.", true, false],
+    ["Steel Slate", "#94A3B8", "Sub-navigation, metadata, the legal schedule.", true, true],
+    ["Brushed Imperial Gold", "#D4AF37", "Labels, hairlines, numerals, active tabs, the seal.", true, true],
+    ["Gold Bright", "#E6C55C", "One emphasised word, hover states.", true, false],
+    ["Warm Amber Gold", "#F59E0B", "Primary buttons, counts and status markers.", true, true],
+    ["Crimson", "#D8473F", "Held in reserve for warnings.", true, false],
   ];
   const host = document.getElementById("swatches");
-  for (const [name, hex, role, kind] of tokens) {
-    const ratio = contrast(hex, "#050507");
+  for (const [name, hex, role, text, client] of tokens) {
+    const ratio = contrast(hex, BG);
     const el = document.createElement("div");
     el.className = "sw";
     el.innerHTML =
-      `<div class="chip" style="background:${hex}"></div>` +
+      `<div class="chip" style="background:${hex}">${client ? '<span class="client">Client palette</span>' : ""}</div>` +
       `<div class="meta"><p class="name">${name}</p><p class="hex">${hex}</p><p class="role">${role}</p>` +
-      (kind ? `<p class="label" style="margin-top:10px">Contrast <span class="cy">${ratio.toFixed(1)} : 1</span></p>` : `<p class="label" style="margin-top:10px">Surface</p>`) +
+      (text ? `<p class="label" style="margin-top:10px">Contrast <span class="am">${ratio.toFixed(1)} : 1</span></p>` : `<p class="label" style="margin-top:10px">Surface</p>`) +
       `</div>`;
     host.appendChild(el);
   }
 
   // The eight lattice forms, plotted from the portal's own generated point data.
   const forms = [
-    ["State 00", "Galaxy", "Hero, thesis, councils intro"],
-    ["State 01", "Diamond-cubic lattice", "Council I · Materials"],
-    ["State 02", "Photonic layer stack", "Council II · AI & Compute"],
-    ["State 03", "Geodesic shield", "Council III · Cyber & Defense"],
-    ["State 04", "Double helix", "Council IV · Foresight & Labs"],
-    ["State 05", "Ledger terraces", "Council V · Economic Stability"],
+    ["State 00", "Galaxy", "Hero, founding vision, councils intro"],
+    ["State 01", "Diamond-cubic lattice", "Council I · Materials & Tooling"],
+    ["State 02", "Photonic layer stack", "Council II · Compute & Networks"],
+    ["State 03", "Geodesic shield", "Council III · Cyber & Resilience"],
+    ["State 04", "Double helix", "Council IV · Bio, Agro & Space"],
+    ["State 05", "Ledger terraces", "Council V · Energy & Capital"],
     ["State 06", "Corridor globe", "Council VI · Trade & Diplomacy"],
-    ["State 07", "Closed loop", "Risk mitigation"],
+    ["State 07", "Closed loop", "Stewardship"],
   ];
-  const palette = ["224,178,92", "214,219,226", "95,212,230"];
+  const palette = ["219,178,66", "214,222,234", "148,174,219"];
   const grid = document.getElementById("forms");
   forms.forEach(([state, name, use], k) => {
     const card = document.createElement("div");
@@ -420,7 +459,7 @@
     const S = 720;
     canvas.width = S; canvas.height = S;
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#050507"; ctx.fillRect(0, 0, S, S);
+    ctx.fillStyle = BG; ctx.fillRect(0, 0, S, S);
     ctx.globalCompositeOperation = "lighter";
     const pts = window.FORMS[k];
     for (let i = 0; i < pts.length; i += 3) {

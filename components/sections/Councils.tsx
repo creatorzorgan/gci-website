@@ -194,7 +194,7 @@ export default function Councils() {
               The Six Governing Councils <em className="text-gold-bright">&amp;</em> Complete
               Industrial Divisions
             </h2>
-            <p className="mt-6 max-w-[40rem] text-[1.0625rem] leading-relaxed text-titanium-dim">
+            <p className="mt-6 max-w-[33rem] text-[1.0625rem] leading-relaxed text-titanium-dim">
               {councilsIntro.body}
             </p>
             <p className="label mt-6">
