@@ -155,6 +155,11 @@ export function pageTop(id: string) {
 /** Scroll target for division `g`, in whichever councils layout is showing. */
 export function divisionY(g: number) {
   if (frame.vw >= PINNED_COUNCILS_MIN_W) return sectionY("councils", divisionProgress(g));
+  // In the stacked layout the councils are collapsed cards: open the one holding it.
+  const el = document.getElementById(`division-${divisions[g].code}`);
+  for (let d = el?.closest("details"); d; d = d.parentElement?.closest("details") ?? null) {
+    d.open = true;
+  }
   const top = pageTop(`division-${divisions[g].code}`);
   return top === null ? sectionY("councils", divisionProgress(g)) : top - 96;
 }

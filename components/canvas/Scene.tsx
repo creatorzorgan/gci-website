@@ -287,7 +287,7 @@ export default function Scene() {
       dpr={[1, dpr]}
       camera={{ position: [0, 0, 6.6], fov: 34, near: 0.1, far: 60 }}
       gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
-      onCreated={({ gl }) => gl.setClearColor("#050507", 1)}
+      onCreated={({ gl }) => gl.setClearColor("#070B14", 1)}
     >
       <PerformanceMonitor
         onDecline={() => setDpr(1)}

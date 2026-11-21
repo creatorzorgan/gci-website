@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { entity, portal } from "@/content/briefing";
 import { useUI } from "@/lib/store";
-import { GciMark } from "../ui/Logo";
+import { GciSeal } from "../ui/Logo";
 
 const HOLD_MS = 900;
 const SESSION_KEY = "gci-clearance";
@@ -67,7 +67,7 @@ export default function Gate() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="gate-title"
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[rgb(5_5_7/0.74)] px-4 py-10 [@media(max-height:720px)]:py-4"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[rgb(7_11_20/0.74)] px-4 py-10 [@media(max-height:720px)]:py-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1] } }}
@@ -81,8 +81,8 @@ export default function Gate() {
           >
             <div className="flex items-center justify-between gap-4 border-b border-hairline pb-4">
               <span className="flex items-center gap-2.5">
-                <GciMark size={26} />
-                <span className="font-display text-[1.15rem] leading-none tracking-[0.14em] text-titanium">
+                <GciSeal size={56} className="[@media(max-height:720px)]:h-11 [@media(max-height:720px)]:w-11" />
+                <span className="hidden font-display text-[1.15rem] leading-none tracking-[0.14em] text-titanium sm:inline">
                   {entity.short}
                 </span>
               </span>
@@ -105,7 +105,7 @@ export default function Gate() {
 
             <button
               type="button"
-              className="group relative mt-7 flex h-14 w-full [@media(max-height:720px)]:mt-5 [@media(max-height:720px)]:h-12 touch-manipulation items-center justify-between overflow-hidden rounded-sharp border border-gold/60 px-5 text-left transition-colors select-none [-webkit-touch-callout:none] hover:border-gold-bright"
+              className="group relative mt-7 flex h-14 w-full [@media(max-height:720px)]:mt-5 [@media(max-height:720px)]:h-12 touch-manipulation items-center justify-between overflow-hidden rounded-sharp border border-amber bg-amber px-5 text-left transition-colors select-none [-webkit-touch-callout:none] hover:border-amber-bright hover:bg-amber-bright"
               onPointerDown={startHold}
               // A long press on a phone must not open the text-selection or callout menu.
               onContextMenu={(e) => e.preventDefault()}
@@ -125,11 +125,11 @@ export default function Gate() {
             >
               <span
                 aria-hidden
-                className="absolute inset-y-0 left-0 w-full origin-left bg-gold/25"
+                className="absolute inset-y-0 left-0 w-full origin-left bg-obsidian/25"
                 style={{ transform: `scaleX(${hold})` }}
               />
-              <span className="label relative text-gold-bright">Press and hold to acknowledge</span>
-              <span aria-hidden className="label relative text-gold">
+              <span className="label relative font-medium text-obsidian">Press and hold to acknowledge</span>
+              <span aria-hidden className="label relative text-obsidian/70">
                 {Math.round(hold * 100)
                   .toString()
                   .padStart(3, "0")}

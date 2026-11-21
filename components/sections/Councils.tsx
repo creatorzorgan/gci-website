@@ -7,7 +7,7 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   councilInitiativeCount,
   councils,
@@ -28,6 +28,7 @@ import {
   sectionY,
   useUI,
 } from "@/lib/store";
+import { Disclose } from "../ui/Disclose";
 
 /** The initiatives of one division. Hover, click or arrow keys open a row. */
 function InitiativeList({ g }: { g: number }) {
@@ -160,6 +161,12 @@ export default function Councils() {
     [0, 1, 1, 0],
   );
 
+  // The overview cards are clickable only while the intro is on screen.
+  const [introLive, setIntroLive] = useState(true);
+  useMotionValueEvent(introOpacity, "change", (o) => {
+    if (o > 0.5 !== introLive) setIntroLive(o > 0.5);
+  });
+
   const shown = Math.max(0, activeCouncil);
   const g = activeDivision < 0 ? firstDivision[shown] : activeDivision;
   const council = councils[shown];
@@ -180,7 +187,7 @@ export default function Councils() {
         <div className="sticky top-0 h-screen overflow-hidden">
           <motion.div
             style={{ opacity: introOpacity }}
-            className="pointer-events-none absolute inset-0 flex flex-col justify-end px-16 pb-32"
+            className="pointer-events-none absolute inset-0 flex flex-col justify-end px-16 pb-28"
           >
             <p className="label bullet text-titanium-dim">03 / Councils</p>
             <h2 className="mt-5 max-w-[56rem] font-display text-[clamp(2.25rem,4.6vw,4.25rem)] leading-[1.04] font-light tracking-[-0.02em] text-titanium">
@@ -191,15 +198,40 @@ export default function Councils() {
               {councilsIntro.body}
             </p>
             <p className="label mt-6">
-              <span className="text-cyan">{pad(councils.length)}</span> councils ·{" "}
-              <span className="text-cyan">{divisions.length}</span> divisions ·{" "}
-              <span className="text-cyan">{initiativeCount}</span> initiatives
+              <span className="text-amber">{pad(councils.length)}</span> councils ·{" "}
+              <span className="text-amber">{divisions.length}</span> divisions ·{" "}
+              <span className="text-amber">{initiativeCount}</span> initiatives
             </p>
+            <div
+              className={`mt-8 grid max-w-[78rem] grid-cols-6 gap-3 ${introLive ? "pointer-events-auto" : ""}`}
+            >
+              {councils.map((c, k) => (
+                <button
+                  key={c.key}
+                  type="button"
+                  onClick={() => goTo(k)}
+                  className="panel group flex flex-col items-start p-4 text-left transition-colors hover:border-gold/60"
+                >
+                  <span className="label text-gold">Council {c.numeral}</span>
+                  <span className="mt-2 font-display text-[1.15rem] leading-[1.15] font-light text-titanium">
+                    {c.label}
+                  </span>
+                  <span className="mt-4 flex w-full items-center justify-between">
+                    <span className="rounded-full bg-amber/15 px-2 py-0.5 label text-[0.625rem] text-amber">
+                      {councilInitiativeCount(c)}
+                    </span>
+                    <span aria-hidden className="text-gold transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div
             style={{ opacity: matrixOpacity }}
-            className="absolute inset-0 grid grid-cols-[3.25rem_minmax(0,1fr)_minmax(0,34vw)_minmax(0,1fr)] gap-x-8 px-16 pt-24 pb-24 [@media(max-height:820px)]:pt-[4.75rem] [@media(max-height:820px)]:pb-[4.5rem]"
+            className={`absolute inset-0 grid ${introLive ? "pointer-events-none" : ""} grid-cols-[3.25rem_minmax(0,1fr)_minmax(0,34vw)_minmax(0,1fr)] gap-x-8 px-16 pt-24 pb-24 [@media(max-height:820px)]:pt-[4.75rem] [@media(max-height:820px)]:pb-[4.5rem]`}
           >
             <nav aria-label="Councils" className="flex flex-col justify-center gap-1">
               {councils.map((c, k) => (
@@ -252,8 +284,8 @@ export default function Councils() {
                     {council.directorate}
                   </p>
                   <p className="label mt-5">
-                    <span className="text-cyan">{pad(councilInitiativeCount(council))}</span>{" "}
-                    initiatives · <span className="text-cyan">{pad(council.divisions.length)}</span>{" "}
+                    <span className="text-amber">{pad(councilInitiativeCount(council))}</span>{" "}
+                    initiatives · <span className="text-amber">{pad(council.divisions.length)}</span>{" "}
                     divisions
                   </p>
                 </motion.div>
@@ -294,49 +326,79 @@ export default function Councils() {
         </div>
       </div>
 
-      {/* Below 1280 px: no pinning (the division lists need the width). Every council, division and initiative is listed in full. */}
+      {/* Below 1280 px: no pinning. Six council cards; a tap opens divisions, a tap on an
+          initiative opens its charter text. */}
       <div className="px-6 py-24 sm:px-10 xl:hidden">
         <p className="label bullet text-titanium-dim">03 / Councils</p>
         <h2 className="mt-5 font-display text-[clamp(2rem,8vw,3rem)] leading-[1.05] font-light tracking-[-0.02em] text-titanium">
           {councilsIntro.title}
         </h2>
         <p className="mt-5 text-[1rem] leading-relaxed text-titanium-dim">{councilsIntro.body}</p>
+        <p className="label mt-5">
+          <span className="text-amber">{pad(councils.length)}</span> councils ·{" "}
+          <span className="text-amber">{divisions.length}</span> divisions ·{" "}
+          <span className="text-amber">{initiativeCount}</span> initiatives
+        </p>
 
-        <div className="mt-14 space-y-16">
+        <div className="mt-10 grid gap-3 md:grid-cols-2">
           {councils.map((c) => (
-            <article key={c.key} id={`council-${c.key}`} className="panel p-5">
-              <p aria-hidden className="font-display text-[3.5rem] leading-none font-light text-gold">
-                {c.numeral}
-              </p>
-              <p className="label mt-4 text-titanium-dim">Council {c.numeral}</p>
-              <h3 className="mt-2 font-display text-[1.5rem] leading-[1.14] font-light text-titanium">
-                {c.title}
-              </h3>
-              <p className="mt-3 text-[0.875rem] leading-snug text-titanium-dim italic">
-                {c.directorate}
-              </p>
-              {c.divisions.map((d) => (
-                <section key={d.code} id={`division-${d.code}`} className="mt-8">
-                  <p className="label text-gold">Division {d.code}</p>
-                  <h4 className="mt-1.5 font-display text-[1.2rem] leading-[1.18] font-light text-titanium">
-                    {d.title}
-                  </h4>
-                  <ol className="mt-4 border-t border-hairline">
-                    {d.initiatives.map((item) => (
-                      <li key={item.n} className="border-b border-hairline py-3.5">
-                        <p className="flex items-baseline justify-between gap-4">
-                          <span className="text-[1rem] leading-snug text-titanium">{item.name}</span>
-                          <span className="label shrink-0 text-gold">/{pad(item.n)}</span>
-                        </p>
-                        <p className="mt-1.5 text-[0.875rem] leading-relaxed text-titanium-dim">
-                          {item.body}
-                        </p>
-                      </li>
-                    ))}
-                  </ol>
-                </section>
-              ))}
-            </article>
+            <Disclose
+              key={c.key}
+              id={`council-${c.key}`}
+              className="panel self-start open:border-gold/60 open:md:col-span-2"
+              summaryClassName="p-5"
+              summary={
+                <>
+                  <div className="flex items-baseline gap-3">
+                    <span aria-hidden className="font-display text-[2rem] leading-none font-light text-gold">
+                      {c.numeral}
+                    </span>
+                    <span className="label text-gold">Council {c.numeral}</span>
+                  </div>
+                  <h3 className="mt-3 font-display text-[1.3rem] leading-[1.16] font-light text-titanium">
+                    {c.title}
+                  </h3>
+                  <p className="mt-3 inline-block rounded-full bg-amber/15 px-2.5 py-1 label text-[0.625rem] text-amber">
+                    {councilInitiativeCount(c)} initiatives · {c.divisions.length} divisions
+                  </p>
+                </>
+              }
+            >
+              <div className="px-5 pb-5">
+                <p className="border-l border-gold/60 pl-3 text-[0.875rem] leading-snug text-titanium-dim italic">
+                  {c.directorate}
+                </p>
+                {c.divisions.map((d) => (
+                  <section key={d.code} id={`division-${d.code}`} className="mt-7">
+                    <p className="label text-gold">Division {d.code}</p>
+                    <h4 className="mt-1 text-[0.9375rem] leading-snug font-medium text-titanium">
+                      {d.title}
+                    </h4>
+                    <ol className="mt-3 border-t border-hairline">
+                      {d.initiatives.map((item) => (
+                        <li key={item.n} className="border-b border-hairline">
+                          <Disclose
+                            summaryClassName="py-3"
+                            summary={
+                              <p className="grid grid-cols-[2rem_1fr] items-baseline gap-x-1">
+                                <span className="label text-gold">{pad(item.n)}</span>
+                                <span className="text-[0.9375rem] leading-snug text-titanium">
+                                  {item.name}
+                                </span>
+                              </p>
+                            }
+                          >
+                            <p className="pb-4 pl-[2.25rem] text-[0.875rem] leading-relaxed text-titanium-dim">
+                              {item.body}
+                            </p>
+                          </Disclose>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                ))}
+              </div>
+            </Disclose>
           ))}
         </div>
       </div>

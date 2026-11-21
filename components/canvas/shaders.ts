@@ -28,9 +28,10 @@ export const latticeVertex = /* glsl */ `
   varying float vAlpha;
   varying vec3 vColor;
 
-  const vec3 GOLD = vec3(0.90, 0.70, 0.30);
-  const vec3 TITANIUM = vec3(0.80, 0.83, 0.88);
-  const vec3 CYAN = vec3(0.37, 0.83, 0.90);
+  const vec3 GOLD = vec3(0.86, 0.70, 0.26);
+  const vec3 TITANIUM = vec3(0.84, 0.87, 0.92);
+  // Cool platinum-blue edge, in key with the navy palette.
+  const vec3 CYAN = vec3(0.58, 0.68, 0.86);
   const vec3 CREAM = vec3(0.93, 0.88, 0.80);
 
   vec3 target(int i) {

@@ -38,7 +38,7 @@ class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolea
           className="h-full w-full"
           style={{
             background:
-              "radial-gradient(60% 50% at 50% 45%, rgb(200 162 74 / 0.10), transparent 70%), #050507",
+              "radial-gradient(60% 50% at 50% 45%, rgb(212 175 55 / 0.10), transparent 70%), #070B14",
           }}
         />
       );

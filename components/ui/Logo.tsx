@@ -27,9 +27,9 @@ function Lobes({ stroke, width }: { stroke: string; width: number }) {
 
 export function GciMark({
   size = 28,
-  lobe = "#C8A24A",
+  lobe = "#D4AF37",
   disc = "#C9CED6",
-  core = "#C8A24A",
+  core = "#D4AF37",
   className,
 }: {
   size?: number;
@@ -77,5 +77,30 @@ export function GciMark({
         <circle cx={CX} cy={CX} r={CORE} fill={core} />
       </g>
     </svg>
+  );
+}
+
+/**
+ * The GCI shield (compact mark) and seal, from brand/tools/build_seal.py.
+ * Served as static SVG files in public/brand.
+ */
+export function GciShield({ size = 30, className = "" }: { size?: number; className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/brand/gci-shield.svg"
+      alt=""
+      aria-hidden
+      width={Math.round((size * 200) / 226)}
+      height={size}
+      className={className}
+    />
+  );
+}
+
+export function GciSeal({ size = 64, className = "" }: { size?: number; className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src="/brand/gci-seal.svg" alt="" aria-hidden width={size} height={size} className={className} />
   );
 }

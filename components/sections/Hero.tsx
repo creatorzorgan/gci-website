@@ -36,7 +36,7 @@ export default function Hero() {
         <motion.div
           aria-hidden
           style={{ opacity: exitOpacity }}
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[78%] bg-[linear-gradient(0deg,rgb(5_5_7/0.94)_0%,rgb(5_5_7/0.82)_55%,rgb(5_5_7/0)_100%)] lg:hidden"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[78%] bg-[linear-gradient(0deg,rgb(7_11_20/0.94)_0%,rgb(7_11_20/0.82)_55%,rgb(7_11_20/0)_100%)] lg:hidden"
         />
         <motion.div style={{ opacity: exitOpacity, y: exitY }} className="relative max-w-[60rem]">
           <p className="label bullet text-titanium-dim">01 / Apex node</p>

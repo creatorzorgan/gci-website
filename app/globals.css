@@ -1,17 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-obsidian: #050507;
-  --color-carbon: #0b0c10;
-  --color-graphite: #14161c;
-  --color-hairline: rgb(255 255 255 / 0.08);
-  --color-hairline-strong: rgb(255 255 255 / 0.16);
-  --color-titanium: #c9ced6;
-  --color-titanium-dim: #8a919c;
-  --color-steel: #737b88;
-  --color-gold: #c8a24a;
-  --color-gold-bright: #e0b25c;
-  --color-cyan: #5fd4e6;
+  /* Kiran's institutional palette (website.pdf, Nov 2026). */
+  --color-obsidian: #070b14; /* Deep Obsidian Navy: page, top bar */
+  --color-carbon: #0f172a; /* Midnight Slate: cards, modals */
+  --color-graphite: #172036; /* raised panels */
+  --color-hairline: rgb(148 163 184 / 0.14);
+  --color-hairline-strong: rgb(148 163 184 / 0.28);
+  --color-titanium: #e2e8f0; /* Platinum Alabaster: headlines, body */
+  --color-titanium-dim: #a3b1c4;
+  --color-steel: #94a3b8; /* Steel Slate: sub-nav, metadata, legal */
+  --color-gold: #d4af37; /* Brushed Imperial Gold: labels, hairlines, active tabs */
+  --color-gold-bright: #e6c55c;
+  --color-amber: #f59e0b; /* Warm Amber Gold: primary CTAs, status */
+  --color-amber-bright: #fbb435;
   --color-crimson: #d8473f;
 
   --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
@@ -42,23 +44,41 @@ body {
 }
 
 ::selection {
-  background: rgb(200 162 74 / 0.35);
+  background: rgb(212 175 55 / 0.35);
   color: #fff;
 }
 
 :focus-visible {
-  outline: 1px solid var(--color-cyan);
+  outline: 1px solid var(--color-amber);
   outline-offset: 3px;
 }
 
-/* Mono micro-label used across the instrumentation. */
-.label {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  line-height: 1.4;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-steel);
+/* Mono micro-label used across the instrumentation. In the components layer so
+   colour and size utilities on the same element win. */
+@layer components {
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-steel);
+  }
+}
+
+/* Fine blueprint grid with one gold rule, after the footer pattern in Kiran's mockup. */
+.blueprint {
+  background-color: rgb(15 23 42 / 0.55);
+  background-image:
+    linear-gradient(90deg, transparent calc(70% - 0.5px), rgb(212 175 55 / 0.35) 70%, transparent calc(70% + 0.5px)),
+    linear-gradient(rgb(148 163 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.07) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+}
+
+/* Only the disclosure's own summary flips its toggle, never nested ones. */
+details[open] > summary .disclose-toggle::after {
+  scale: 1 0;
 }
 
 .bullet::before {
@@ -73,7 +93,7 @@ body {
 
 /* Tinted panel with a specular hairline. No blur, so it stays cheap. */
 .panel {
-  background: linear-gradient(180deg, rgb(20 22 28 / 0.78), rgb(11 12 16 / 0.86));
+  background: linear-gradient(180deg, rgb(23 32 54 / 0.8), rgb(15 23 42 / 0.9));
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-sharp);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
@@ -98,7 +118,7 @@ body {
   border-radius: inherit;
   background: radial-gradient(
     340px circle at var(--spot-x, 50%) var(--spot-y, 0%),
-    rgb(200 162 74 / 0.13),
+    rgb(212 175 55 / 0.13),
     transparent 62%
   );
   opacity: 0;
@@ -120,7 +140,7 @@ body {
     from var(--beam-angle),
     transparent 0deg,
     transparent 300deg,
-    rgb(224 178 92 / 0.9) 345deg,
+    rgb(230 197 92 / 0.9) 345deg,
     transparent 360deg
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -159,7 +179,7 @@ body {
   top: -3px;
   width: 6px;
   height: 6px;
-  border: 1px solid var(--color-cyan);
+  border: 1px solid var(--color-amber);
   border-radius: 50%;
 }
 
@@ -169,7 +189,7 @@ body {
   top: 0;
   height: 1px;
   width: 56px;
-  background: linear-gradient(90deg, var(--color-cyan), rgb(95 212 230 / 0.25));
+  background: linear-gradient(90deg, var(--color-amber), rgb(245 158 11 / 0.2));
   transform-origin: 0 0;
 }
 

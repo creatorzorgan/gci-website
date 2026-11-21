@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef } from "react";
 import { councils, divisions, firstDivision, initiativeCount, pad } from "@/content/briefing";
 import { divisionY, scrollToY, useUI } from "@/lib/store";
+import { Disclose } from "./Disclose";
 
 /** Every initiative with its full wording, grouped by council and division. */
 export default function IndexDrawer() {
@@ -35,7 +36,7 @@ export default function IndexDrawer() {
         <>
           <motion.div
             key="scrim"
-            className="fixed inset-0 z-40 bg-[rgb(5_5_7/0.6)]"
+            className="fixed inset-0 z-40 bg-[rgb(7_11_20/0.6)]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -57,9 +58,9 @@ export default function IndexDrawer() {
               <div>
                 <p className="label bullet text-titanium-dim">Initiative index</p>
                 <p className="label mt-1.5">
-                  <span className="text-cyan">{initiativeCount}</span> initiatives ·{" "}
-                  <span className="text-cyan">{divisions.length}</span> divisions ·{" "}
-                  <span className="text-cyan">{pad(councils.length)}</span> councils
+                  <span className="text-amber">{initiativeCount}</span> initiatives ·{" "}
+                  <span className="text-amber">{divisions.length}</span> divisions ·{" "}
+                  <span className="text-amber">{pad(councils.length)}</span> councils
                 </p>
               </div>
               <button
@@ -102,16 +103,22 @@ export default function IndexDrawer() {
                       </div>
                       <ol>
                         {d.initiatives.map((item) => (
-                          <li key={item.n} className="border-b border-hairline py-5">
-                            <div className="flex items-baseline justify-between gap-5">
-                              <h4 className="font-display text-[1.3rem] leading-[1.16] font-light text-titanium">
-                                {item.name}
-                              </h4>
-                              <span className="label shrink-0 text-gold">/{pad(item.n)}</span>
-                            </div>
-                            <p className="mt-2 max-w-[38rem] text-[0.9375rem] leading-relaxed text-titanium-dim">
-                              {item.body}
-                            </p>
+                          <li key={item.n} className="border-b border-hairline">
+                            <Disclose
+                              summaryClassName="py-4"
+                              summary={
+                                <div className="flex items-baseline justify-between gap-5">
+                                  <h4 className="font-display text-[1.2rem] leading-[1.18] font-light text-titanium">
+                                    {item.name}
+                                  </h4>
+                                  <span className="label shrink-0 text-gold">/{pad(item.n)}</span>
+                                </div>
+                              }
+                            >
+                              <p className="max-w-[38rem] pb-5 text-[0.9375rem] leading-relaxed text-titanium-dim">
+                                {item.body}
+                              </p>
+                            </Disclose>
                           </li>
                         ))}
                       </ol>

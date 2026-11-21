@@ -16,7 +16,7 @@ import {
   sectionY,
   useUI,
 } from "@/lib/store";
-import { GciMark } from "./Logo";
+import { GciShield } from "./Logo";
 import { Scramble } from "./text";
 
 type Stop = {
@@ -59,7 +59,7 @@ function getStops(): Stop[] {
     ...councils.map((c, k) => {
       const label = `03.${c.numeral} / ${c.label}`;
       const top = frame.vw < PINNED_COUNCILS_MIN_W ? pageTop(`council-${c.key}`) : null;
-      if (top !== null) return { label, start: top - vh * 0.5, target: top - 96 };
+      if (top !== null) return { label, start: top - vh * 0.3, target: top - 96 };
       return {
         label,
         start: sectionY(
@@ -128,13 +128,13 @@ export default function Chrome() {
         <span className="absolute -right-px -bottom-px h-2.5 w-2.5 border-r border-b border-gold/70" />
       </div>
 
-      <header className="fixed inset-x-3 top-3 z-30 flex h-14 items-center justify-between gap-4 border-b border-hairline bg-[rgb(5_5_7/0.88)] px-4 sm:px-6">
+      <header className="fixed inset-x-3 top-3 z-30 flex h-14 items-center justify-between gap-4 border-b border-hairline bg-[rgb(7_11_20/0.88)] px-4 sm:px-6">
         <a
           href="#apex"
           className="flex min-w-0 items-center gap-3"
           aria-label={`${entity.name}, back to top`}
         >
-          <GciMark size={30} />
+          <GciShield size={32} />
           <span className="font-display text-[1.3rem] leading-none tracking-[0.14em] text-titanium">
             {entity.short}
           </span>
@@ -151,7 +151,7 @@ export default function Chrome() {
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="label chamfer shrink-0 bg-titanium px-4 py-2.5 text-obsidian transition-colors hover:bg-gold-bright"
+          className="label chamfer shrink-0 bg-amber px-4 py-2.5 font-medium text-obsidian transition-colors hover:bg-amber-bright"
         >
           Index <span className="ml-1.5 opacity-60">/{initiativeCount}</span>
         </button>
@@ -159,7 +159,7 @@ export default function Chrome() {
 
       <nav
         aria-label="Briefing chapters"
-        className="fixed inset-x-3 bottom-3 z-30 grid h-14 grid-cols-[1fr_auto] items-center gap-4 border-t border-hairline bg-[rgb(5_5_7/0.88)] px-4 sm:grid-cols-[1fr_auto_1fr] sm:px-6"
+        className="fixed inset-x-3 bottom-3 z-30 grid h-14 grid-cols-[1fr_auto] items-center gap-4 border-t border-hairline bg-[rgb(7_11_20/0.88)] px-4 sm:grid-cols-[1fr_auto_1fr] sm:px-6"
       >
         <p className="label truncate text-titanium-dim">
           <span aria-hidden className="mr-2.5 inline-block h-[7px] w-[7px] bg-gold" />
@@ -194,7 +194,7 @@ export default function Chrome() {
           <span className="label">Briefing</span>
           <span className="relative block h-px w-24 bg-hairline-strong">
             <motion.span
-              className="absolute inset-0 origin-left bg-cyan"
+              className="absolute inset-0 origin-left bg-amber"
               style={{ scaleX: scrollYProgress }}
             />
           </span>

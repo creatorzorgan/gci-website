@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "motion/react"
 import type { PointerEvent } from "react";
 import { stewardship } from "@/content/briefing";
 import { useSectionRange } from "@/lib/hooks";
+import { Expandable } from "../ui/Disclose";
 
 function CommitmentCard({
   index,
@@ -28,18 +29,26 @@ function CommitmentCard({
   return (
     <motion.article
       style={{ opacity, y }}
-      tabIndex={0}
       onPointerMove={onMove}
       // Below the pinned layout the cards are simply shown; scroll-linked reveal is desktop only.
       className={`panel spotlight flex flex-col p-5 max-lg:transform-none! max-lg:opacity-100! xl:p-6 ${
         seedling ? "border-gold/50!" : ""
       }`}
     >
-      <span className="label text-gold">Commitment 0{index + 1}</span>
-      <h3 className="mt-3 font-display text-[clamp(1.2rem,1.45vw,1.45rem)] leading-[1.16] font-light text-titanium">
-        {commitment.name}
-      </h3>
-      <p className="mt-3 text-[0.875rem] leading-relaxed text-titanium-dim [@media(max-height:820px)]:text-[0.8125rem] [@media(max-height:820px)]:leading-snug">{commitment.body}</p>
+      <Expandable
+        summary={
+          <>
+            <span className="label text-gold">Commitment 0{index + 1}</span>
+            <h3 className="mt-3 font-display text-[clamp(1.2rem,1.45vw,1.45rem)] leading-[1.16] font-light text-titanium">
+              {commitment.name}
+            </h3>
+          </>
+        }
+      >
+        <p className="mt-3 text-[0.875rem] leading-relaxed text-titanium-dim [@media(max-height:820px)]:text-[0.8125rem] [@media(max-height:820px)]:leading-snug">
+          {commitment.body}
+        </p>
+      </Expandable>
     </motion.article>
   );
 }

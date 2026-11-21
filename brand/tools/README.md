@@ -47,3 +47,17 @@ height once fonts load; use that as the window height. Example (Git Bash):
 ```
 
 The four images in `brand/imagery/` are screenshots of the live page at 1440 x 900, downscaled to 800 px.
+
+## `build_seal.py`: GCI seal, shield and lockups (November 2026)
+
+Writes the institutional seal (dark and light), the compact shield for small sizes,
+the shield favicon and the seal + "GCI | Global Confederation of Industries — India"
+lockups into `brand/logo/`. Built from the client's references without any national
+emblem, foreign arms or ® (see the docstring). Uses Cinzel (OFL, `brand/fonts/Cinzel-OFL.txt`).
+
+```bash
+.venv-brand/Scripts/python brand/tools/build_seal.py brand/logo brand/fonts
+```
+
+Then copy `gci-seal.svg`, `gci-shield.svg` and `gci-lockup.svg` into `public/brand/`,
+and `gci-favicon-seal.svg` to `app/icon.svg`.

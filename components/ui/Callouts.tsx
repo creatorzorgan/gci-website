@@ -29,8 +29,8 @@ export default function Callouts() {
       >
         <span className="callout-dot" />
         <span className="callout-line" style={{ transform: "rotate(-122deg)" }} />
-        <div className="absolute right-[30px] bottom-[48px] w-[13rem] border-r border-cyan/60 bg-[rgb(5_5_7/0.9)] py-1 pr-3 pl-2 text-right">
-          <p className="label text-cyan">
+        <div className="absolute right-[30px] bottom-[48px] w-[13rem] border-r border-amber/60 bg-[rgb(7_11_20/0.9)] py-1 pr-3 pl-2 text-right">
+          <p className="label text-amber">
             {division.code} / {pad(initiative.n)}
           </p>
           <p className="label mt-1 text-titanium">
@@ -47,8 +47,8 @@ export default function Callouts() {
       >
         <span className="callout-dot" />
         <span className="callout-line" style={{ transform: "rotate(58deg)" }} />
-        <div className="absolute top-[48px] left-[30px] w-[11rem] border-l border-cyan/60 bg-[rgb(5_5_7/0.9)] py-1 pr-2 pl-3">
-          <p className="label text-cyan">Form {pad(index + 1)} / 06</p>
+        <div className="absolute top-[48px] left-[30px] w-[11rem] border-l border-amber/60 bg-[rgb(7_11_20/0.9)] py-1 pr-2 pl-3">
+          <p className="label text-amber">Form {pad(index + 1)} / 06</p>
           <p className="label mt-1 text-titanium">
             <Scramble text={council.form} />
           </p>

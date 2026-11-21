@@ -3,6 +3,7 @@
 import { entity, particulars, portal, statute } from "@/content/briefing";
 import { useSectionRange } from "@/lib/hooks";
 import { scrollToY } from "@/lib/store";
+import { Disclose } from "../ui/Disclose";
 
 const sectionId = (n: string) => `statute-${n}`;
 
@@ -15,7 +16,9 @@ export default function Legal() {
 
   const jump = (n: string) => {
     const el = document.getElementById(sectionId(n));
-    if (el) scrollToY(el.getBoundingClientRect().top + window.scrollY - 96);
+    if (!el) return;
+    if (el instanceof HTMLDetailsElement) el.open = true;
+    scrollToY(el.getBoundingClientRect().top + window.scrollY - 96);
   };
 
   return (
@@ -23,7 +26,7 @@ export default function Legal() {
       ref={ref}
       id="legal"
       aria-label={statute.title}
-      className="relative bg-[linear-gradient(180deg,rgb(5_5_7/0)_0%,rgb(5_5_7/0.9)_18%,rgb(5_5_7/0.96)_100%)] px-6 pt-[38vh] pb-28 sm:px-10 lg:px-16"
+      className="relative bg-[linear-gradient(180deg,rgb(7_11_20/0)_0%,rgb(7_11_20/0.9)_18%,rgb(7_11_20/0.96)_100%)] px-6 pt-[38vh] pb-28 sm:px-10 lg:px-16"
     >
       <div className="mx-auto max-w-[60rem]">
         <p className="label bullet text-titanium-dim">05 / Statutory governance</p>
@@ -62,32 +65,48 @@ export default function Legal() {
           </ol>
         </nav>
 
-        {statute.sections.map((s) => (
-          <section key={s.n} id={sectionId(s.n)} aria-labelledby={`${sectionId(s.n)}-h`} className="mt-16">
-            <h3
-              id={`${sectionId(s.n)}-h`}
-              className="grid grid-cols-[2.5rem_1fr] border-b border-hairline-strong pb-3 font-display text-[1.45rem] leading-[1.2] font-light text-titanium"
+        <div className="mt-10 border-t border-hairline-strong">
+          {statute.sections.map((s) => (
+            <Disclose
+              key={s.n}
+              id={sectionId(s.n)}
+              className="border-b border-hairline-strong"
+              summaryClassName="py-5"
+              summary={
+                <h3 className="grid grid-cols-[2.25rem_1fr] font-display text-[1.25rem] leading-[1.22] font-light text-titanium sm:text-[1.4rem]">
+                  <span className="text-gold">{s.n}.</span>
+                  <span>{s.title}</span>
+                </h3>
+              }
             >
-              <span className="text-gold">{s.n}.</span>
-              <span>{s.title}</span>
-            </h3>
-            <ol>
-              {s.clauses.map((c) => (
-                <li
-                  key={c.n}
-                  className="grid gap-x-6 gap-y-2 border-b border-hairline py-5 sm:grid-cols-[2.5rem_14rem_1fr]"
-                >
-                  <span className="label pt-0.5 text-gold">{c.n}</span>
-                  <p className="text-[0.9375rem] leading-snug font-medium text-titanium">{c.title}</p>
-                  <p className="text-[0.9375rem] leading-[1.7] text-titanium-dim">{c.body}</p>
-                </li>
-              ))}
-            </ol>
-          </section>
-        ))}
+              <ol className="pb-4">
+                {s.clauses.map((c) => (
+                  <li
+                    key={c.n}
+                    className="grid gap-x-6 gap-y-1.5 border-t border-hairline py-4 sm:grid-cols-[2.5rem_13rem_1fr]"
+                  >
+                    <span className="label pt-0.5 text-gold">{c.n}</span>
+                    <p className="text-[0.9375rem] leading-snug font-medium text-titanium">{c.title}</p>
+                    <p className="text-[0.875rem] leading-[1.7] text-titanium-dim sm:text-[0.9375rem]">
+                      {c.body}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </Disclose>
+          ))}
+        </div>
 
         {/* Charter Part V.3: global footer notice, at the bottom of every public page. */}
-        <footer className="mt-24 border-t border-hairline-strong pt-8">
+        <footer className="blueprint relative mt-24 border-t border-gold/40 px-5 pt-8 pb-6 sm:px-8">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/gci-lockup.svg"
+            alt="Global Confederation of Industries (GCI), India"
+            width={1147}
+            height={300}
+            className="mb-8 h-auto w-full max-w-[22rem]"
+          />
           <p className="label text-titanium">{portal.footer.title}</p>
           <p className="mt-3 text-[0.8125rem] leading-[1.75] text-steel">{portal.footer.body}</p>
           <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-5">

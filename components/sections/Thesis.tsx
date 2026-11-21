@@ -50,7 +50,7 @@ function Purposes() {
       <p className="label mt-0 sm:mt-9">{vision.purposeIntro}</p>
       <ol className="mt-3 grid max-w-[66rem] gap-px border border-hairline bg-hairline sm:grid-cols-2">
         {vision.purposes.map((purpose, i) => (
-          <li key={purpose.name} className="bg-[rgb(11_12_16/0.82)] px-4 py-3.5 sm:p-6 max-lg:[@media(max-height:720px)]:py-2.5">
+          <li key={purpose.name} className="bg-[rgb(15_23_42/0.82)] px-4 py-3.5 sm:p-6 max-lg:[@media(max-height:720px)]:py-2.5">
             <span className="label text-gold">0{i + 1}</span>
             <p className="mt-1.5 font-display text-[1.25rem] leading-tight font-light text-titanium sm:mt-3 sm:text-[1.6rem] max-lg:[@media(max-height:720px)]:mt-1 max-lg:[@media(max-height:720px)]:text-[1.125rem]">
               {purpose.name}
@@ -140,16 +140,13 @@ export default function Thesis() {
               </ul>
             </motion.div>
           </div>
-          <p className="panel mx-auto mt-6 hidden max-w-[54rem] px-6 py-4 text-[0.875rem] leading-relaxed text-titanium-dim lg:block">
-            {vision.contrastSentence}
-          </p>
         </motion.div>
 
         {/* C. The commons: the form stays pinned, a dark blur rises, the closing statement over it. */}
         <motion.div
           aria-hidden
           style={{ opacity: veil, backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}
-          className="absolute inset-0 bg-[rgb(5_5_7/0.5)]"
+          className="absolute inset-0 bg-[rgb(7_11_20/0.5)]"
         />
         <motion.div
           style={{ opacity: beatC }}
