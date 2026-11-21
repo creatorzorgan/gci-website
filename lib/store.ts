@@ -110,6 +110,9 @@ type UIState = {
   setSelected: (division: number, row: number) => void;
   drawerOpen: boolean;
   setDrawerOpen: (v: boolean) => void;
+  /** Left sidebar menu. */
+  menuOpen: boolean;
+  setMenuOpen: (v: boolean) => void;
   tier: Tier;
   setTier: (t: Tier) => void;
   reducedMotion: boolean;
@@ -134,6 +137,8 @@ export const useUI = create<UIState>((set) => ({
     }),
   drawerOpen: false,
   setDrawerOpen: (drawerOpen) => set({ drawerOpen }),
+  menuOpen: false,
+  setMenuOpen: (menuOpen) => set({ menuOpen }),
   tier: "high",
   setTier: (tier) => set({ tier }),
   reducedMotion: false,

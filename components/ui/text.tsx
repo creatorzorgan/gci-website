@@ -4,7 +4,7 @@ import { motion, useTransform, type MotionValue } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { useUI } from "@/lib/store";
 
-const GOLD = "#e0b25c";
+const GOLD = "#e6c55c";
 
 function Char({
   ch,
@@ -12,15 +12,17 @@ function Char({
   start,
   step,
   color,
+  cursor,
 }: {
   ch: string;
   progress: MotionValue<number>;
   start: number;
   step: number;
   color: string;
+  cursor: string;
 }) {
   const opacity = useTransform(progress, [start, start + step * 1.5], [0.1, 1]);
-  const tone = useTransform(progress, [start, start + step * 1.5, start + step * 6], [GOLD, GOLD, color]);
+  const tone = useTransform(progress, [start, start + step * 1.5, start + step * 6], [cursor, cursor, color]);
   return (
     <motion.span aria-hidden style={{ opacity, color: tone }}>
       {ch}
@@ -38,7 +40,8 @@ export function TypeOn({
   from,
   to,
   className,
-  color = "#c9ced6",
+  color = "#e2e8f0",
+  cursor = GOLD,
 }: {
   text: string;
   progress: MotionValue<number>;
@@ -46,6 +49,8 @@ export function TypeOn({
   to: number;
   className?: string;
   color?: string;
+  /** Colour of the newest letter while typing. */
+  cursor?: string;
 }) {
   const words = useMemo(() => text.split(" "), [text]);
   const total = text.length;
@@ -67,6 +72,7 @@ export function TypeOn({
                 start={from + (index + c) * step}
                 step={step}
                 color={color}
+                cursor={cursor}
               />
             ))}
             {w < words.length - 1 ? " " : ""}

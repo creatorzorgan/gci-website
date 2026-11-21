@@ -182,7 +182,7 @@ function Lattice({ count }: { count: number }) {
       !!r.esg &&
       frame.y > r.councils.top - frame.vh * 0.5 &&
       frame.y < r.esg.top - frame.vh * 0.5;
-    const held = narrow ? (pastHero ? 0.34 : 0.8) : stackedCouncils ? 0.45 : 1;
+    const held = narrow ? (pastHero ? 0.26 : 0.8) : stackedCouncils ? 0.45 : 1;
     const bright = s.bright * held * (0.28 + 0.72 * s.boot);
 
     u.uTime.value += dt * (1 - calm * 0.85);

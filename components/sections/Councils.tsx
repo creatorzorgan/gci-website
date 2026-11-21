@@ -190,8 +190,8 @@ export default function Councils() {
             className="pointer-events-none absolute inset-0 flex flex-col justify-end px-16 pb-28"
           >
             <p className="label bullet text-titanium-dim">03 / Councils</p>
-            <h2 className="mt-5 max-w-[56rem] font-display text-[clamp(2.25rem,4.6vw,4.25rem)] leading-[1.04] font-light tracking-[-0.02em] text-titanium">
-              The Six Governing Councils <em className="text-gold-bright">&amp;</em> Complete
+            <h2 className="mt-5 max-w-[50rem] font-classical font-medium uppercase text-[clamp(1.8rem,3.4vw,3.3rem)] leading-[1.1] tracking-[0.02em] text-titanium">
+              The Six Governing Councils <span className="text-gold">&amp;</span> Complete
               Industrial Divisions
             </h2>
             <p className="mt-6 max-w-[33rem] text-[1.0625rem] leading-relaxed text-titanium-dim">
@@ -330,7 +330,7 @@ export default function Councils() {
           initiative opens its charter text. */}
       <div className="px-6 py-24 sm:px-10 xl:hidden">
         <p className="label bullet text-titanium-dim">03 / Councils</p>
-        <h2 className="mt-5 font-display text-[clamp(2rem,8vw,3rem)] leading-[1.05] font-light tracking-[-0.02em] text-titanium">
+        <h2 className="mt-5 font-classical font-medium uppercase text-[clamp(1.45rem,6.4vw,2.4rem)] leading-[1.12] tracking-[0.02em] text-titanium">
           {councilsIntro.title}
         </h2>
         <p className="mt-5 text-[1rem] leading-relaxed text-titanium-dim">{councilsIntro.body}</p>

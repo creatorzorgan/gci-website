@@ -69,8 +69,8 @@ export default function Esg() {
           className="max-w-[48rem] max-lg:transform-none! max-lg:opacity-100!"
         >
           <p className="label bullet text-titanium-dim">04 / Stewardship</p>
-          <h2 className="mt-5 font-display text-[clamp(1.9rem,3.5vw,3.25rem)] leading-[1.08] font-light tracking-[-0.016em] text-titanium">
-            Responsible Growth <em className="text-gold-bright">&amp;</em> Environmental
+          <h2 className="mt-5 font-classical font-medium uppercase text-[clamp(1.45rem,2.7vw,2.5rem)] leading-[1.12] tracking-[0.02em] text-titanium">
+            Responsible Growth <span className="text-gold">&amp;</span> Environmental
             Stewardship
           </h2>
           <p className="mt-5 max-w-[40rem] text-[1rem] leading-relaxed text-titanium-dim">

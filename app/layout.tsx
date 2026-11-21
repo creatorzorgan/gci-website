@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Newsreader } from "next/font/google";
+import { Cinzel, Geist, Geist_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
+// Classical capitals for headlines and the seal lettering (client mockup).
+const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", display: "swap" });
 const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
@@ -31,7 +33,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${newsreader.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${newsreader.variable} ${cinzel.variable}`}>
       <body>{children}</body>
     </html>
   );

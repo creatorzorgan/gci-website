@@ -15,6 +15,7 @@ import Thesis from "./sections/Thesis";
 import Callouts, { GalaxyLabels } from "./ui/Callouts";
 import Chrome from "./ui/Chrome";
 import IndexDrawer from "./ui/IndexDrawer";
+import Sidebar from "./ui/Sidebar";
 
 // The WebGL chunk loads in the browser only, while the clearance gate is on screen.
 const Scene = dynamic(() => import("./canvas/Scene"), { ssr: false });
@@ -96,6 +97,7 @@ export default function Experience() {
         </main>
 
         <IndexDrawer />
+        <Sidebar />
       </SmoothScroll>
     </MotionConfig>
   );

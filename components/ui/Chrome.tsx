@@ -84,6 +84,7 @@ const IDENTITY_SHOW = ["hidden md:inline", "hidden lg:inline", "hidden 2xl:inlin
 export default function Chrome() {
   const cleared = useUI((s) => s.cleared);
   const setDrawerOpen = useUI((s) => s.setDrawerOpen);
+  const setMenuOpen = useUI((s) => s.setMenuOpen);
   const { scrollY, scrollYProgress } = useScroll();
   const [current, setCurrent] = useState(0);
   const [label, setLabel] = useState("01 / Apex node");
@@ -129,13 +130,28 @@ export default function Chrome() {
       </div>
 
       <header className="fixed inset-x-3 top-3 z-30 flex h-14 items-center justify-between gap-4 border-b border-hairline bg-[rgb(7_11_20/0.88)] px-4 sm:px-6">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+        <button
+          type="button"
+          onClick={() => setMenuOpen(true)}
+          aria-label="Open menu"
+          className="group -ml-1 flex h-10 shrink-0 items-center gap-2.5 px-1 text-titanium transition-colors hover:text-gold-bright"
+        >
+          <span aria-hidden className="flex w-5 flex-col gap-[5px]">
+            <span className="h-px w-5 bg-current" />
+            <span className="h-px w-3.5 bg-gold transition-all group-hover:w-5" />
+            <span className="h-px w-5 bg-current" />
+          </span>
+          <span className="label hidden text-current lg:inline">Menu</span>
+        </button>
+        <span aria-hidden className="h-6 w-px bg-hairline-strong" />
         <a
           href="#apex"
           className="flex min-w-0 items-center gap-3"
           aria-label={`${entity.name}, back to top`}
         >
           <GciShield size={32} />
-          <span className="font-display text-[1.3rem] leading-none tracking-[0.14em] text-titanium">
+          <span className="font-classical text-[1.2rem] leading-none font-semibold tracking-[0.08em] text-titanium">
             {entity.short}
           </span>
           <span aria-hidden className="hidden h-5 w-px bg-hairline-strong md:block" />
@@ -148,6 +164,7 @@ export default function Chrome() {
             ))}
           </span>
         </a>
+        </div>
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}

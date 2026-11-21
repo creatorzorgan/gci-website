@@ -17,6 +17,7 @@
   --color-crimson: #d8473f;
 
   --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-classical: var(--font-cinzel), "Trajan Pro", ui-serif, Georgia, serif;
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 

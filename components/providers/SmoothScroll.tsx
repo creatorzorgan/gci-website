@@ -14,6 +14,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
   const ref = useRef<LenisRef>(null);
   const cleared = useUI((s) => s.cleared);
   const drawerOpen = useUI((s) => s.drawerOpen);
+  const menuOpen = useUI((s) => s.menuOpen);
 
   useEffect(() => {
     function update(data: { timestamp: number }) {
@@ -31,7 +32,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Scroll stays locked behind the clearance gate and the index drawer.
+  // Scroll stays locked behind the clearance gate, the index drawer and the menu.
   useEffect(() => {
     let raf = 0;
     const apply = () => {
@@ -40,12 +41,12 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
         raf = requestAnimationFrame(apply);
         return;
       }
-      if (cleared && !drawerOpen) lenis.start();
+      if (cleared && !drawerOpen && !menuOpen) lenis.start();
       else lenis.stop();
     };
     apply();
     return () => cancelAnimationFrame(raf);
-  }, [cleared, drawerOpen]);
+  }, [cleared, drawerOpen, menuOpen]);
 
   return (
     <ReactLenis root ref={ref} options={{ autoRaf: false, lerp: 0.09, anchors: true }}>

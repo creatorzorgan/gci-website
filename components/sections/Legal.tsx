@@ -30,7 +30,7 @@ export default function Legal() {
     >
       <div className="mx-auto max-w-[60rem]">
         <p className="label bullet text-titanium-dim">05 / Statutory governance</p>
-        <h2 className="mt-5 font-display text-[clamp(1.8rem,3.4vw,2.9rem)] leading-[1.1] font-light tracking-[-0.016em] text-titanium">
+        <h2 className="mt-5 font-classical font-medium uppercase text-[clamp(1.3rem,2.5vw,2.2rem)] leading-[1.16] tracking-[0.02em] text-titanium">
           {statute.title}
         </h2>
 

@@ -41,14 +41,22 @@ export default function Hero() {
         <motion.div style={{ opacity: exitOpacity, y: exitY }} className="relative max-w-[60rem]">
           <p className="label bullet text-titanium-dim">01 / Apex node</p>
 
-          <h1 className="mt-5 font-display text-[clamp(2.6rem,7.4vw,6.75rem)] leading-[0.98] font-light tracking-[-0.022em] max-lg:[@media(max-height:720px)]:mt-3 max-lg:[@media(max-height:720px)]:text-[2.15rem]">
-            <TypeOn text={hero.headline[0]} progress={typed} from={0} to={0.46} className="block" />
+          <h1 className="mt-5 font-classical text-[clamp(1.85rem,3.15vw,3.5rem)] leading-[1.04] font-medium tracking-[0.02em] uppercase max-lg:[@media(max-height:720px)]:mt-3 max-lg:[@media(max-height:720px)]:text-[1.75rem]">
+            <TypeOn
+              text={hero.headline[0]}
+              progress={typed}
+              from={0}
+              to={0.46}
+              className="block"
+              color="#d4af37"
+              cursor="#f8fafc"
+            />
             <TypeOn
               text={hero.headline[1]}
               progress={typed}
               from={0.46}
               to={0.98}
-              className="block italic"
+              className="block"
             />
           </h1>
 

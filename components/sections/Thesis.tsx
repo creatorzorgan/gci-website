@@ -34,7 +34,7 @@ function Definition({ progress }: { progress: MotionValue<number> }) {
   return (
     <>
       <p className="label bullet text-titanium-dim">02 / Founding vision</p>
-      <h2 className="mt-5 max-w-[60rem] font-display text-[clamp(2rem,4.8vw,4.25rem)] leading-[1.04] font-light tracking-[-0.02em]">
+      <h2 className="mt-5 max-w-[60rem] font-classical font-medium uppercase text-[clamp(1.6rem,3.6vw,3.4rem)] leading-[1.1] tracking-[0.02em]">
         <TypeOn text={vision.headline} progress={progress} from={0.04} to={0.14} />
       </h2>
       <p className="mt-4 max-w-[40rem] text-[0.9375rem] leading-relaxed text-titanium-dim sm:mt-6 sm:text-[1.0625rem]">

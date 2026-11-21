@@ -91,9 +91,9 @@ export default function Gate() {
 
             <h1
               id="gate-title"
-              className="mt-7 font-display text-[clamp(1.9rem,5vw,2.75rem)] leading-[1.05] font-light tracking-[-0.01em] text-titanium [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:text-[1.75rem]"
+              className="mt-7 font-classical text-[clamp(1.4rem,4.2vw,2.1rem)] leading-[1.12] font-medium tracking-[0.02em] text-titanium uppercase [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:text-[1.3rem]"
             >
-              Institutional Access <em className="text-gold-bright">Acknowledgment</em>
+              Institutional Access <span className="block text-gold">Acknowledgment</span>
             </h1>
             <p className="label mt-4 text-titanium-dim">
               {entity.name} <span className="mx-1.5 text-gold">/</span> {entity.structure}
