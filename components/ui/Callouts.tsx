@@ -70,7 +70,7 @@ type GalaxyLabel = {
 
 /** Labels on the galaxy in the hero. Same order as the anchors in the scene. */
 const GALAXY_LABELS: GalaxyLabel[] = [
-  // Wording kept clear of governmental terms (charter Part IV, 1.2).
+  // Wording kept clear of governmental terms (charter Part V, 1.2).
   { title: "Apex node", sub: "Central Secretariat · six councils", dx: 52, dy: -58, dir: 1 },
   { title: "Public counterparts", sub: "Union Ministries · State Secretariats", dx: -44, dy: -40, dir: -1 },
   { title: "Institutional capital", sub: "Non-debt · infrastructure", dx: -30, dy: 46, dir: -1 },

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useState } from "react";
 import { vision } from "@/content/briefing";
 import { useSectionRange } from "@/lib/hooks";
 import { TypeOn } from "../ui/text";
@@ -44,18 +45,34 @@ function Definition({ progress }: { progress: MotionValue<number> }) {
   );
 }
 
+/**
+ * The three-part operational mandate. From `sm` up every body shows; on phones they form
+ * an accordion (one open at a time, the first by default) so the beat fits a short screen.
+ */
 function Purposes() {
+  const [open, setOpen] = useState(0);
   return (
     <>
-      <p className="label mt-0 sm:mt-9">{vision.purposeIntro}</p>
-      <ol className="mt-3 grid max-w-[66rem] gap-px border border-hairline bg-hairline sm:grid-cols-2">
+      <p className="label mt-0 lg:mt-9">{vision.purposeIntro}</p>
+      <ol className="mt-3 grid max-w-[76rem] gap-px border border-hairline bg-hairline lg:grid-cols-3">
         {vision.purposes.map((purpose, i) => (
-          <li key={purpose.name} className="bg-[rgb(15_23_42/0.82)] px-4 py-3.5 sm:p-6 max-lg:[@media(max-height:720px)]:py-2.5">
-            <span className="label text-gold">0{i + 1}</span>
-            <p className="mt-1.5 font-display text-[1.25rem] leading-tight font-light text-titanium sm:mt-3 sm:text-[1.6rem] max-lg:[@media(max-height:720px)]:mt-1 max-lg:[@media(max-height:720px)]:text-[1.125rem]">
-              {purpose.name}
-            </p>
-            <p className="mt-2 text-[0.875rem] leading-relaxed text-titanium-dim sm:mt-2.5 sm:text-[0.9375rem] max-lg:[@media(max-height:720px)]:mt-1.5 max-lg:[@media(max-height:720px)]:text-[0.8125rem] max-lg:[@media(max-height:720px)]:leading-snug">
+          <li key={purpose.name} className="bg-[rgb(15_23_42/0.82)] px-4 py-3 sm:p-5 xl:p-6 max-lg:[@media(max-height:720px)]:py-2.5">
+            <button
+              type="button"
+              aria-expanded={open === i}
+              onClick={() => setOpen(i)}
+              className="flex w-full items-baseline gap-3 text-left sm:pointer-events-none sm:block"
+            >
+              <span className="label text-gold">0{i + 1}</span>
+              <span className="mt-1.5 block font-display text-[1.125rem] leading-tight font-light text-titanium sm:mt-3 sm:text-[1.45rem] max-lg:[@media(max-height:720px)]:mt-1 max-lg:[@media(max-height:720px)]:text-[1.0625rem]">
+                {purpose.name}
+              </span>
+            </button>
+            <p
+              className={`mt-2 text-[0.8125rem] leading-relaxed text-titanium-dim sm:mt-2.5 sm:block sm:text-[0.9375rem] lg:text-[0.875rem] xl:text-[0.9375rem] max-lg:[@media(max-height:720px)]:mt-1.5 max-lg:[@media(max-height:720px)]:text-[0.8125rem] max-lg:[@media(max-height:720px)]:leading-snug ${
+                open === i ? "" : "hidden"
+              }`}
+            >
               {purpose.body}
             </p>
           </li>
@@ -83,23 +100,23 @@ export default function Thesis() {
   return (
     <section ref={ref} id="thesis" aria-label={vision.title} className="relative h-[500vh]">
       <div className="sticky top-0 h-screen overflow-hidden">
-        {/* A. Definition and the dual purpose. Phones get them as two beats (A1, A2). */}
+        {/* A. Definition and the three-part mandate. Below lg they are two beats (A1, A2). */}
         <motion.div
           style={{ opacity: beatA }}
-          className="absolute inset-0 hidden flex-col justify-center px-6 py-20 sm:flex sm:px-10 lg:px-16"
+          className="absolute inset-0 hidden flex-col justify-center px-16 py-20 lg:flex"
         >
           <Definition progress={p} />
           <Purposes />
         </motion.div>
         <motion.div
           style={{ opacity: beatA1 }}
-          className="absolute inset-0 flex flex-col justify-center px-6 py-20 sm:hidden"
+          className="absolute inset-0 flex flex-col justify-center px-6 py-20 sm:px-10 lg:hidden"
         >
           <Definition progress={p} />
         </motion.div>
         <motion.div
           style={{ opacity: beatA2 }}
-          className="absolute inset-0 flex flex-col justify-center px-6 py-20 sm:hidden"
+          className="absolute inset-0 flex flex-col justify-center px-6 py-20 sm:px-10 lg:hidden"
         >
           <Purposes />
         </motion.div>
@@ -109,14 +126,14 @@ export default function Thesis() {
           style={{ opacity: beatB }}
           className="absolute inset-0 flex flex-col justify-center px-6 sm:px-10 lg:px-16"
         >
-          <div className="grid w-full items-center gap-6 lg:grid-cols-[1fr_minmax(0,24rem)_1fr]">
-            <motion.div style={{ x: leftX }} className="panel p-6 lg:p-7">
+          <div className="grid w-full items-center gap-4 sm:gap-6 lg:grid-cols-[1fr_minmax(0,24rem)_1fr]">
+            <motion.div style={{ x: leftX }} className="panel p-4 sm:p-6 lg:p-7">
               <p className="label">{vision.contrast.incumbent.label}</p>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-3 space-y-1 sm:mt-4 sm:space-y-3">
                 {vision.contrast.incumbent.lines.map((line) => (
                   <li
                     key={line}
-                    className="border-l border-hairline-strong pl-4 text-[1rem] leading-snug text-titanium-dim"
+                    className="border-l border-hairline-strong pl-4 text-[0.9375rem] leading-snug text-titanium-dim sm:text-[1rem]"
                   >
                     {line}
                   </li>
@@ -126,13 +143,13 @@ export default function Thesis() {
 
             <div aria-hidden className="hidden lg:block" />
 
-            <motion.div style={{ x: rightX }} className="panel p-6 lg:p-7">
+            <motion.div style={{ x: rightX }} className="panel p-4 sm:p-6 lg:p-7">
               <p className="label text-gold">{vision.contrast.gci.label}</p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 space-y-1 sm:mt-4 sm:space-y-2.5">
                 {vision.contrast.gci.lines.map((line) => (
                   <li
                     key={line}
-                    className="border-l border-gold/70 pl-4 text-[1rem] leading-snug text-titanium"
+                    className="border-l border-gold/70 pl-4 text-[0.9375rem] leading-snug text-titanium sm:text-[1rem]"
                   >
                     {line}
                   </li>

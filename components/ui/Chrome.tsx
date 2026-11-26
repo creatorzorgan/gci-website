@@ -30,7 +30,7 @@ type Stop = {
 /** One entry per chapter of the briefing, in scroll order. */
 function getStops(): Stop[] {
   const r = frame.ranges;
-  if (!r.hero || !r.thesis || !r.councils || !r.esg || !r.legal) return [];
+  if (!r.hero || !r.thesis || !r.councils || !r.restoration || !r.stewardships || !r.legal) return [];
   const vh = frame.vh;
   return [
     { label: "01 / Apex node", start: 0, target: r.hero.top },
@@ -70,15 +70,20 @@ function getStops(): Stop[] {
       };
     }),
     {
-      label: "04 / Stewardship",
-      start: r.esg.top - vh * 0.5,
-      target: sectionY("esg", 0.62),
+      label: "04 / Planetary restoration",
+      start: r.restoration.top - vh * 0.5,
+      target: r.restoration.top + vh * 0.3 - 96,
     },
-    { label: "05 / Statutory governance", start: r.legal.top - vh * 0.6, target: r.legal.top + vh * 0.3 },
+    {
+      label: "05 / Stewardships",
+      start: r.stewardships.top - vh * 0.5,
+      target: r.stewardships.top,
+    },
+    { label: "06 / Statutory governance", start: r.legal.top - vh * 0.6, target: r.legal.top + vh * 0.3 },
   ];
 }
 
-/** Charter Part V.1: identity bar segments, revealed as the header gets wider. */
+/** Charter Part VI.1: identity bar segments, revealed as the header gets wider. */
 const IDENTITY_SHOW = ["hidden md:inline", "hidden lg:inline", "hidden 2xl:inline"];
 
 export default function Chrome() {

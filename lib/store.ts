@@ -2,7 +2,7 @@ import type Lenis from "lenis";
 import { create } from "zustand";
 import { councils, divisionCount, divisions, firstDivision } from "@/content/briefing";
 
-export type SectionId = "hero" | "thesis" | "councils" | "esg" | "legal";
+export type SectionId = "hero" | "thesis" | "councils" | "restoration" | "stewardships" | "legal";
 
 export type Tier = "high" | "mid" | "low";
 

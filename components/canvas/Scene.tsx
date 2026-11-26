@@ -179,9 +179,9 @@ function Lattice({ count }: { count: number }) {
     const stackedCouncils =
       frame.vw < 1280 &&
       !!r.councils &&
-      !!r.esg &&
+      !!r.restoration &&
       frame.y > r.councils.top - frame.vh * 0.5 &&
-      frame.y < r.esg.top - frame.vh * 0.5;
+      frame.y < r.restoration.top - frame.vh * 0.5;
     const held = narrow ? (pastHero ? 0.26 : 0.8) : stackedCouncils ? 0.45 : 1;
     const bright = s.bright * held * (0.28 + 0.72 * s.boot);
 

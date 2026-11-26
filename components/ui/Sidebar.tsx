@@ -8,7 +8,7 @@ import { scrollToY, useUI } from "@/lib/store";
 import { GciSeal } from "./Logo";
 
 /**
- * Left sidebar menu, after the client's mockup: the seal, the five chapters, the six
+ * Left sidebar menu, after the client's mockup: the seal, the six chapters, the six
  * councils and the six statute sections, with a gold marker on the one being read.
  */
 export default function Sidebar() {

@@ -10,7 +10,7 @@ const HOLD_MS = 900;
 const SESSION_KEY = "gci-clearance";
 
 /**
- * Click-wrap gate (charter Part V.2: Institutional Access Acknowledgment).
+ * Click-wrap gate (charter Part VI.2: Institutional Access Acknowledgment).
  * It records the acknowledgement for this browser session and starts the boot
  * sequence. It is not access control.
  */

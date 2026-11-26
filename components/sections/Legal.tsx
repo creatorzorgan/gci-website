@@ -8,7 +8,7 @@ import { Disclose } from "../ui/Disclose";
 const sectionId = (n: string) => `statute-${n}`;
 
 /**
- * Part IV of the charter in full, then the global footer notice (Part V.3).
+ * Part V of the charter in full, then the global footer notice (Part VI.3).
  * Plain, static text: a statute should read without motion.
  */
 export default function Legal() {
@@ -29,12 +29,12 @@ export default function Legal() {
       className="relative bg-[linear-gradient(180deg,rgb(7_11_20/0)_0%,rgb(7_11_20/0.9)_18%,rgb(7_11_20/0.96)_100%)] px-6 pt-[38vh] pb-28 sm:px-10 lg:px-16"
     >
       <div className="mx-auto max-w-[60rem]">
-        <p className="label bullet text-titanium-dim">05 / Statutory governance</p>
+        <p className="label bullet text-titanium-dim">06 / Statutory governance</p>
         <h2 className="mt-5 font-classical font-medium uppercase text-[clamp(1.3rem,2.5vw,2.2rem)] leading-[1.16] tracking-[0.02em] text-titanium">
           {statute.title}
         </h2>
 
-        {/* Corporate & Statutory Particulars */}
+        {/* Corporate & Institutional Particulars */}
         <dl className="mt-10 border-t border-hairline">
           {particulars.map((p) => (
             <div
@@ -97,7 +97,7 @@ export default function Legal() {
           ))}
         </div>
 
-        {/* Charter Part V.3: global footer notice, at the bottom of every public page. */}
+        {/* Charter Part VI.3: global footer notice, at the bottom of every public page. */}
         <footer className="blueprint relative mt-24 border-t border-gold/40 px-5 pt-8 pb-6 sm:px-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

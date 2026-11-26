@@ -24,7 +24,7 @@ export type Directive = {
   collapse: number;
   /** Radial zoom-blur between major sections. */
   warp: number;
-  /** Brief horizontal tearing (councils to ESG). */
+  /** Brief horizontal tearing (councils to restoration). */
   glitch: number;
   bright: number;
   scale: number;
@@ -94,7 +94,7 @@ export function computeDirective(d: Directive) {
   d.ring = 0;
   d.labels = 0;
 
-  if (!r.hero || !r.thesis || !r.councils || !r.esg || !r.legal) return;
+  if (!r.hero || !r.thesis || !r.councils || !r.restoration || !r.legal) return;
 
   if (y < r.thesis.top) {
     // Hero: the galaxy sits to the right of the headline. Scrolling pushes the camera
@@ -121,7 +121,7 @@ export function computeDirective(d: Directive) {
     d.scale = 1.15 - 0.25 * d.fracture;
     d.tilt = 0.5 + 0.25 * d.fracture;
     d.ring = 0.35 * (1 - d.fracture) + 0.65 * smoothstep(0.66, 0.76, t);
-  } else if (y < r.esg.top) {
+  } else if (y < r.restoration.top) {
     const c = sectionProgress("councils");
     // Sized to sit inside the centre column, between the council title and its programmes.
     d.scale = COUNCIL_SCALE;
@@ -153,15 +153,18 @@ export function computeDirective(d: Directive) {
     }
     d.glitch = smoothstep(0.985, 1, c);
   } else {
-    const e = sectionProgress("esg");
+    // Parts III and IV scroll as reading pages over the closed loop. The morph runs over
+    // the first viewport of Part III, whatever the section's length.
+    const e = (y - r.restoration.top) / vh;
     d.from = 6;
     d.to = 7;
-    d.mix = smoothstep(0, 0.14, e);
-    d.glitch = 1 - smoothstep(0, 0.05, e);
+    d.mix = smoothstep(-0.3, 0.6, e);
+    d.glitch = 1 - smoothstep(-0.3, 0, e);
     d.flow = d.mix;
-    d.bright = 0.92;
+    // Dimmed once the reading pages fill the screen, so the loop never fights the text.
+    d.bright = 0.92 * (1 - 0.55 * smoothstep(0.5, 1.3, e));
     d.scale = COUNCIL_SCALE + 0.14 * d.mix;
-    // The closed loop sits up and to the right, clear of the mandate text and cards.
+    // The closed loop sits up and to the right, behind the reading column.
     d.offsetX = 1.5 * d.mix;
     d.offsetY = 0.55 * d.mix;
   }

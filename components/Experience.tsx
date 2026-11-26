@@ -7,10 +7,11 @@ import { detectTier } from "@/lib/quality";
 import { frame, useUI } from "@/lib/store";
 import SmoothScroll from "./providers/SmoothScroll";
 import Councils from "./sections/Councils";
-import Esg from "./sections/Esg";
 import Gate from "./sections/Gate";
 import Hero from "./sections/Hero";
 import Legal from "./sections/Legal";
+import Restoration from "./sections/Restoration";
+import Stewardships from "./sections/Stewardships";
 import Thesis from "./sections/Thesis";
 import Callouts, { GalaxyLabels } from "./ui/Callouts";
 import Chrome from "./ui/Chrome";
@@ -92,7 +93,8 @@ export default function Experience() {
           <Hero />
           <Thesis />
           <Councils />
-          <Esg />
+          <Restoration />
+          <Stewardships />
           <Legal />
         </main>
 

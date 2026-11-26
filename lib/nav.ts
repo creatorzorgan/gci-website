@@ -16,8 +16,9 @@ export const CHAPTERS = [
   { id: "hero", n: "01", label: "Apex node" },
   { id: "thesis", n: "02", label: "Founding vision" },
   { id: "councils", n: "03", label: "Governing councils" },
-  { id: "esg", n: "04", label: "Stewardship" },
-  { id: "legal", n: "05", label: "Statutory governance" },
+  { id: "restoration", n: "04", label: "Planetary restoration" },
+  { id: "stewardships", n: "05", label: "Stewardships" },
+  { id: "legal", n: "06", label: "Statutory governance" },
 ] as const;
 
 export type ChapterId = (typeof CHAPTERS)[number]["id"];
@@ -44,9 +45,10 @@ export function chapterY(id: ChapterId) {
     case "councils":
       if (frame.vw >= PINNED_COUNCILS_MIN_W) return sectionY("councils", COUNCILS_INTRO_FRAC * 0.4);
       return (r.councils?.top ?? 0) + 40;
-    case "esg":
-      // Pinned from 1024 px; below that it is a normal block.
-      return frame.vw >= 1024 ? sectionY("esg", 0.62) : (r.esg?.top ?? 0) + 40;
+    case "restoration":
+      return (r.restoration?.top ?? 0) + vh * 0.3 - OFFSET;
+    case "stewardships":
+      return r.stewardships?.top ?? 0;
     case "legal":
       return (r.legal?.top ?? 0) + vh * 0.3;
   }

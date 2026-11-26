@@ -10,6 +10,7 @@ import {
 import { useRef, useState } from "react";
 import {
   councilInitiativeCount,
+  councilRange,
   councils,
   councilsIntro,
   divisions,
@@ -30,6 +31,28 @@ import {
 } from "@/lib/store";
 import { Disclose } from "../ui/Disclose";
 
+/** Initiative range of a council, as in the charter's summary table: "#1–#24". */
+function Range({ c }: { c: (typeof councils)[number] }) {
+  const { first, last } = councilRange(c);
+  return (
+    <>
+      #{first}–#{last}
+    </>
+  );
+}
+
+/** Part II's note on the Central Secretariat chartering further Working Groups. */
+function LivingMandate() {
+  return (
+    <aside className="border-l border-gold/60 bg-[rgb(7_11_20/0.78)] py-3 pr-4 pl-4 backdrop-blur-md">
+      <p className="label text-gold">{councilsIntro.livingMandate.name}</p>
+      <p className="mt-2 text-[0.875rem] leading-relaxed text-titanium-dim [@media(max-height:820px)]:text-[0.8125rem] [@media(max-height:820px)]:leading-snug">
+        {councilsIntro.livingMandate.body}
+      </p>
+    </aside>
+  );
+}
+
 /** The initiatives of one division. Hover, click or arrow keys open a row. */
 function InitiativeList({ g }: { g: number }) {
   const division = divisions[g];
@@ -37,6 +60,8 @@ function InitiativeList({ g }: { g: number }) {
   const selected = useUI((s) => s.selected[g]);
   const setSelected = useUI((s) => s.setSelected);
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
+  // The longest divisions (V-A has eleven) get tighter rows so they fit one screen.
+  const dense = items.length >= 9;
 
   const move = (delta: number) => {
     const next = (selected + delta + items.length) % items.length;
@@ -72,12 +97,15 @@ function InitiativeList({ g }: { g: number }) {
               onPointerEnter={(e) => {
                 if (e.pointerType === "mouse") setSelected(g, i);
               }}
-              className="grid w-full grid-cols-[2rem_1fr] items-baseline gap-x-2 py-[0.45rem] text-left [@media(max-height:820px)]:py-[0.22rem]"
+              className={`grid w-full grid-cols-[2.25rem_1fr] items-baseline gap-x-2 text-left ${
+                dense ? "py-[0.24rem] [@media(max-height:820px)]:py-[0.12rem]" : "py-[0.45rem] [@media(max-height:820px)]:py-[0.22rem]"
+              }`}
             >
               <span className={`label ${open ? "text-gold" : ""}`}>{pad(item.n)}</span>
               <span
-                className={`text-[0.875rem] leading-snug transition-colors duration-200 ${
-                  open ? "text-titanium" : "text-titanium-dim"
+                title={open ? undefined : item.name}
+                className={`min-w-0 ${dense ? "text-[0.8125rem]" : "text-[0.875rem]"} leading-snug transition-colors duration-200 ${
+                  open ? "text-titanium" : "text-titanium-dim [@media(max-height:820px)]:truncate"
                 }`}
               >
                 {item.name}
@@ -93,7 +121,13 @@ function InitiativeList({ g }: { g: number }) {
                   transition={{ type: "spring", stiffness: 320, damping: 34, mass: 0.7 }}
                   className="overflow-hidden"
                 >
-                  <p className="pb-3 pl-[2.5rem] text-[0.8125rem] leading-relaxed text-titanium-dim [@media(max-height:820px)]:pb-2 [@media(max-height:820px)]:text-[0.78rem] [@media(max-height:820px)]:leading-snug">
+                  <p
+                    className={`pl-[2.75rem] text-titanium-dim ${
+                      dense
+                        ? "pb-2 text-[0.78rem] leading-snug [@media(max-height:820px)]:text-[0.75rem]"
+                        : "pb-3 text-[0.8125rem] leading-relaxed [@media(max-height:820px)]:pb-2 [@media(max-height:820px)]:text-[0.78rem] [@media(max-height:820px)]:leading-snug"
+                    }`}
+                  >
                     {item.body}
                   </p>
                 </motion.div>
@@ -191,12 +225,15 @@ export default function Councils() {
           >
             <p className="label bullet text-titanium-dim">03 / Councils</p>
             <h2 className="mt-5 max-w-[50rem] font-classical font-medium uppercase text-[clamp(1.8rem,3.4vw,3.3rem)] leading-[1.1] tracking-[0.02em] text-titanium">
-              The Six Governing Councils <span className="text-gold">&amp;</span> Complete
-              Industrial Divisions
+              The Six Governing Councils <span className="text-gold">&amp;</span> 100-Initiative
+              Architecture
             </h2>
-            <p className="mt-6 max-w-[33rem] text-[1.0625rem] leading-relaxed text-titanium-dim">
-              {councilsIntro.body}
-            </p>
+            <div className="mt-6 grid max-w-[78rem] grid-cols-[minmax(0,33rem)_minmax(0,30rem)] gap-x-12 [@media(max-height:820px)]:mt-4">
+              <p className="text-[1.0625rem] leading-relaxed text-titanium-dim [@media(max-height:820px)]:text-[0.9375rem]">
+                {councilsIntro.body}
+              </p>
+              <LivingMandate />
+            </div>
             <p className="label mt-6">
               <span className="text-amber">{pad(councils.length)}</span> councils ·{" "}
               <span className="text-amber">{divisions.length}</span> divisions ·{" "}
@@ -218,7 +255,7 @@ export default function Councils() {
                   </span>
                   <span className="mt-4 flex w-full items-center justify-between">
                     <span className="rounded-full bg-amber/15 px-2 py-0.5 label text-[0.625rem] text-amber">
-                      {councilInitiativeCount(c)}
+                      <Range c={c} />
                     </span>
                     <span aria-hidden className="text-gold transition-transform group-hover:translate-x-1">
                       →
@@ -334,6 +371,9 @@ export default function Councils() {
           {councilsIntro.title}
         </h2>
         <p className="mt-5 text-[1rem] leading-relaxed text-titanium-dim">{councilsIntro.body}</p>
+        <div className="mt-6 max-w-[40rem]">
+          <LivingMandate />
+        </div>
         <p className="label mt-5">
           <span className="text-amber">{pad(councils.length)}</span> councils ·{" "}
           <span className="text-amber">{divisions.length}</span> divisions ·{" "}
@@ -359,7 +399,7 @@ export default function Councils() {
                     {c.title}
                   </h3>
                   <p className="mt-3 inline-block rounded-full bg-amber/15 px-2.5 py-1 label text-[0.625rem] text-amber">
-                    {councilInitiativeCount(c)} initiatives · {c.divisions.length} divisions
+                    <Range c={c} /> · {councilInitiativeCount(c)} initiatives · {c.divisions.length} divisions
                   </p>
                 </>
               }
@@ -380,7 +420,7 @@ export default function Councils() {
                           <Disclose
                             summaryClassName="py-3"
                             summary={
-                              <p className="grid grid-cols-[2rem_1fr] items-baseline gap-x-1">
+                              <p className="grid grid-cols-[2.25rem_1fr] items-baseline gap-x-1">
                                 <span className="label text-gold">{pad(item.n)}</span>
                                 <span className="text-[0.9375rem] leading-snug text-titanium">
                                   {item.name}
@@ -388,7 +428,7 @@ export default function Councils() {
                               </p>
                             }
                           >
-                            <p className="pb-4 pl-[2.25rem] text-[0.875rem] leading-relaxed text-titanium-dim">
+                            <p className="pb-4 pl-[2.5rem] text-[0.875rem] leading-relaxed text-titanium-dim">
                               {item.body}
                             </p>
                           </Disclose>
