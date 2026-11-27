@@ -1,6 +1,6 @@
 import type Lenis from "lenis";
 import { create } from "zustand";
-import { councils, divisionCount, divisions, firstDivision } from "@/content/briefing";
+import { councils, divisionCount } from "@/content/briefing";
 
 export type SectionId = "hero" | "thesis" | "councils" | "restoration" | "stewardships" | "legal";
 
@@ -16,29 +16,34 @@ export const frame = {
   vh: 1,
   vw: 1,
   ranges: {} as Partial<Record<SectionId, { top: number; height: number }>>,
+  /** Named sub-ranges inside sections (the choke-point table, the seal stamp). */
+  marks: {} as Record<string, { top: number; height: number }>,
   pointerX: 0,
   pointerY: 0,
+  /** Pointer in CSS pixels, for the X-ray lens. */
+  clientX: -9999,
+  clientY: -9999,
   lenis: null as Lenis | null,
-  /** DOM nodes the canvas positions each frame (callout labels pinned to the lattice). */
-  callouts: [] as (HTMLElement | null)[],
   /** Labels pinned to the galaxy in the hero. */
   galaxyLabels: [] as (HTMLElement | null)[],
+  /** The 100 initiative points of the constellation (councils intro). */
+  stars: [] as (HTMLElement | null)[],
 };
 
 /**
  * Councils section layout, in viewport heights. Shared by the DOM and the canvas.
- * After the intro, every division gets the same hold; a council spans its divisions.
+ * An intro (the constellation), then one hold per council while the rotunda turns.
  */
-export const COUNCILS_INTRO_VH = 100;
-export const DIVISION_VH = 75;
+export const COUNCILS_INTRO_VH = 130;
+export const COUNCIL_VH = 140;
 export const COUNCIL_COUNT = councils.length;
-export const COUNCILS_PIN_VH = COUNCILS_INTRO_VH + DIVISION_VH * divisionCount;
+export const COUNCILS_PIN_VH = COUNCILS_INTRO_VH + COUNCIL_VH * COUNCIL_COUNT;
 /** Total section height: the pinned distance plus one viewport to release the pin. */
 export const COUNCILS_SECTION_VH = COUNCILS_PIN_VH + 100;
 export const COUNCILS_INTRO_FRAC = COUNCILS_INTRO_VH / COUNCILS_PIN_VH;
-export const DIVISION_FRAC = DIVISION_VH / COUNCILS_PIN_VH;
-/** The form morphs to the next council over this much scroll at the end of a council. */
-export const COUNCIL_MORPH_VH = 26;
+export const COUNCIL_FRAC = COUNCIL_VH / COUNCILS_PIN_VH;
+/** The rotunda turns to the next alcove over this much scroll at the end of a council. */
+export const COUNCIL_TURN_VH = 34;
 
 export function clamp01(v: number) {
   return v < 0 ? 0 : v > 1 ? 1 : v;
@@ -64,37 +69,29 @@ export function sectionY(id: SectionId, progress: number) {
   return r.top + progress * Math.max(1, r.height - frame.vh);
 }
 
-/**
- * Which division the text shows for a given councils-section progress (index into
- * `divisions`). -1 during the intro. Switches just before a boundary, so at a council
- * boundary the text changes while the lattice is mid-morph.
- */
-export function divisionAt(progress: number) {
-  if (progress < COUNCILS_INTRO_FRAC * 0.8) return -1;
-  const f = (progress - COUNCILS_INTRO_FRAC) / DIVISION_FRAC;
-  return Math.max(0, Math.min(divisionCount - 1, Math.floor(f + 0.1)));
+/** Progress 0..1 of a sticky stage (an element taller than the screen), by its mark name. */
+export function markProgress(name: string, y = frame.y) {
+  const r = frame.marks[name];
+  if (!r) return 0;
+  return clamp01((y - r.top) / Math.max(1, r.height - frame.vh));
 }
 
-/** Council shown for a given progress, or -1 during the intro. */
+/** Council shown for a given councils-section progress, or -1 during the intro. */
 export function councilAt(progress: number) {
-  const g = divisionAt(progress);
-  return g < 0 ? -1 : divisions[g].councilIndex;
-}
-
-/** Progress value that puts division `g` at the start of its hold. */
-export function divisionProgress(g: number) {
-  return COUNCILS_INTRO_FRAC + (g + 0.25) * DIVISION_FRAC;
+  if (progress < COUNCILS_INTRO_FRAC * 0.86) return -1;
+  const f = (progress - COUNCILS_INTRO_FRAC) / COUNCIL_FRAC;
+  // Switches a little before the boundary, while the rotunda is mid-turn.
+  return Math.max(0, Math.min(COUNCIL_COUNT - 1, Math.floor(f + 0.12)));
 }
 
 /** Progress value that puts council `k` at the start of its hold. */
 export function councilProgress(k: number) {
-  return divisionProgress(firstDivision[k]);
+  return COUNCILS_INTRO_FRAC + (k + 0.18) * COUNCIL_FRAC;
 }
 
 /** Where council `k` starts and how long it lasts, as section progress. */
 export function councilSpan(k: number) {
-  const start = COUNCILS_INTRO_FRAC + firstDivision[k] * DIVISION_FRAC;
-  return { start, length: councils[k].divisions.length * DIVISION_FRAC };
+  return { start: COUNCILS_INTRO_FRAC + k * COUNCIL_FRAC, length: COUNCIL_FRAC };
 }
 
 type UIState = {
@@ -102,13 +99,16 @@ type UIState = {
   setCleared: (v: boolean) => void;
   activeCouncil: number;
   setActiveCouncil: (k: number) => void;
-  /** Division in view (index into `divisions`), -1 outside the councils. */
-  activeDivision: number;
-  setActiveDivision: (g: number) => void;
-  /** Selected initiative row per division. */
+  /** Division tab open in each council (index within the council). */
+  tab: number[];
+  setTab: (council: number, i: number) => void;
+  /** Selected initiative row per division (index into `divisions`). */
   selected: number[];
   setSelected: (division: number, row: number) => void;
   drawerOpen: boolean;
+  /** Council the index opens at, or -1 for the top. */
+  drawerCouncil: number;
+  openDrawer: (council?: number) => void;
   setDrawerOpen: (v: boolean) => void;
   /** Left sidebar menu. */
   menuOpen: boolean;
@@ -126,8 +126,13 @@ export const useUI = create<UIState>((set) => ({
   setCleared: (cleared) => set({ cleared }),
   activeCouncil: -1,
   setActiveCouncil: (activeCouncil) => set({ activeCouncil }),
-  activeDivision: -1,
-  setActiveDivision: (activeDivision) => set({ activeDivision }),
+  tab: councils.map(() => 0),
+  setTab: (council, i) =>
+    set((s) => {
+      const tab = s.tab.slice();
+      tab[council] = i;
+      return { tab };
+    }),
   selected: Array.from({ length: divisionCount }, () => 0),
   setSelected: (division, row) =>
     set((s) => {
@@ -136,6 +141,8 @@ export const useUI = create<UIState>((set) => ({
       return { selected };
     }),
   drawerOpen: false,
+  drawerCouncil: -1,
+  openDrawer: (council = -1) => set({ drawerOpen: true, drawerCouncil: council }),
   setDrawerOpen: (drawerOpen) => set({ drawerOpen }),
   menuOpen: false,
   setMenuOpen: (menuOpen) => set({ menuOpen }),
@@ -147,26 +154,11 @@ export const useUI = create<UIState>((set) => ({
   setWebglFailed: (webglFailed) => set({ webglFailed }),
 }));
 
-/** Width from which the councils are pinned; below it they are a stacked list. */
-export const PINNED_COUNCILS_MIN_W = 1280;
-
 /** Top of an element in page coordinates, or null if it is not rendered. */
 export function pageTop(id: string) {
   const el = document.getElementById(id);
   if (!el || el.offsetParent === null) return null;
   return el.getBoundingClientRect().top + window.scrollY;
-}
-
-/** Scroll target for division `g`, in whichever councils layout is showing. */
-export function divisionY(g: number) {
-  if (frame.vw >= PINNED_COUNCILS_MIN_W) return sectionY("councils", divisionProgress(g));
-  // In the stacked layout the councils are collapsed cards: open the one holding it.
-  const el = document.getElementById(`division-${divisions[g].code}`);
-  for (let d = el?.closest("details"); d; d = d.parentElement?.closest("details") ?? null) {
-    d.open = true;
-  }
-  const top = pageTop(`division-${divisions[g].code}`);
-  return top === null ? sectionY("councils", divisionProgress(g)) : top - 96;
 }
 
 export function scrollToY(y: number, immediate = false) {

@@ -1,18 +1,22 @@
 /** GLSL kept in template strings so no bundler loader is needed. */
 
+/**
+ * The particle form ("star dust"), drawn as light on Kiran's navy: a gold core fading to
+ * platinum white, with his blueprint blue at the outer edges. Additive blending, so dense
+ * areas glow like the first render. No cyan, no green.
+ */
 export const latticeVertex = /* glsl */ `
   uniform float uTime;
   uniform float uMix;
   uniform float uFracture;
-  uniform float uCollapse;
   uniform float uWarp;
-  uniform float uGlitch;
   uniform float uDust;
   uniform float uCalm;
   uniform float uSize;
   uniform float uPixelRatio;
   uniform float uBright;
   uniform float uRot;
+  uniform float uInk;
   uniform int uFrom;
   uniform int uTo;
 
@@ -28,11 +32,10 @@ export const latticeVertex = /* glsl */ `
   varying float vAlpha;
   varying vec3 vColor;
 
-  const vec3 GOLD = vec3(0.86, 0.70, 0.26);
-  const vec3 TITANIUM = vec3(0.84, 0.87, 0.92);
-  // Cool platinum-blue edge, in key with the navy palette.
-  const vec3 CYAN = vec3(0.58, 0.68, 0.86);
-  const vec3 CREAM = vec3(0.93, 0.88, 0.80);
+  const vec3 GOLD = vec3(0.86, 0.71, 0.36);
+  const vec3 PLATINUM = vec3(0.86, 0.90, 0.95);
+  const vec3 BLUE = vec3(0.38, 0.55, 0.82);
+  const vec3 LINE = vec3(0.42, 0.58, 0.86);
 
   vec3 target(int i) {
     if (i == 1) return aT1;
@@ -49,7 +52,6 @@ export const latticeVertex = /* glsl */ `
     vec3 a = target(uFrom);
     vec3 b = target(uTo);
 
-    // Each particle leaves and arrives at its own moment.
     float stagger = aSeed.x * 0.4;
     float m = clamp((uMix - stagger) / 0.6, 0.0, 1.0);
     m = m * m * (3.0 - 2.0 * m);
@@ -61,52 +63,43 @@ export const latticeVertex = /* glsl */ `
       sin(p.x * 3.3 + uTime * 0.8 + aSeed.w * 6.2832)
     );
     float turbulence = sin(m * 3.14159);
-    p += n * (0.42 * turbulence * (1.0 - uCalm) + 0.006 * (1.0 - uCalm));
+    p += n * (0.36 * turbulence * (1.0 - uCalm) + 0.005 * (1.0 - uCalm));
 
-    // Fracture: the galaxy splits into six sectors that drift apart (fragmented silos).
+    // Fracture: six sectors drift apart.
     float wedge = floor((atan(p.z, p.x) + 3.14159) / 1.0472);
     float wa = (wedge + 0.5) * 1.0472 - 3.14159;
     vec3 wdir = vec3(cos(wa), (mod(wedge, 2.0) - 0.5) * 0.55, sin(wa));
     p += wdir * uFracture * 0.8 + n * uFracture * 0.04;
 
-    // Dormant dust before clearance.
+    // Scattered dust before the gate is passed.
     p = mix(p, p * (2.4 + aSeed.x * 2.2) + n * 0.6, uDust);
 
     float c = cos(uRot);
     float s = sin(uRot);
     p.xz = mat2(c, -s, s, c) * p.xz;
 
-    // Collapse to a horizon line.
-    p.y *= mix(1.0, 0.012, uCollapse);
-    p.x *= mix(1.0, 3.4, uCollapse);
-    p.z *= mix(1.0, 0.35, uCollapse);
-    p.y -= uCollapse * 0.35;
-
-    // Zoom-blur: everything rushes past the camera.
+    // Rush past the camera between chapters.
     p += normalize(p + vec3(0.0001)) * uWarp * (0.8 + aSeed.y * 1.4);
     p *= 1.0 + uWarp * (1.4 + aSeed.x * 2.2);
     p.z += uWarp * 2.2 * aSeed.w;
 
-    // Horizontal tearing.
-    p.x += (step(0.5, fract(p.y * 6.0 + uTime * 11.0)) - 0.5) * uGlitch * 0.55;
-
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
 
-    float size = uSize * (0.55 + aSeed.z * 0.95) * (1.0 + uWarp * 1.5 + uDust * 0.8);
+    // Blueprint dots are finer than built ones.
+    float size = uSize * (0.55 + aSeed.z * 0.95) * mix(0.7, 1.0, uInk) * (1.0 + uWarp * 1.5 + uDust * 0.8);
     gl_PointSize = size * uPixelRatio / max(0.5, -mv.z);
 
     float radius = length(mix(a, b, m));
-    // The galaxy (form 0) is warm: a gold core fading to cream, with almost no cyan edge.
     float galaxy = (uFrom == 0 ? 1.0 - m : 0.0) + (uTo == 0 ? m : 0.0);
-    vec3 outer = mix(TITANIUM, CREAM, galaxy);
-    vec3 color = mix(GOLD, outer, smoothstep(0.12 + galaxy * 0.1, 0.95 + galaxy * 0.35, radius));
-    color = mix(color, CYAN, smoothstep(1.45, 2.3, radius) * 0.45 * (1.0 - galaxy * 0.85));
+    vec3 color = mix(GOLD, PLATINUM, smoothstep(0.12 + galaxy * 0.1, 0.95 + galaxy * 0.35, radius));
+    color = mix(color, BLUE, smoothstep(1.4, 2.3, radius) * 0.55 * (1.0 - galaxy * 0.6));
     // A few gold motes everywhere keep the accent present in every form.
-    color = mix(color, GOLD, step(0.965, aSeed.y) * 0.85);
-    vColor = color;
+    color = mix(color, GOLD, step(0.955, aSeed.y) * 0.9);
+    // Blueprint: everything is drawn in one fine blue line colour.
+    vColor = mix(LINE, color, uInk);
 
-    vAlpha = uBright * (0.3 + 0.7 * aSeed.w) * (1.0 - uWarp * 0.6) * (1.0 - uDust * 0.72);
+    vAlpha = uBright * (0.3 + 0.7 * aSeed.w) * mix(0.6, 1.0, uInk) * (1.0 - uWarp * 0.6) * (1.0 - uDust * 0.72);
   }
 `;
 
@@ -135,7 +128,6 @@ export const threadVertex = /* glsl */ `
   varying vec3 vColor;
 
   void main() {
-    // Particles flow down a gently swaying vertical strand through the centre of the form.
     float t = fract(aSeed.x + uTime * (0.018 + aSeed.y * 0.02));
     float y = (t - 0.5) * 11.0;
     float sway = 0.1 + uSpread * 0.9;
@@ -149,13 +141,13 @@ export const threadVertex = /* glsl */ `
     gl_Position = projectionMatrix * mv;
     gl_PointSize = uSize * (0.5 + aSeed.y) * uPixelRatio / max(0.5, -mv.z);
 
-    vColor = vec3(0.92, 0.72, 0.32);
+    vColor = vec3(0.92, 0.76, 0.40);
     float ends = smoothstep(0.0, 0.12, t) * smoothstep(1.0, 0.88, t);
     vAlpha = uBright * ends * (0.35 + 0.65 * aSeed.x);
   }
 `;
 
-/** Eclipse ring at the core: a thin bright annulus with a soft halo, always facing the camera. */
+/** Gold ring at the core: a thin line with a soft wash, always facing the camera. */
 export const ringVertex = /* glsl */ `
   varying vec2 vUv;
   void main() {
@@ -173,9 +165,41 @@ export const ringFragment = /* glsl */ `
     float d = length(vUv - 0.5) * 2.0;
     float ring = exp(-pow((d - 0.42) / 0.028, 2.0));
     float halo = exp(-pow((d - 0.42) / 0.16, 2.0)) * 0.32;
-    float corona = smoothstep(1.0, 0.42, d) * step(0.42, d) * 0.08;
     float shimmer = 0.92 + 0.08 * sin(uTime * 1.3 + atan(vUv.y - 0.5, vUv.x - 0.5) * 6.0);
-    vec3 color = mix(vec3(0.88, 0.70, 0.36), vec3(1.0, 0.94, 0.82), ring);
-    gl_FragColor = vec4(color, (ring + halo + corona) * shimmer * uOpacity);
+    vec3 color = mix(vec3(0.86, 0.71, 0.36), vec3(1.0, 0.95, 0.84), ring);
+    gl_FragColor = vec4(color, (ring + halo) * shimmer * uOpacity);
+  }
+`;
+
+/** Flow along the choke-point pipeline: murky before the first valve, clearer after each closed one. */
+export const flowVertex = /* glsl */ `
+  uniform float uTime;
+  uniform float uPixelRatio;
+  uniform float uActive;
+  uniform float uLength;
+  attribute vec3 aSeed;
+  varying vec3 vColor;
+  varying float vAlpha;
+
+  // Pollution reads as dull grey; clean water as bright blue (no orange or green).
+  const vec3 MURK = vec3(0.40, 0.42, 0.46);
+  const vec3 CLEAR = vec3(0.38, 0.64, 0.98);
+
+  void main() {
+    float t = fract(aSeed.x + uTime * (0.045 + aSeed.y * 0.02));
+    float x = (t - 0.5) * uLength;
+    float r = 0.11 * sqrt(aSeed.z);
+    float a = aSeed.y * 6.2832 + uTime * 0.6;
+    vec3 p = vec3(x, cos(a) * r, sin(a) * r);
+    vec4 mv = modelViewMatrix * vec4(p, 1.0);
+    gl_Position = projectionMatrix * mv;
+    gl_PointSize = (7.0 + aSeed.z * 6.0) * uPixelRatio / max(0.5, -mv.z);
+
+    // Valve k sits at x_k = (k + 0.5) / 6 along the pipe. Each closed valve upstream cleans more.
+    // Valves close in order, so the closed ones upstream of this point are the first few.
+    float upstream = floor(t * 6.0 + 0.5);
+    float cleaned = clamp(min(upstream, uActive) / 6.0, 0.0, 1.0);
+    vColor = mix(MURK, CLEAR, cleaned);
+    vAlpha = 0.85 * smoothstep(0.0, 0.04, t) * smoothstep(1.0, 0.96, t);
   }
 `;

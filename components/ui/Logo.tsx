@@ -84,11 +84,20 @@ export function GciMark({
  * The GCI shield (compact mark) and seal, from brand/tools/build_seal.py.
  * Served as static SVG files in public/brand.
  */
-export function GciShield({ size = 30, className = "" }: { size?: number; className?: string }) {
+export function GciShield({
+  size = 30,
+  className = "",
+  tone = "dark",
+}: {
+  size?: number;
+  className?: string;
+  /** "dark" for navy grounds (the default), "light" for light ones. */
+  tone?: "light" | "dark";
+}) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/brand/gci-shield.svg"
+      src={tone === "light" ? "/brand/gci-shield-light.svg" : "/brand/gci-shield.svg"}
       alt=""
       aria-hidden
       width={Math.round((size * 200) / 226)}
@@ -98,9 +107,18 @@ export function GciShield({ size = 30, className = "" }: { size?: number; classN
   );
 }
 
-export function GciSeal({ size = 64, className = "" }: { size?: number; className?: string }) {
+export function GciSeal({
+  size = 64,
+  className = "",
+  tone = "dark",
+}: {
+  size?: number;
+  className?: string;
+  tone?: "light" | "dark";
+}) {
+  const src = tone === "light" ? "/brand/gci-seal-light.svg" : "/brand/gci-seal.svg";
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src="/brand/gci-seal.svg" alt="" aria-hidden width={size} height={size} className={className} />
+    <img src={src} alt="" aria-hidden width={size} height={size} className={className} />
   );
 }

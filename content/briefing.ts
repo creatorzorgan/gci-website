@@ -1,39 +1,33 @@
 /**
  * Everything the portal shows, shaped for the components.
  *
- * Canonical source: the client's charter, "GCI Final Master.pdf" (Master Institutional Charter,
- * 100-Initiative Edition, 22 pp), confirmed final by the client on 27 November 2026.
- * Its wording lives in ./charter.ts, generated word for word by content/tools/build_charter.py.
- *
- * This file adds only:
- * - site metadata (short labels, particle form names, keys);
- * - fragments quoted from the charter for layout (each is a verbatim excerpt);
- * - headlines marked DRAFT, which are written for this page and need client approval.
+ * Two sources:
+ * - ./site.ts: the web copy, rewritten and shortened from the charter (Kiran, 27 Nov 2026);
+ * - ./charter.ts: the client's charter, generated word for word from "GCI Final Master.pdf".
+ *   It supplies the legal texts the site shows verbatim (statute, access acknowledgment,
+ *   footer notice, particulars) and is the reference the web copy is checked against.
  */
 
 import * as charter from "./charter";
+import * as site from "./site";
 
-export type Initiative = {
-  /** Number in the charter, 1..100. */
-  n: number;
-  name: string;
-  body: string;
-};
+export type Initiative = site.SiteInitiative;
 
 export type Division = {
-  /** Charter code, e.g. "I-A". */
   code: string;
-  title: string;
+  name: string;
   initiatives: readonly Initiative[];
 };
 
 export type Council = {
   numeral: string;
   key: string;
+  /** Short name, e.g. "Materials & Construction". */
+  name: string;
+  /** One sentence on what the council is for. */
+  line: string;
+  /** The charter's full council title, kept for screen readers and the index. */
   title: string;
-  directorate: string;
-  /** Short label for rails and the bottom bar. */
-  label: string;
   /** Name of the particle form shown for this council. */
   form: string;
   divisions: readonly Division[];
@@ -41,29 +35,49 @@ export type Council = {
 
 /** Site-only metadata per council, in charter order. */
 const COUNCIL_META = [
-  { key: "materials", label: "Materials & Construction", form: "Diamond-cubic lattice" },
-  { key: "compute", label: "Compute & Physical AI", form: "Photonic layer stack" },
-  { key: "resilience", label: "Cyber & Resilience", form: "Geodesic shield" },
-  { key: "bio", label: "Bio, Agro & Space", form: "Double helix" },
-  { key: "energy", label: "Energy, Mobility & Capital", form: "Ledger terraces" },
-  { key: "trade", label: "Trade & Diplomacy", form: "Corridor globe" },
+  { key: "materials", form: "Diamond-cubic lattice" },
+  { key: "compute", form: "Photonic layer stack" },
+  { key: "resilience", form: "Geodesic shield" },
+  { key: "bio", form: "Double helix" },
+  { key: "energy", form: "Ledger terraces" },
+  { key: "trade", form: "Corridor globe" },
 ] as const;
 
-export const councils: Council[] = charter.councils.map((c, k) => ({ ...c, ...COUNCIL_META[k] }));
+export const councils: Council[] = site.councils.map((c, k) => ({
+  numeral: c.numeral,
+  key: COUNCIL_META[k].key,
+  form: COUNCIL_META[k].form,
+  name: c.name,
+  line: c.line,
+  title: charter.councils[k].title,
+  divisions: c.divisions.map((d) => ({ code: d.code, name: d.name, initiatives: d.items })),
+}));
+
+/**
+ * The web copy must cover the charter one for one: same councils, divisions and initiative
+ * numbers. Fails the build (and the dev server) if they drift apart.
+ */
+(function checkAgainstCharter() {
+  const a = charter.councils.flatMap((c) => c.divisions.map((d) => `${d.code}:${d.initiatives.map((i) => i.n).join(",")}`));
+  const b = councils.flatMap((c) => c.divisions.map((d) => `${d.code}:${d.initiatives.map((i) => i.n).join(",")}`));
+  if (a.join("|") !== b.join("|")) throw new Error("content/site.ts no longer matches the charter's initiatives");
+  const text = JSON.stringify(site);
+  if (text.includes("—")) throw new Error("content/site.ts contains an em dash");
+})();
 
 /** All divisions in charter order, with the council each belongs to. */
 export const divisions = councils.flatMap((council, councilIndex) =>
-  council.divisions.map((division, indexInCouncil) => ({
-    ...division,
-    councilIndex,
-    indexInCouncil,
-  })),
+  council.divisions.map((division, indexInCouncil) => ({ ...division, councilIndex, indexInCouncil })),
 );
 
 /** Index of a council's first division in `divisions`. */
 export const firstDivision = councils.map((_, k) => divisions.findIndex((d) => d.councilIndex === k));
 
-export const initiativeCount = divisions.reduce((n, d) => n + d.initiatives.length, 0);
+export const initiatives = councils.flatMap((c, councilIndex) =>
+  c.divisions.flatMap((d) => d.initiatives.map((i) => ({ ...i, councilIndex, division: d.code }))),
+);
+
+export const initiativeCount = initiatives.length;
 export const divisionCount = divisions.length;
 
 export const councilInitiativeCount = (c: Council) =>
@@ -77,19 +91,14 @@ export const councilRange = (c: Council) => {
 
 export const pad = (n: number) => String(n).padStart(2, "0");
 
-const particular = (name: string) => charter.particulars.find((p) => p.name === name)!.body;
-
 export const entity = {
   name: "Global Confederation of Industries",
   short: "GCI",
-  /** Charter: Corporate & Institutional Particulars. */
   structure: "Section 8 Apex Public-Private Execution Platform",
-  structureFull: particular("Institutional Structure"),
-  domicile: particular("Domicile"),
   classification: "Restricted · Institutional Briefing Portal",
   /** Charter Part VI.1: the top identity bar, reserved for GCI. */
   identityBar: charter.portal.identityBar,
-  /** Charter: Institutional Counterparts, abbreviated for one-line display. Full list in `particulars`. */
+  /** Charter: Institutional Counterparts, abbreviated for one-line display. Full names in `title`. */
   counterparts: [
     { short: "PMO", full: "Prime Minister’s Office (PMO)" },
     { short: "MEA", full: "Ministry of External Affairs (MEA)" },
@@ -104,64 +113,22 @@ export const entity = {
     { short: "Jal Shakti", full: "Ministry of Jal Shakti" },
     { short: "NITI Aayog", full: "NITI Aayog" },
     { short: "TIDCO", full: "State Industrial Secretariats (TIDCO)" },
-    { short: "Diplomatic Missions", full: "Diplomatic Missions" },
-    { short: "Sovereign Wealth Underwriters", full: "Global Sovereign Wealth Underwriters" },
-    { short: "Institutional Private Equity", full: "Institutional Private Equity" },
+    { short: "Missions", full: "Diplomatic Missions" },
+    { short: "Sovereign funds", full: "Global Sovereign Wealth Underwriters" },
+    { short: "Private equity", full: "Institutional Private Equity" },
   ],
 };
 
+export const hero = site.hero;
+export const about = site.about;
+export const councilsIntro = site.councilsIntro;
+export const restoration = site.restoration;
+export const stewardships = site.stewardships;
+export const governance = site.governance;
+export const gate = site.gate;
+export const chapters = site.chapters;
+
+/** Legal texts shown word for word. */
 export const particulars = charter.particulars;
-
-export const hero = {
-  /** DRAFT headline, built from two phrases of the Founding Vision. */
-  headline: ["Upstream self-reliance.", "Collective global growth."],
-  /** Excerpt of the Founding Vision, first sentence. */
-  lede: "An India-anchored, non-governmental public-private execution platform.",
-};
-
-const [visionDefinition, visionContrast] = charter.vision.body.split(/(?<=\.) (?=Traditional)/);
-
-export const vision = {
-  title: charter.vision.title,
-  /** DRAFT headline: the three qualifiers from the Founding Vision's first sentence. */
-  headline: "India-anchored. Non-governmental. Public-private.",
-  definition: visionDefinition,
-  /** The charter's second sentence, quoted in full under the contrast. */
-  contrastSentence: visionContrast,
-  contrast: {
-    incumbent: {
-      label: "Traditional chambers of commerce",
-      lines: ["Consultative advocacy", "Tariff lobbying", "Downstream assembly"],
-    },
-    gci: {
-      label: "GCI works alongside Union Ministries, State Secretariats, and international partners",
-      lines: [
-        "Foundational capital tooling",
-        "Green construction engineering",
-        "Physical-AI and environmental analyzer networks",
-        "Multi-domain surveillance and defense resilience",
-        "Phased 24/7 clean base-load energy",
-        "New-age transportation",
-        "Green remediation chemistry",
-        "Non-debt capital structures",
-      ],
-    },
-  },
-  purposeIntro: charter.vision.purposeIntro,
-  purposes: charter.vision.purposes,
-  closing: charter.vision.closing,
-};
-
-export const councilsIntro = charter.councilsIntro;
-
-export const meta = charter.meta;
-
-/** Part III: Regenerative Planetary Restoration. */
-export const restoration = charter.restoration;
-
-/** Part IV: Institutional, Human & Ethical Stewardships. */
-export const stewardships = charter.stewardships;
-
 export const statute = charter.statute;
-
 export const portal = charter.portal;

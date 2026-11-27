@@ -85,7 +85,7 @@ export function TypeOn({
   );
 }
 
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/·—";
+const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/·";
 
 /** Label that scramble-decodes whenever its text changes. */
 export function Scramble({ text, className }: { text: string; className?: string }) {

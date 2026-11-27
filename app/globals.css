@@ -1,80 +1,230 @@
 @import "tailwindcss";
 
 @theme {
-  /* Kiran's institutional palette (website.pdf, Nov 2026). */
-  --color-obsidian: #070b14; /* Deep Obsidian Navy: page, top bar */
-  --color-carbon: #0f172a; /* Midnight Slate: cards, modals */
-  --color-graphite: #172036; /* raised panels */
-  --color-hairline: rgb(148 163 184 / 0.14);
-  --color-hairline-strong: rgb(148 163 184 / 0.28);
-  --color-titanium: #e2e8f0; /* Platinum Alabaster: headlines, body */
-  --color-titanium-dim: #a3b1c4;
-  --color-steel: #94a3b8; /* Steel Slate: sub-nav, metadata, legal */
-  --color-gold: #d4af37; /* Brushed Imperial Gold: labels, hairlines, active tabs */
-  --color-gold-bright: #e6c55c;
-  --color-amber: #f59e0b; /* Warm Amber Gold: primary CTAs, status */
-  --color-amber-bright: #fbb435;
-  --color-crimson: #d8473f;
+  /* Kiran's palette (sent 21 and 28 Nov 2026, sampled from his image): his navy blues,
+     brushed gold and platinum white. No orange, no green. Token names are kept from the light
+     build so every component follows; their meaning is now "page", "text" and so on. */
+  --color-paper: #0a101e; /* page: Deep Navy (his swatch 1) */
+  --color-ivory: #111826; /* menu, drawers */
+  --color-mist: #0d1626; /* the councils hall */
+  --color-card: #151e2f; /* cards (his council cards) */
+  --color-card-raised: #192134; /* raised panels: Midnight Navy (his swatch 2) */
+  --color-blueprint: #1e3f65; /* his blueprint blue: grids and glows */
+  --color-ink: #e0e7f1; /* text: Platinum White (his swatch 5) */
+  --color-navy: #0a101e; /* text on gold */
+  --color-navy-deep: #060a14;
+  --color-slate: #aab5c6; /* secondary text, 9:1 on the page */
+  --color-mute: #8593a8; /* labels and metadata, 5.8:1 on the page */
+  --color-steel: #5a6980; /* his swatch 6: secondary buttons, quiet lines */
+  --color-rule: rgb(224 231 241 / 0.1);
+  --color-rule-strong: rgb(224 231 241 / 0.2);
+  --color-gold: #c9a54a; /* lines, fills, the seal */
+  --color-gold-ink: #d8bc66; /* gold text (his brushed gold, light end), 9:1 */
+  --color-gold-light: #e6cc80;
+  --color-gold-deep: #b18c36; /* his brushed gold, dark end */
 
-  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+  /* Type after his mockup: Roman capitals for headlines, a condensed sans for labels and
+     buttons, the same family at normal width for reading. */
+  --font-display: var(--font-cinzel), "Trajan Pro", ui-serif, Georgia, serif;
   --font-classical: var(--font-cinzel), "Trajan Pro", ui-serif, Georgia, serif;
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: var(--font-barlow-condensed), var(--font-barlow), ui-sans-serif, sans-serif;
 
   --radius-sharp: 2px;
 }
 
-@property --beam-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
 html {
-  background: var(--color-obsidian);
+  background: var(--page, var(--color-paper));
   color-scheme: dark;
 }
 
 body {
-  background: var(--color-obsidian);
-  color: var(--color-titanium);
+  background: var(--page, var(--color-paper));
+  color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 1.0625rem;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
 }
 
+/* The faint blueprint grid behind everything, as in his mockup. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(70% 55% at 70% 40%, rgb(30 63 101 / var(--glow, 0.42)), transparent 70%),
+    linear-gradient(rgb(224 231 241 / 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(224 231 241 / 0.028) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    32px 32px,
+    32px 32px;
+}
+
 ::selection {
-  background: rgb(212 175 55 / 0.35);
+  background: rgb(201 165 74 / 0.35);
   color: #fff;
 }
 
 :focus-visible {
-  outline: 1px solid var(--color-amber);
+  outline: 1.5px solid var(--color-gold);
   outline-offset: 3px;
 }
 
-/* Mono micro-label used across the instrumentation. In the components layer so
-   colour and size utilities on the same element win. */
 @layer components {
+  /* Condensed tracked capitals for kickers, labels and metadata. */
   .label {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-family: var(--font-condensed);
+    font-size: 0.75rem;
+    font-weight: 500;
     line-height: 1.4;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-steel);
+    color: var(--color-mute);
+  }
+
+  /* Kicker with a short gold rule in front. */
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .kicker::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: var(--color-gold);
+  }
+
+  /* Display headline: Roman capitals, as in his mockup. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.12;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  /* The gold part of a headline (his hero: first line gold, the rest white). */
+  .accent {
+    color: var(--color-gold-ink);
+  }
+
+  /* Primary button: brushed gold, navy text. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0 1.125rem;
+    border-radius: var(--radius-sharp);
+    background: linear-gradient(180deg, #ddc06b, #c19b40);
+    color: var(--color-navy);
+    font-family: var(--font-condensed);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition:
+      filter 0.2s ease,
+      transform 0.2s ease;
+  }
+  .btn:hover {
+    filter: brightness(1.08);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  /* Secondary button: steel, after his mockup. */
+  .btn-steel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0 1.125rem;
+    border-radius: var(--radius-sharp);
+    background: var(--color-steel);
+    color: var(--color-ink);
+    font-family: var(--font-condensed);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    border-bottom: 1px solid var(--color-rule-strong);
+    font-family: var(--font-condensed);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold-ink);
+  }
+
+  /* Gold pill badge (his mockup's council chips, in gold instead of orange). */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    background: var(--color-gold);
+    padding: 0.15rem 0.6rem;
+    font-family: var(--font-condensed);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-navy);
   }
 }
 
-/* Fine blueprint grid with one gold rule, after the footer pattern in Kiran's mockup. */
+/* Navy card with a steel hairline, as in his mockup; gold edge when active or hovered. */
+.card {
+  background: linear-gradient(180deg, rgb(25 33 52 / 0.94), rgb(21 30 47 / 0.94));
+  border: 1px solid rgb(90 105 128 / 0.45);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 1px 0 rgb(224 231 241 / 0.05),
+    0 24px 48px -30px rgb(0 0 0 / 0.7);
+}
+.card-active,
+.card:hover {
+  border-color: rgb(201 165 74 / 0.85);
+}
+
+/* Fine engineering grid with one gold rule, his footer pattern. */
 .blueprint {
-  background-color: rgb(15 23 42 / 0.55);
   background-image:
-    linear-gradient(90deg, transparent calc(70% - 0.5px), rgb(212 175 55 / 0.35) 70%, transparent calc(70% + 0.5px)),
-    linear-gradient(rgb(148 163 184 / 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(148 163 184 / 0.07) 1px, transparent 1px);
-  background-size: 100% 100%, 24px 24px, 24px 24px;
+    linear-gradient(rgb(224 231 241 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(224 231 241 / 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.blueprint-dark {
+  background-color: var(--color-navy-deep);
+  background-image:
+    linear-gradient(90deg, transparent calc(70% - 0.5px), rgb(201 165 74 / 0.55) 70%, transparent calc(70% + 0.5px)),
+    linear-gradient(rgb(224 231 241 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(224 231 241 / 0.05) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    28px 28px,
+    28px 28px;
 }
 
 /* Only the disclosure's own summary flips its toggle, never nested ones. */
@@ -82,121 +232,43 @@ details[open] > summary .disclose-toggle::after {
   scale: 1 0;
 }
 
-.bullet::before {
-  content: "";
-  display: inline-block;
-  width: 0.4375rem;
-  height: 0.4375rem;
-  margin-right: 0.625rem;
-  background: var(--color-gold);
-  vertical-align: 0.02em;
-}
-
-/* Tinted panel with a specular hairline. No blur, so it stays cheap. */
-.panel {
-  background: linear-gradient(180deg, rgb(23 32 54 / 0.8), rgb(15 23 42 / 0.9));
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-sharp);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
-}
-
 /* Chamfered corner, as on the frame chrome. */
 .chamfer {
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
 }
 
-/* Pointer-tracked spotlight plus a travelling border beam on focus or hover. */
-.spotlight {
-  position: relative;
-  isolation: isolate;
+/* Lines of a paragraph that go from faint to full as they are read (GSAP sets --read). */
+.read-line {
+  color: color-mix(in srgb, var(--color-ink) calc(30% + 70% * var(--read, 1)), transparent);
 }
 
-.spotlight::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(
-    340px circle at var(--spot-x, 50%) var(--spot-y, 0%),
-    rgb(212 175 55 / 0.13),
-    transparent 62%
-  );
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-.spotlight:hover::before,
-.spotlight:focus-within::before {
-  opacity: 1;
-}
-
-.spotlight::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(
-    from var(--beam-angle),
-    transparent 0deg,
-    transparent 300deg,
-    rgb(230 197 92 / 0.9) 345deg,
-    transparent 360deg
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-
-.spotlight:hover::after,
-.spotlight:focus-within::after {
-  opacity: 1;
-  animation: beam 3.2s linear infinite;
-}
-
-@keyframes beam {
-  to {
-    --beam-angle: 360deg;
-  }
-}
-
-/* Leader line for labels pinned to the lattice. */
-.callout {
+/* Label pinned to a point in 3D (positioned every frame from the canvas). */
+.pin {
   position: absolute;
   left: 0;
   top: 0;
   opacity: 0;
   will-change: transform, opacity;
-  transition: opacity 0.25s linear;
 }
 
-.callout-dot {
-  position: absolute;
-  left: -3px;
-  top: -3px;
-  width: 6px;
-  height: 6px;
-  border: 1px solid var(--color-amber);
-  border-radius: 50%;
-}
-
-.callout-line {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 1px;
-  width: 56px;
-  background: linear-gradient(90deg, var(--color-amber), rgb(245 158 11 / 0.2));
-  transform-origin: 0 0;
+/* Scroll cue under the hero: a gold line that draws down and fades. */
+@keyframes cue {
+  0% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spotlight:hover::after,
-  .spotlight:focus-within::after {
-    animation: none;
+  .read-line {
+    --read: 1 !important;
   }
 }

@@ -1,12 +1,13 @@
 import type { Tier } from "./store";
 
-export const TIERS: Record<Tier, { particles: number; dpr: number; post: boolean }> = {
-  high: { particles: 60000, dpr: 1.75, post: true },
-  mid: { particles: 30000, dpr: 1.25, post: true },
-  low: { particles: 12000, dpr: 1, post: false },
+/** Pixel-ratio ceiling per tier; the canvas steps it down live if frames drop. */
+export const TIERS: Record<Tier, { dpr: number }> = {
+  high: { dpr: 1.75 },
+  mid: { dpr: 1.4 },
+  low: { dpr: 1.15 },
 };
 
-/** First guess from the device; the canvas steps it down live if frames drop. */
+/** First guess from the device. */
 export function detectTier(): Tier {
   if (typeof window === "undefined") return "high";
   const nav = navigator as Navigator & { deviceMemory?: number };

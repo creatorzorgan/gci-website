@@ -205,7 +205,7 @@ export const councils = [
           },
           {
             "name": "Japan-Grade Segregated Urban Sewage, Tertiary River-Drainage & Aquifer-Well Recharge Grids",
-            "body": "Physically separated stormwater and municipal sewage networks—modeled on Japanese urban hydrological standards—combining decentralized Membrane Bioreactor (MBR), ozone, and UV tertiary plants with underground flood-attenuation caverns so only crystal-clear, aquatic-life-grade water enters rivers while filtered rainwater replenishes urban recharge wells.",
+            "body": "Physically separated stormwater and municipal sewage networks, modeled on Japanese urban hydrological standards, combining decentralized Membrane Bioreactor (MBR), ozone, and UV tertiary plants with underground flood-attenuation caverns so only crystal-clear, aquatic-life-grade water enters rivers while filtered rainwater replenishes urban recharge wells.",
             "n": 22
           },
           {
@@ -458,7 +458,7 @@ export const councils = [
           },
           {
             "name": "Bio-Mineralizing Living Seawalls & Coastal Reef Restoration",
-            "body": "Low-voltage mineral accretion grids growing self-repairing limestone breakwaters directly from dissolved seawater minerals—protecting coastal cities and ports with living marine habitats.",
+            "body": "Low-voltage mineral accretion grids growing self-repairing limestone breakwaters directly from dissolved seawater minerals, protecting coastal cities and ports with living marine habitats.",
             "n": 60
           },
           {
@@ -528,7 +528,7 @@ export const councils = [
         "initiatives": [
           {
             "name": "Walk-Away-Safe Thorium & Molten-Salt Modular Reactors (Immediate Coal-Exit Bridge)",
-            "body": "Atmospheric-pressure liquid-fuel reactors utilizing India’s abundant thorium reserves with passive gravity freeze-plugs—physically incapable of core meltdown—deployed immediately to retire coal power and supply 24/7 zero-carbon industrial heat, explicitly engineered with standardized thermal-grid interfaces to pivot cleanly to post-fission systems as they scale.",
+            "body": "Atmospheric-pressure liquid-fuel reactors utilizing India’s abundant thorium reserves with passive gravity freeze-plugs (physically incapable of core meltdown), deployed immediately to retire coal power and supply 24/7 zero-carbon industrial heat, explicitly engineered with standardized thermal-grid interfaces to pivot cleanly to post-fission systems as they scale.",
             "n": 69
           },
           {
@@ -589,7 +589,7 @@ export const councils = [
         "initiatives": [
           {
             "name": "Molten-Salt Reactor-Powered Deep-Ocean Cargo Vessels",
-            "body": "Compact, passively safe marine modular reactors powering ultra-large container ships and bulk carriers for 20+ years without refueling—immediately eliminating heavy bunker-fuel emissions and oil-shock exposure, built with modular propulsion bays ready to pivot to future zero-radiation drives.",
+            "body": "Compact, passively safe marine modular reactors powering ultra-large container ships and bulk carriers for 20+ years without refueling, immediately eliminating heavy bunker-fuel emissions and oil-shock exposure, built with modular propulsion bays ready to pivot to future zero-radiation drives.",
             "n": 80
           },
           {
@@ -614,7 +614,7 @@ export const councils = [
           },
           {
             "name": "Structural Solid-State & Sodium-Ion Vehicle Chassis",
-            "body": "Non-flammable, lithium-free structural battery panels engineered as the load-bearing frame of electric trucks, buses, and passenger vehicles—eliminating thermal-runaway fires and foreign lithium chokepoints.",
+            "body": "Non-flammable, lithium-free structural battery panels engineered as the load-bearing frame of electric trucks, buses, and passenger vehicles, eliminating thermal-runaway fires and foreign lithium chokepoints.",
             "n": 85
           },
           {
@@ -726,7 +726,7 @@ export const councils = [
 export const restoration = {
   "title": "Regenerative Planetary Restoration, Environmental Analyzer Architecture & Check-and-Choke Points",
   "subtitle": "Hard Engineering Law for Reversing Ecological Aging Through Industrial Development",
-  "preface": "GCI does not issue symbolic sustainability pledges. Fulfilling Article 51A(g) of the Constitution of India alongside India’s Net-Zero 2070 (Panchamrit) commitments, the Carbon Credit Trading Scheme (CCTS) under the Energy Conservation Act, Paris Agreement Article 6, and SEBI’s BRSR Core framework, GCI treats Earth’s health as a hard engineering and balance-sheet specification. Every industrial corridor, utility hub, and pilot chartered under GCI must leave its local airshed, rivers, aquifers, topsoil, and marine commons measurably healthier than before development began—audited by physical sensors and enforced by automated financial choke points.",
+  "preface": "GCI does not issue symbolic sustainability pledges. Fulfilling Article 51A(g) of the Constitution of India alongside India’s Net-Zero 2070 (Panchamrit) commitments, the Carbon Credit Trading Scheme (CCTS) under the Energy Conservation Act, Paris Agreement Article 6, and SEBI’s BRSR Core framework, GCI treats Earth’s health as a hard engineering and balance-sheet specification. Every industrial corridor, utility hub, and pilot chartered under GCI must leave its local airshed, rivers, aquifers, topsoil, and marine commons measurably healthier than before development began, audited by physical sensors and enforced by automated financial choke points.",
   "analyzers": {
     "n": "1",
     "title": "Mandatory Physical Environmental Analyzer Stack (Zero Self-Reporting)",
@@ -776,17 +776,17 @@ export const restoration = {
       {
         "code": "A",
         "title": "Japan-Grade Urban Hydrology & Water-Positive Mandate",
-        "body": "All chartered urban and industrial corridors enforce Initiative #22: physically segregated stormwater and sewage networks, automated tertiary MBR/ozone/UV and supercritical treatment (#24) before any discharge enters a river, and filtered stormwater routing into urban aquifer-recharge wells—operating toward a verified Water-Positive Mandate."
+        "body": "All chartered urban and industrial corridors enforce Initiative #22: physically segregated stormwater and sewage networks, automated tertiary MBR/ozone/UV and supercritical treatment (#24) before any discharge enters a river, and filtered stormwater routing into urban aquifer-recharge wells, operating toward a verified Water-Positive Mandate."
       },
       {
         "code": "B",
         "title": "Two-Horizon Clean-Energy Exit (Replace Coal Now, Pivot Next)",
-        "body": "Retiring coal today requires reliable 24/7 base-load power immediately. GCI deploys passively safe thorium/molten-salt modular reactors (#69), reactor-powered cargo vessels (#80), and sCO₂ waste-heat turbines (#75) immediately to exit coal and bunker fuel—while binding every corridor charter to standardized thermal-grid and propulsion interfaces engineered to pivot cleanly to aneutronic fusion (#70) and 15 km deep geothermal (#71) as post-fission systems mature."
+        "body": "Retiring coal today requires reliable 24/7 base-load power immediately. GCI deploys passively safe thorium/molten-salt modular reactors (#69), reactor-powered cargo vessels (#80), and sCO₂ waste-heat turbines (#75) immediately to exit coal and bunker fuel, while binding every corridor charter to standardized thermal-grid and propulsion interfaces engineered to pivot cleanly to aneutronic fusion (#70) and 15 km deep geothermal (#71) as post-fission systems mature."
       },
       {
         "code": "C",
         "title": "True-Cost Pricing, Net-Negative Construction & Legacy MSME Transition",
-        "body": "Aquifer recharge, carbon-mineralized aggregates (#13), radiative cooling envelopes (#7), and end-of-life material recovery (#20, #87) are priced directly into project unit economics prior to capital syndication. Existing Indian MSMEs (steel, cement, textiles, tanneries, chemicals) receive subsidized access to domestic flue scrubbers, green remediation chemistry, and ZLD hardware—turning SEBI BRSR Core, India’s CCTS, and EU CBAM resilience into a global export advantage (#24, #97)."
+        "body": "Aquifer recharge, carbon-mineralized aggregates (#13), radiative cooling envelopes (#7), and end-of-life material recovery (#20, #87) are priced directly into project unit economics prior to capital syndication. Existing Indian MSMEs (steel, cement, textiles, tanneries, chemicals) receive subsidized access to domestic flue scrubbers, green remediation chemistry, and ZLD hardware, turning SEBI BRSR Core, India’s CCTS, and EU CBAM resilience into a global export advantage (#24, #97)."
       }
     ]
   },
@@ -848,7 +848,7 @@ export const stewardships = {
     {
       "n": "1",
       "title": "Human Capital, Automation-Transition & MSME Payment Stewardship",
-      "body": "Reconfigurable swarm factories, site robotics, and physical AI must elevate—not discard—the workforce. Every automated facility or robotic construction corridor chartered under GCI allocates a fixed statutory share of productivity gains into an accredited Workforce Reskilling Escrow for floor workers. Heavy-industry and civil sites must deploy wearable heat-stress, toxic-gas, and structural-proximity telemetry that automatically halts hazardous operations during lethal heatwaves or leaks. Simultaneously, Smart-Contract Fiscal Ledgers enforce automated 15-day milestone payouts to Tier-2 and Tier-3 MSME subcontractors, eliminating the working-capital squeeze on small domestic suppliers."
+      "body": "Reconfigurable swarm factories, site robotics, and physical AI must elevate, not discard, the workforce. Every automated facility or robotic construction corridor chartered under GCI allocates a fixed statutory share of productivity gains into an accredited Workforce Reskilling Escrow for floor workers. Heavy-industry and civil sites must deploy wearable heat-stress, toxic-gas, and structural-proximity telemetry that automatically halts hazardous operations during lethal heatwaves or leaks. Simultaneously, Smart-Contract Fiscal Ledgers enforce automated 15-day milestone payouts to Tier-2 and Tier-3 MSME subcontractors, eliminating the working-capital squeeze on small domestic suppliers."
     },
     {
       "n": "2",
@@ -858,12 +858,12 @@ export const stewardships = {
     {
       "n": "3",
       "title": "Algorithmic, Surveillance & Constitutional Privacy Stewardship",
-      "body": "Every civilian, port-security, or disaster-rescue deployment of non-line-of-sight (NLOS) imaging, RF tomography, hyperspectral swarms, or genomic surveillance (#46–#49, #61) operates under Dual-Key Statutory Authorization with cryptographic audit logs—physically preventing unauthorized mass citizen profiling. All formally verified deterministic autonomy kernels (#34) governing heavy freight, grids, and industrial actuators must retain hard-wired human-in-the-loop manual override switches that no AI model can lock out."
+      "body": "Every civilian, port-security, or disaster-rescue deployment of non-line-of-sight (NLOS) imaging, RF tomography, hyperspectral swarms, or genomic surveillance (#46–#49, #61) operates under Dual-Key Statutory Authorization with cryptographic audit logs, physically preventing unauthorized mass citizen profiling. All formally verified deterministic autonomy kernels (#34) governing heavy freight, grids, and industrial actuators must retain hard-wired human-in-the-loop manual override switches that no AI model can lock out."
     },
     {
       "n": "4",
       "title": "Orbital & Deep-Ocean Commons Stewardship",
-      "body": "Every orbital foundry capsule or VLEO satellite constellation chartered under GCI must post a verified Zero-Debris Orbital Bond ensuring passive atmospheric burn-up or active servicing removal (#52, #53) to prevent Kessler Syndrome. Across India’s 2.3 million sq. km EEZ, deep-ocean polymetallic nodule harvesters (#95) operate under independent marine-biologist baselines and real-time seabed turbidity sensors—triggering an automatic extraction hard-stop if sediment plumes threaten benthic biodiversity under UNCLOS and International Seabed Authority (ISA) standards."
+      "body": "Every orbital foundry capsule or VLEO satellite constellation chartered under GCI must post a verified Zero-Debris Orbital Bond ensuring passive atmospheric burn-up or active servicing removal (#52, #53) to prevent Kessler Syndrome. Across India’s 2.3 million sq. km EEZ, deep-ocean polymetallic nodule harvesters (#95) operate under independent marine-biologist baselines and real-time seabed turbidity sensors, triggering an automatic extraction hard-stop if sediment plumes threaten benthic biodiversity under UNCLOS and International Seabed Authority (ISA) standards."
     },
     {
       "n": "5",
@@ -878,7 +878,7 @@ export const stewardships = {
     {
       "n": "7",
       "title": "Biodiversity, Sensory-Pollution & Intergenerational Custodianship (Silicon Seedling Initiative)",
-      "body": "No transport corridor, geothermal pad, coastal energy station, or industrial park receives GCI charter approval without mapped wildlife overpasses/underpasses, zero-encroachment ecological buffers, native-flora restoration, and hard caps on decibel, thermal, and dark-sky light pollution (utilizing Council I acoustic metasurfaces, #8). Permanently anchoring generational sovereignty, a fixed statutory share of all council licensing surpluses is reinvested into regional open-access micro-foundries across India under the Silicon Seedling Initiative—training young Indian scientists in regenerative engineering while keeping domestically incubated IP under Indian ownership."
+      "body": "No transport corridor, geothermal pad, coastal energy station, or industrial park receives GCI charter approval without mapped wildlife overpasses/underpasses, zero-encroachment ecological buffers, native-flora restoration, and hard caps on decibel, thermal, and dark-sky light pollution (utilizing Council I acoustic metasurfaces, #8). Permanently anchoring generational sovereignty, a fixed statutory share of all council licensing surpluses is reinvested into regional open-access micro-foundries across India under the Silicon Seedling Initiative, training young Indian scientists in regenerative engineering while keeping domestically incubated IP under Indian ownership."
     }
   ]
 } as const;
@@ -1003,7 +1003,7 @@ export const statute = {
         {
           "n": "6.1",
           "title": "Structural Plagiarism & Moral Rights",
-          "body": "The taxonomy of GCI’s Six Governing Councils, one hundred core technological and infrastructural initiatives, environmental analyzer and check-and-choke point architectures, institutional stewardships, and policy briefing frameworks constitute protected original works and proprietary databases under Sections 13 and 14 of the Copyright Act, 1957. Any attempt by external corporate actors, consultancies, design agencies, or web development contractors to plagiarize, mirror, paraphrase, or substantially reproduce these structural frameworks—whether in whole, in part, or in disguised derivative form—constitutes actionable copyright infringement under Section 51 of the Copyright Act, 1957 and a violation of GCI’s special moral rights of paternity and integrity codified under Section 57 of the Copyright Act, 1957."
+          "body": "The taxonomy of GCI’s Six Governing Councils, one hundred core technological and infrastructural initiatives, environmental analyzer and check-and-choke point architectures, institutional stewardships, and policy briefing frameworks constitute protected original works and proprietary databases under Sections 13 and 14 of the Copyright Act, 1957. Any attempt by external corporate actors, consultancies, design agencies, or web development contractors to plagiarize, mirror, paraphrase, or substantially reproduce these structural frameworks, whether in whole, in part, or in disguised derivative form, constitutes actionable copyright infringement under Section 51 of the Copyright Act, 1957 and a violation of GCI’s special moral rights of paternity and integrity codified under Section 57 of the Copyright Act, 1957."
         },
         {
           "n": "6.2",

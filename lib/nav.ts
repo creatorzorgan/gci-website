@@ -1,66 +1,46 @@
-import { councils } from "@/content/briefing";
-import {
-  COUNCILS_INTRO_FRAC,
-  PINNED_COUNCILS_MIN_W,
-  councilProgress,
-  frame,
-  pageTop,
-  sectionY,
-} from "./store";
+import { chapters } from "@/content/briefing";
+import { COUNCILS_INTRO_FRAC, councilProgress, frame, pageTop, sectionY } from "./store";
 
 /** Header and frame height to keep clear when landing on an element. */
-const OFFSET = 96;
+const OFFSET = 88;
 
 /** Chapters of the briefing, in page order. `id` matches frame.ranges. */
-export const CHAPTERS = [
-  { id: "hero", n: "01", label: "Apex node" },
-  { id: "thesis", n: "02", label: "Founding vision" },
-  { id: "councils", n: "03", label: "Governing councils" },
-  { id: "restoration", n: "04", label: "Planetary restoration" },
-  { id: "stewardships", n: "05", label: "Stewardships" },
-  { id: "legal", n: "06", label: "Statutory governance" },
-] as const;
+export const CHAPTERS = chapters;
 
 export type ChapterId = (typeof CHAPTERS)[number]["id"];
 
 /** Short names for the six statute sections (menu only; the page shows the charter titles). */
 export const STATUTE_SHORT = [
-  "Corporate constitution",
+  "Constitution",
   "Ring-fenced capital",
-  "Diplomatic comity & treaties",
+  "Diplomacy and treaties",
   "Intellectual property",
-  "Sovereign immunity & disputes",
-  "Anti-plagiarism & control",
+  "Immunity and disputes",
+  "Anti-plagiarism",
 ];
 
-/** Scroll target for a chapter's hold point, in whichever layout is showing. */
+/** Scroll target for a chapter's hold point. */
 export function chapterY(id: ChapterId) {
   const r = frame.ranges;
-  const vh = frame.vh;
   switch (id) {
     case "hero":
       return 0;
     case "thesis":
-      return sectionY("thesis", 0.17);
+      return sectionY("thesis", 0.12);
     case "councils":
-      if (frame.vw >= PINNED_COUNCILS_MIN_W) return sectionY("councils", COUNCILS_INTRO_FRAC * 0.4);
-      return (r.councils?.top ?? 0) + 40;
+      return sectionY("councils", COUNCILS_INTRO_FRAC * 0.45);
     case "restoration":
-      return (r.restoration?.top ?? 0) + vh * 0.3 - OFFSET;
+      return (r.restoration?.top ?? 0) - OFFSET + frame.vh * 0.2;
     case "stewardships":
-      return r.stewardships?.top ?? 0;
+      return (r.stewardships?.top ?? 0) - OFFSET + frame.vh * 0.1;
     case "legal":
-      return (r.legal?.top ?? 0) + vh * 0.3;
+      return (r.legal?.top ?? 0) - OFFSET + frame.vh * 0.2;
   }
 }
 
-/** Scroll target for council `k`; in the stacked layout its card is opened first. */
+/** Scroll target for council `k`. */
 export function councilY(k: number) {
-  if (frame.vw >= PINNED_COUNCILS_MIN_W) return sectionY("councils", councilProgress(k));
-  const el = document.getElementById(`council-${councils[k].key}`);
-  if (el instanceof HTMLDetailsElement) el.open = true;
-  const top = pageTop(`council-${councils[k].key}`);
-  return top === null ? chapterY("councils") : top - OFFSET;
+  return sectionY("councils", councilProgress(k));
 }
 
 /** Scroll target for statute section `n` (1..6), opened first. */

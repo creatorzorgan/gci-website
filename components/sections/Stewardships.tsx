@@ -1,72 +1,71 @@
 "use client";
 
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useState } from "react";
 import { stewardships } from "@/content/briefing";
-import { useSectionRange } from "@/lib/hooks";
-import { Expandable } from "../ui/Disclose";
-import { Reveal, spot } from "./Restoration";
+import { useMark, useSectionRange } from "@/lib/hooks";
 
 /**
- * Part IV of the charter: Institutional, Human & Ethical Stewardships. Seven binding
- * covenants, read in a two-column grid; the Silicon Seedling Initiative closes it in gold.
+ * Part IV, the seven stewardships. Pinned: the colonnade builds one column per promise as
+ * it is read; the seventh, the Silicon Seedling Initiative, grows as a crystal tree.
  */
 export default function Stewardships() {
   const ref = useSectionRange<HTMLElement>("stewardships");
+  const stageRef = useMark<HTMLDivElement>("steward");
+  const { items } = stewardships;
+  const { scrollYProgress } = useScroll({ target: stageRef, offset: ["start start", "end end"] });
+  const [i, setI] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    const next = Math.max(0, Math.min(items.length - 1, Math.floor(v * (items.length + 0.6) - 0.15)));
+    if (next !== i) setI(next);
+  });
+  const item = items[i];
 
   return (
-    <section
-      ref={ref}
-      id="stewardships"
-      aria-label={stewardships.title}
-      className="relative bg-[rgb(7_11_20/0.7)] px-6 pt-24 pb-28 sm:px-10 lg:px-16"
-    >
-      <div className="mx-auto max-w-[78rem]">
-        <Reveal className="max-w-[54rem]">
-          <p className="label bullet text-titanium-dim">05 / Stewardships</p>
-          <h2 className="mt-5 font-classical font-medium uppercase text-[clamp(1.35rem,2.6vw,2.4rem)] leading-[1.14] tracking-[0.02em] text-titanium">
-            Institutional, Human <span className="text-gold">&amp;</span> Ethical Stewardships
-          </h2>
-          <p className="mt-6 border-l border-gold/60 pl-4 font-display text-[clamp(1.1rem,1.6vw,1.35rem)] leading-[1.32] font-light text-titanium italic">
-            {stewardships.subtitle}
-          </p>
-          <p className="mt-6 max-w-[46rem] text-[0.9375rem] leading-relaxed text-titanium-dim sm:text-[1rem]">
-            {stewardships.preface}
-          </p>
-        </Reveal>
+    <section ref={ref} id="stewardships" aria-label={stewardships.headline} className="relative">
+      <div ref={stageRef} className="relative" style={{ height: `${items.length * 58 + 100}vh` }}>
+        <div className="sticky top-0 flex h-[100svh] flex-col px-6 pt-20 pb-20 sm:px-10 lg:px-16 lg:pt-24">
+          <div className="max-w-[44rem]">
+            <p className="label kicker text-gold-ink">{stewardships.kicker}</p>
+            <h2 className="display mt-4 text-[clamp(1.5rem,3vw,2.7rem)]">{stewardships.headline}</h2>
+            <p className="mt-2 text-[0.9375rem] text-slate">{stewardships.lede}</p>
+          </div>
 
-        <ol className="mt-12 grid gap-3 lg:grid-cols-2">
-          {stewardships.items.map((s, i) => {
-            const seedling = s.title.includes("Silicon Seedling");
-            return (
-              <li key={s.n} className={seedling ? "lg:col-span-2" : ""}>
-                <Reveal delay={(i % 2) * 0.08} className="h-full">
-                  <article
-                    onPointerMove={spot}
-                    className={`panel spotlight h-full p-5 xl:p-7 ${seedling ? "border-gold/50!" : ""}`}
-                  >
-                    <Expandable
-                      summary={
-                        <>
-                          <span className="label text-gold">Stewardship 0{s.n}</span>
-                          <h3 className="mt-2.5 font-display text-[1.2rem] leading-[1.2] font-light text-titanium xl:text-[1.4rem]">
-                            {s.title}
-                          </h3>
-                        </>
-                      }
-                    >
-                      <p
-                        className={`mt-3 text-[0.875rem] leading-relaxed text-titanium-dim xl:text-[0.9375rem] ${
-                          seedling ? "lg:max-w-[60rem]" : ""
-                        }`}
-                      >
-                        {s.body}
-                      </p>
-                    </Expandable>
-                  </article>
-                </Reveal>
-              </li>
-            );
-          })}
-        </ol>
+          <div id="stage-colonnade" className="relative min-h-0 flex-1" aria-hidden />
+
+          <div className="grid gap-5 lg:grid-cols-[auto_1fr] lg:items-end lg:gap-12">
+            <ol aria-label={stewardships.headline} className="flex flex-wrap gap-1.5">
+              {items.map((s, j) => (
+                <li
+                  key={s.n}
+                  aria-current={j === i ? "step" : undefined}
+                  className={`flex h-7 min-w-7 items-center justify-center rounded-full border px-2 text-[0.75rem] tabular-nums transition-colors ${
+                    j <= i ? "border-gold bg-gold text-paper" : "border-rule-strong text-mute"
+                  }`}
+                >
+                  {s.n}
+                </li>
+              ))}
+            </ol>
+            <div className="min-h-[8.5rem] sm:min-h-[6.5rem]">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={item.n}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
+                  className="grid gap-x-10 gap-y-2 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.6fr)] md:items-baseline"
+                >
+                  <p className="display text-[clamp(1.25rem,2.1vw,1.9rem)]">
+                    {item.n === 7 ? <span className="accent">{item.name}</span> : item.name}
+                  </p>
+                  <p className="max-w-[40rem] text-[1rem] leading-relaxed text-slate sm:text-[1.0625rem]">{item.line}</p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

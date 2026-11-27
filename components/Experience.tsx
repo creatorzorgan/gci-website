@@ -13,15 +13,17 @@ import Legal from "./sections/Legal";
 import Restoration from "./sections/Restoration";
 import Stewardships from "./sections/Stewardships";
 import Thesis from "./sections/Thesis";
-import Callouts, { GalaxyLabels } from "./ui/Callouts";
+import { GalaxyLabels } from "./ui/Callouts";
 import Chrome from "./ui/Chrome";
 import IndexDrawer from "./ui/IndexDrawer";
+import { BackgroundJourney, Ribbon } from "./ui/Journey";
 import Sidebar from "./ui/Sidebar";
+import TextMotion from "./ui/TextMotion";
 
-// The WebGL chunk loads in the browser only, while the clearance gate is on screen.
+// The WebGL chunk loads in the browser only, while the access gate is on screen.
 const Scene = dynamic(() => import("./canvas/Scene"), { ssr: false });
 
-/** If WebGL cannot start, the page still reads: a static backdrop replaces the canvas. */
+/** If WebGL cannot start, the page still reads: the stages simply stay empty. */
 class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
 
@@ -34,17 +36,7 @@ class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolea
   }
 
   render() {
-    if (this.state.failed) {
-      return (
-        <div
-          className="h-full w-full"
-          style={{
-            background:
-              "radial-gradient(60% 50% at 50% 45%, rgb(212 175 55 / 0.10), transparent 70%), #070B14",
-          }}
-        />
-      );
-    }
+    if (this.state.failed) return null;
     return this.props.children;
   }
 }
@@ -66,6 +58,8 @@ export default function Experience() {
     const onPointer = (e: PointerEvent) => {
       frame.pointerX = (e.clientX / window.innerWidth) * 2 - 1;
       frame.pointerY = (e.clientY / window.innerHeight) * 2 - 1;
+      frame.clientX = e.clientX;
+      frame.clientY = e.clientY;
     };
     window.addEventListener("pointermove", onPointer, { passive: true });
 
@@ -78,7 +72,10 @@ export default function Experience() {
   return (
     <MotionConfig reducedMotion="user">
       <SmoothScroll>
+        <BackgroundJourney />
+        {/* The canvas, and the full-screen box the shared 3D world renders into. */}
         <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
+          <div id="stage-world" className="absolute inset-0" />
           <CanvasBoundary>
             <Scene />
           </CanvasBoundary>
@@ -86,10 +83,10 @@ export default function Experience() {
 
         <Gate />
         <Chrome />
-        <Callouts />
         <GalaxyLabels />
 
         <main className="relative z-10">
+          <Ribbon />
           <Hero />
           <Thesis />
           <Councils />
@@ -100,6 +97,7 @@ export default function Experience() {
 
         <IndexDrawer />
         <Sidebar />
+        <TextMotion />
       </SmoothScroll>
     </MotionConfig>
   );

@@ -1,6 +1,6 @@
 import {
   COUNCIL_COUNT,
-  COUNCIL_MORPH_VH,
+  COUNCIL_TURN_VH,
   COUNCILS_INTRO_FRAC,
   COUNCILS_PIN_VH,
   clamp01,
@@ -11,34 +11,42 @@ import {
 } from "./store";
 
 /**
- * What the particle lattice should be doing at the current scroll position.
- * Shapes: 0 galaxy, 1..6 councils, 7 closed loop.
+ * What the shared 3D world (medallion, galaxy, rotunda) should be doing at the current
+ * scroll position. Shapes: 0 galaxy, 1..6 councils, 7 closed loop.
  */
 export type Directive = {
   from: number;
   to: number;
   mix: number;
-  /** The galaxy splits into six drifting sectors (thesis "fragmented silos"). */
+  /** The galaxy splits into six drifting sectors (the old model's silos). */
   fracture: number;
-  /** Flattens to a horizon line (legal footer). */
-  collapse: number;
-  /** Radial zoom-blur between major sections. */
+  /** Radial rush between major sections. */
   warp: number;
-  /** Brief horizontal tearing (councils to restoration). */
-  glitch: number;
   bright: number;
   scale: number;
-  /** Circulation speed (closed loop). */
-  flow: number;
   /** Where the form sits, in scene units. Zero is the centre of the screen. */
   offsetX: number;
   offsetY: number;
-  /** Camera elevation over the form, in radians (tilt of the disc toward the viewer). */
+  /** Camera elevation over the form, in radians. */
   tilt: number;
-  /** Eclipse ring at the galaxy core, 0..1. */
+  /** Gold ring at the galaxy core, 0..1. */
   ring: number;
-  /** Labels pinned to the galaxy in the hero, 0..1. */
+  /** Labels pinned to the galaxy, 0..1. */
   labels: number;
+  /** Blueprint (0, thin dark-blue dots) to built (1, full ink and gold). */
+  ink: number;
+  /** Hero medallion: presence 0..1 and how far it has turned edge-on 0..1. */
+  medal: number;
+  medalTurn: number;
+  /** Councils hall: presence 0..1, rotation in alcoves (0..5, fractional mid-turn). */
+  hall: number;
+  turn: number;
+  /** Build progress of each alcove, 0 (drawing) .. 1 (marble and gold). */
+  builds: number[];
+  /** The 100-point constellation over the hall, 0..1. */
+  stars: number;
+  /** Phones: how far the hall and form are raised above the text, in scene units. */
+  lift: number;
 };
 
 export function createDirective(): Directive {
@@ -47,31 +55,32 @@ export function createDirective(): Directive {
     to: 0,
     mix: 0,
     fracture: 0,
-    collapse: 0,
     warp: 0,
-    glitch: 0,
     bright: 1,
     scale: 1,
-    flow: 0,
     offsetX: 0,
     offsetY: 0,
     tilt: 0.3,
     ring: 0,
     labels: 0,
+    ink: 1,
+    medal: 0,
+    medalTurn: 0,
+    hall: 0,
+    turn: 0,
+    builds: Array.from({ length: COUNCIL_COUNT }, () => 0),
+    stars: 0,
+    lift: 0,
   };
 }
 
-/**
- * Zoom-blur across a section boundary. It builds while the outgoing section's
- * pinned stage scrolls away and has resolved shortly after the next one pins.
- */
 function boundaryWarp(y: number, top: number, vh: number) {
   const q = (y - top) / vh;
   return smoothstep(-0.9, -0.5, q) * (1 - smoothstep(-0.3, 0.12, q));
 }
 
-const WARP = 0.9;
-const COUNCIL_SCALE = 0.64;
+const WARP = 0.75;
+export const COUNCIL_SCALE = 0.56;
 
 export function computeDirective(d: Directive) {
   const y = frame.y;
@@ -82,106 +91,110 @@ export function computeDirective(d: Directive) {
   d.to = 0;
   d.mix = 0;
   d.fracture = 0;
-  d.collapse = 0;
   d.warp = 0;
-  d.glitch = 0;
   d.bright = 1;
   d.scale = 1;
-  d.flow = 0;
   d.offsetX = 0;
   d.offsetY = 0;
   d.tilt = 0.3;
   d.ring = 0;
   d.labels = 0;
+  d.ink = 1;
+  d.medal = 0;
+  d.medalTurn = 0;
+  d.hall = 0;
+  d.turn = 0;
+  d.stars = 0;
+  d.lift = 0;
+  for (let k = 0; k < d.builds.length; k++) d.builds[k] = 0;
+  const narrow = frame.vw < 1024;
 
-  if (!r.hero || !r.thesis || !r.councils || !r.restoration || !r.legal) return;
+  if (!r.hero || !r.thesis || !r.councils || !r.restoration) return;
 
   if (y < r.thesis.top) {
-    // Hero: the galaxy sits to the right of the headline. Scrolling pushes the camera
-    // in and up over the disc until the spiral opens out, then the warp carries on.
+    // Hero: the gold medallion leads; the galaxy is a faint engraving behind it. Scrolling
+    // turns the medallion edge-on and it sinks into the galaxy's core as the arms open.
     const h = sectionProgress("hero");
-    const push = smoothstep(0.1, 1, h);
-    d.scale = 1.05 + push * 0.5;
-    d.offsetX = 1.5 - push * 0.8;
-    d.offsetY = 0.6 - push * 0.6;
-    // Near edge-on at first, like a diagram; the camera rises to reveal the six arms.
-    d.tilt = 0.2 + push * 0.62;
-    d.ring = 0.3 * (1 - push * 0.6);
-    d.labels = 1 - smoothstep(0.08, 0.3, h);
+    const push = smoothstep(0.15, 1, h);
+    d.medal = 1 - smoothstep(0.55, 0.95, h);
+    d.medalTurn = smoothstep(0.1, 0.8, h);
+    d.scale = 1.1 + push * 0.4;
+    d.offsetX = 1.45 - push * 0.6;
+    d.offsetY = 0.15 - push * 0.15;
+    d.tilt = 0.24 + push * 0.56;
+    d.bright = 0.42 + 0.58 * push;
+    d.ring = 0.6 * push;
+    d.labels = smoothstep(0.62, 0.8, h) * (1 - smoothstep(0.92, 1, h));
   } else if (y < r.councils.top) {
     const t = sectionProgress("thesis");
-    // Definition: galaxy to the right. Contrast: centred, splitting into six silos.
-    // Outcomes: back to the right, dimmed, with the core ring lit.
-    const centre = smoothstep(0.24, 0.36, t) * (1 - smoothstep(0.62, 0.72, t));
-    d.offsetX = 1.6 * (1 - centre);
-    d.fracture = smoothstep(0.3, 0.42, t) * (1 - smoothstep(0.54, 0.66, t));
-    const dimA = 1 - smoothstep(0.24, 0.34, t);
-    const dimC = smoothstep(0.64, 0.74, t);
-    d.bright = 1 - 0.3 * dimA - 0.55 * dimC;
-    d.scale = 1.15 - 0.25 * d.fracture;
+    // Statement: galaxy to the right. Contrast: centred, split into six silos.
+    // Three jobs: back together, to the right, quieter.
+    // The galaxy keeps to the right of the text and steps back behind the three jobs.
+    const centre = smoothstep(0.3, 0.42, t) * (1 - smoothstep(0.64, 0.74, t));
+    d.offsetX = 1.95 * (1 - centre);
+    d.fracture = smoothstep(0.36, 0.46, t) * (1 - smoothstep(0.58, 0.68, t));
+    d.bright = 1 - 0.72 * smoothstep(0.66, 0.74, t);
+    d.scale = 0.92 - 0.12 * d.fracture;
     d.tilt = 0.5 + 0.25 * d.fracture;
-    d.ring = 0.35 * (1 - d.fracture) + 0.65 * smoothstep(0.66, 0.76, t);
+    d.ring = 0.45 * (1 - d.fracture);
   } else if (y < r.restoration.top) {
     const c = sectionProgress("councils");
-    // Sized to sit inside the centre column, between the council title and its programmes.
     d.scale = COUNCIL_SCALE;
+    // Phones: low in the intro (the headline is above), high in the holds (the text is below).
+    const raise = 0.85 + (frame.vh < 720 ? 0.22 : 0);
+    const settle = smoothstep(COUNCILS_INTRO_FRAC * 0.7, COUNCILS_INTRO_FRAC, c);
+    d.lift = narrow ? 0.1 + raise * settle : -0.55 * (1 - settle);
+    d.hall = smoothstep(0, COUNCILS_INTRO_FRAC * 0.35, c) * (1 - smoothstep(0.985, 1, c));
+    // The last form leaves with the hall, so nothing lingers over the next chapter.
+    d.bright *= 1 - smoothstep(0.975, 1, c);
     if (c < COUNCILS_INTRO_FRAC) {
-      // The camera dives into one arm of the galaxy and it resolves into Council I.
+      // Intro: the hall is drawn as a blueprint with the hundred initiatives circling above
+      // it. Then the galaxy dives into the first alcove and resolves into Council I.
+      const q = c / COUNCILS_INTRO_FRAC;
+      d.stars = smoothstep(0.08, 0.3, q) * (1 - smoothstep(0.62, 0.8, q));
       d.from = 0;
       d.to = 1;
-      d.mix = smoothstep(0.55, 1, c / COUNCILS_INTRO_FRAC);
-      const dive = Math.sin(Math.PI * d.mix);
-      d.offsetX = 1.6 * (1 - d.mix);
-      d.scale = (0.95 + (COUNCIL_SCALE - 0.95) * d.mix) * (1 + 0.9 * dive);
+      d.mix = smoothstep(0.6, 1, q);
+      d.offsetX = 1.4 * (1 - smoothstep(0.1, 0.6, q));
+      d.offsetY = 0.9 * smoothstep(0.1, 0.5, q) * (1 - d.mix);
+      d.scale = 0.95 + (COUNCIL_SCALE - 0.95) * d.mix;
+      d.bright = 0.55 + 0.45 * d.mix;
       d.tilt = 0.5 - 0.2 * d.mix;
-      d.ring = 0.3 * (1 - d.mix);
+      d.ink = 0.15 + 0.85 * smoothstep(0.85, 1, q);
+      d.builds[0] = smoothstep(0.82, 1, q) * 0.35;
     } else {
-      // Councils span different numbers of divisions; the form holds through all of a
-      // council's divisions and morphs to the next council over its last few viewports.
+      // One hold per council. The front alcove builds from drawing to marble while its form
+      // inks in; at the end of the hold the hall turns to the next alcove and the form morphs.
       let k = 0;
       while (k < COUNCIL_COUNT - 1 && c >= councilSpan(k + 1).start) k++;
       const span = councilSpan(k);
       const localVh = (c - span.start) * COUNCILS_PIN_VH;
       const lengthVh = span.length * COUNCILS_PIN_VH;
+      const turning = k < COUNCIL_COUNT - 1 ? smoothstep(lengthVh - COUNCIL_TURN_VH, lengthVh, localVh) : 0;
       d.from = k + 1;
-      if (k < COUNCIL_COUNT - 1) {
-        d.to = k + 2;
-        d.mix = smoothstep(lengthVh - COUNCIL_MORPH_VH, lengthVh, localVh);
-      } else {
-        d.to = d.from;
-      }
+      d.to = k < COUNCIL_COUNT - 1 ? k + 2 : k + 1;
+      d.mix = turning;
+      d.turn = k + turning;
+      const build = 0.35 + 0.65 * smoothstep(0, 46, localVh);
+      for (let j = 0; j < k; j++) d.builds[j] = 1;
+      d.builds[k] = build;
+      if (k + 1 < COUNCIL_COUNT) d.builds[k + 1] = turning * 0.35;
+      // The form inks in with its alcove, and thins back to a drawing while the hall turns.
+      d.ink = smoothstep(0.35, 1, build) * (1 - 0.75 * Math.sin(Math.PI * turning));
     }
-    d.glitch = smoothstep(0.985, 1, c);
   } else {
-    // Parts III and IV scroll as reading pages over the closed loop. The morph runs over
-    // the first viewport of Part III, whatever the section's length.
+    // Past the councils the world steps back: each later chapter has its own stage.
     const e = (y - r.restoration.top) / vh;
     d.from = 6;
-    d.to = 7;
-    d.mix = smoothstep(-0.3, 0.6, e);
-    d.glitch = 1 - smoothstep(-0.3, 0, e);
-    d.flow = d.mix;
-    // Dimmed once the reading pages fill the screen, so the loop never fights the text.
-    d.bright = 0.92 * (1 - 0.55 * smoothstep(0.5, 1.3, e));
-    d.scale = COUNCIL_SCALE + 0.14 * d.mix;
-    // The closed loop sits up and to the right, behind the reading column.
-    d.offsetX = 1.5 * d.mix;
-    d.offsetY = 0.55 * d.mix;
+    d.to = 6;
+    d.lift = narrow ? 0.95 : 0;
+    d.scale = COUNCIL_SCALE;
+    d.hall = 1 - smoothstep(-0.6, 0.1, e);
+    d.turn = COUNCIL_COUNT - 1;
+    for (let j = 0; j < COUNCIL_COUNT; j++) d.builds[j] = 1;
+    d.bright = 1 - smoothstep(-0.6, 0.1, e);
   }
 
   d.warp = Math.max(boundaryWarp(y, r.thesis.top, vh), boundaryWarp(y, r.councils.top, vh)) * WARP;
-
-  // The legal notice flattens the form as soon as it starts entering the viewport.
-  const enter = clamp01((y + vh - r.legal.top) / vh);
-  if (enter > 0) {
-    d.collapse = smoothstep(0, 1, enter);
-    d.bright *= 1 - 0.65 * d.collapse;
-    d.flow *= 1 - d.collapse;
-    d.offsetX *= 1 - d.collapse;
-    d.offsetY = d.offsetY * (1 - d.collapse) + 0.95 * d.collapse;
-    // The statute is long reading; once it fills the screen the horizon fades away
-    // so it never runs through the text.
-    const reading = smoothstep(0.15, 0.55, (y - r.legal.top) / vh);
-    d.bright *= 1 - reading;
-  }
+  d.bright = clamp01(d.bright);
 }

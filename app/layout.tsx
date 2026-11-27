@@ -1,20 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Geist, Geist_Mono, Newsreader } from "next/font/google";
+import { Barlow, Barlow_Condensed, Cinzel } from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
-// Classical capitals for headlines and the seal lettering (client mockup).
-const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", display: "swap" });
-const newsreader = Newsreader({
+// Type after Kiran's mockup: Roman capitals for headlines, a condensed sans for labels and
+// buttons, the same family at normal width for reading. All three are open-licence.
+const cinzel = Cinzel({ subsets: ["latin"], variable: "--font-cinzel", display: "swap", weight: ["400", "500", "600"] });
+const barlow = Barlow({ subsets: ["latin"], variable: "--font-barlow", display: "swap", weight: ["400", "500", "600"] });
+const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
-  variable: "--font-newsreader",
+  variable: "--font-barlow-condensed",
   display: "swap",
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "GCI — Institutional Briefing Portal",
+  title: "GCI | Institutional Briefing Portal",
   description:
     "Global Confederation of Industries (GCI). Apex public-private execution platform, Republic of India. Institutional briefing portal; restricted access.",
   // Confidential briefing: keep it out of search indexes and caches.
@@ -27,13 +27,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070B14",
+  themeColor: "#0A101E",
   colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${newsreader.variable} ${cinzel.variable}`}>
+    <html lang="en" className={`${cinzel.variable} ${barlow.variable} ${barlowCondensed.variable}`}>
       <body>{children}</body>
     </html>
   );

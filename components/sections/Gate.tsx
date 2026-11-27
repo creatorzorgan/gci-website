@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { entity, portal } from "@/content/briefing";
+import { entity, gate, portal } from "@/content/briefing";
 import { useUI } from "@/lib/store";
 import { GciSeal } from "../ui/Logo";
 
@@ -67,22 +67,22 @@ export default function Gate() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="gate-title"
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[rgb(7_11_20/0.74)] px-4 py-10 [@media(max-height:720px)]:py-4"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[rgb(6_10_20/0.78)] px-4 py-10 backdrop-blur-sm [@media(max-height:720px)]:py-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.9, ease: [0.4, 0, 0.2, 1] } }}
           data-lenis-prevent
         >
           <motion.div
-            className="panel chamfer w-full max-w-[38rem] p-6 sm:p-9 [@media(max-height:720px)]:p-5"
+            className="card w-full max-w-[38rem] p-6 sm:p-9 [@media(max-height:720px)]:p-5"
             initial={{ y: 18, opacity: 0 }}
             animate={{ y: 0, opacity: 1, transition: { delay: 0.15, duration: 0.7, ease: [0.2, 0.7, 0.2, 1] } }}
             exit={{ y: -14, opacity: 0, scale: 0.985, transition: { duration: 0.5 } }}
           >
-            <div className="flex items-center justify-between gap-4 border-b border-hairline pb-4">
+            <div className="flex items-center justify-between gap-4 border-b border-rule pb-4">
               <span className="flex items-center gap-2.5">
                 <GciSeal size={56} className="[@media(max-height:720px)]:h-11 [@media(max-height:720px)]:w-11" />
-                <span className="hidden font-display text-[1.15rem] leading-none tracking-[0.14em] text-titanium sm:inline">
+                <span className="hidden font-classical text-[1.15rem] leading-none font-semibold tracking-[0.12em] text-ink sm:inline">
                   {entity.short}
                 </span>
               </span>
@@ -91,21 +91,21 @@ export default function Gate() {
 
             <h1
               id="gate-title"
-              className="mt-7 font-classical text-[clamp(1.4rem,4.2vw,2.1rem)] leading-[1.12] font-medium tracking-[0.02em] text-titanium uppercase [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:text-[1.3rem]"
+              className="display mt-7 text-[clamp(1.45rem,4.2vw,2.05rem)] [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:text-[1.5rem]"
             >
-              Institutional Access <span className="block text-gold">Acknowledgment</span>
+              Institutional access <span className="accent block">acknowledgment</span>
             </h1>
-            <p className="label mt-4 text-titanium-dim">
+            <p className="label mt-4">
               {entity.name} <span className="mx-1.5 text-gold">/</span> {entity.structure}
             </p>
 
-            <p className="mt-6 border-t border-hairline pt-5 text-[0.9375rem] leading-[1.7] text-titanium [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:pt-4 [@media(max-height:720px)]:text-[0.84rem] [@media(max-height:720px)]:leading-[1.55]">
+            <p className="mt-6 border-t border-rule pt-5 text-[0.9375rem] leading-[1.7] text-slate [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:pt-4 [@media(max-height:720px)]:text-[0.84rem] [@media(max-height:720px)]:leading-[1.55]">
               {portal.gate.body}
             </p>
 
             <button
               type="button"
-              className="group relative mt-7 flex h-14 w-full [@media(max-height:720px)]:mt-5 [@media(max-height:720px)]:h-12 touch-manipulation items-center justify-between overflow-hidden rounded-sharp border border-amber bg-amber px-5 text-left transition-colors select-none [-webkit-touch-callout:none] hover:border-amber-bright hover:bg-amber-bright"
+              className="group relative mt-7 flex h-14 w-full [@media(max-height:720px)]:mt-5 [@media(max-height:720px)]:h-12 touch-manipulation items-center justify-between overflow-hidden rounded-sharp bg-[linear-gradient(180deg,#ddc06b,#c19b40)] px-5 text-left transition-[filter] select-none [-webkit-touch-callout:none] hover:brightness-110"
               onPointerDown={startHold}
               // A long press on a phone must not open the text-selection or callout menu.
               onContextMenu={(e) => e.preventDefault()}
@@ -125,17 +125,17 @@ export default function Gate() {
             >
               <span
                 aria-hidden
-                className="absolute inset-y-0 left-0 w-full origin-left bg-obsidian/25"
+                className="absolute inset-y-0 left-0 w-full origin-left bg-[rgb(10_16_30/0.22)]"
                 style={{ transform: `scaleX(${hold})` }}
               />
-              <span className="label relative font-medium text-obsidian">Press and hold to acknowledge</span>
-              <span aria-hidden className="label relative text-obsidian/70">
+              <span className="label relative font-medium text-paper">{gate.button}</span>
+              <span aria-hidden className="label relative text-paper/70">
                 {Math.round(hold * 100)
                   .toString()
                   .padStart(3, "0")}
               </span>
             </button>
-            <p className="label mt-3 text-[0.625rem] [@media(pointer:coarse)]:hidden">Keyboard: press Enter</p>
+            <p className="label mt-3 text-[0.625rem] [@media(pointer:coarse)]:hidden">{gate.keyboard}</p>
           </motion.div>
         </motion.div>
       )}

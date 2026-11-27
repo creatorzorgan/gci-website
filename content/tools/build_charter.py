@@ -42,6 +42,27 @@ FIXES = [(h.replace("-", "", 1), h) for h in HYPHENS] + [
     ('"midnight dumping"', "“midnight dumping”"),
 ]
 
+# Em dashes in the charter text, replaced after cleaning (client request, 27 Nov 2026).
+EM_DASHES = [
+    ("sewage networks—modeled on Japanese urban hydrological standards—combining",
+     "sewage networks, modeled on Japanese urban hydrological standards, combining"),
+    ("seawater minerals—protecting", "seawater minerals, protecting"),
+    ("freeze-plugs—physically incapable of core meltdown—deployed",
+     "freeze-plugs (physically incapable of core meltdown), deployed"),
+    ("without refueling—immediately", "without refueling, immediately"),
+    ("passenger vehicles—eliminating", "passenger vehicles, eliminating"),
+    ("development began—audited", "development began, audited"),
+    ("recharge wells—operating", "recharge wells, operating"),
+    ("bunker fuel—while", "bunker fuel, while"),
+    ("ZLD hardware—turning", "ZLD hardware, turning"),
+    ("must elevate—not discard—the workforce", "must elevate, not discard, the workforce"),
+    ("audit logs—physically", "audit logs, physically"),
+    ("turbidity sensors—triggering", "turbidity sensors, triggering"),
+    ("Seedling Initiative—training", "Seedling Initiative, training"),
+    ("structural frameworks—whether", "structural frameworks, whether"),
+    ("derivative form—constitutes", "derivative form, constitutes"),
+]
+
 # CO2 is everywhere (CO2, sCO2, methane/CO2/NOx); subscript every occurrence.
 CO2 = (r"CO2\b", "CO₂")
 
@@ -385,6 +406,14 @@ def main(src: str, dst: str) -> None:
         f"export const {k} = {json.dumps(v, ensure_ascii=False, indent=2)} as const;\n\n"
         for k, v in data.items()
     )
+    # Client request (27 Nov 2026): no em dashes anywhere on the site. Each one is replaced
+    # with the punctuation its sentence needs; the build fails if any is left.
+    for a, b in EM_DASHES:
+        if a not in body:
+            raise SystemExit(f"Em-dash fix no longer applies: {a!r}")
+        body = body.replace(a, b)
+    if "—" in body:
+        i = body.index("—"); raise SystemExit(f"Unhandled em dash: {body[i-60:i+40]!r}")
     open(dst, "w", encoding="utf-8", newline="\n").write(header + body.rstrip() + "\n")
 
     sys.stdout.reconfigure(encoding="utf-8")
