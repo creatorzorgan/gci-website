@@ -1,7 +1,7 @@
 "use client";
 
 import { PerformanceMonitor, View } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useState, type ReactNode, type RefObject } from "react";
 import * as THREE from "three";
 import { TIERS } from "@/lib/quality";
@@ -36,8 +36,28 @@ function StageView({ id, index, children }: { id: string; index: number; childre
   return (
     <View track={track as RefObject<HTMLElement>} index={index}>
       {children}
+      <Precompile />
     </View>
   );
+}
+
+/**
+ * Prepares every shader in this View's scene up front (while the access gate is still on
+ * screen), so a section does not stutter the first time it scrolls into view.
+ */
+function Precompile() {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  const camera = useThree((s) => s.camera);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      const renderer = gl as THREE.WebGLRenderer & { compileAsync?: (s: THREE.Object3D, c: THREE.Camera) => Promise<unknown> };
+      if (renderer.compileAsync) renderer.compileAsync(scene, camera).catch(() => {});
+      else gl.compile(scene, camera);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [gl, scene, camera]);
+  return null;
 }
 
 /** Views do not clear their boxes, so the whole canvas is cleared once per frame first. */

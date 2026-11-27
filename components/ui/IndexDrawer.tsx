@@ -65,7 +65,7 @@ export default function IndexDrawer() {
                       key={c.key}
                       type="button"
                       onClick={() => jumpTo(k)}
-                      className="shrink-0 rounded-full border border-rule-strong px-3 py-1 font-display text-[0.95rem] text-slate transition-colors hover:border-gold hover:text-gold-ink"
+                      className="inline-flex h-10 min-w-10 shrink-0 items-center justify-center rounded-full border border-rule-strong px-3 font-display text-[0.95rem] text-slate transition-colors hover:border-gold hover:text-gold-ink"
                       aria-label={`Council ${c.numeral}: ${c.name}`}
                     >
                       {c.numeral}
@@ -77,7 +77,7 @@ export default function IndexDrawer() {
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close index"
-                  className="flex h-10 w-10 shrink-0 items-center justify-center border border-rule-strong text-ink transition-colors hover:border-gold hover:text-gold-ink"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center border border-rule-strong text-ink transition-colors hover:border-gold hover:text-gold-ink"
                 >
                   <span aria-hidden className="text-[1.25rem] leading-none">×</span>
                 </button>

@@ -16,7 +16,7 @@ function SealOpening() {
   const embossScale = useTransform(p, [0.6, 0.7], [1.05, 1]);
 
   return (
-    <div ref={ref} className="relative h-[190vh]">
+    <div ref={ref} className="relative h-[165vh]">
       <div className="sticky top-0 grid h-[100svh] grid-rows-[1fr_auto] items-center gap-6 overflow-hidden px-6 pt-20 pb-24 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:grid-rows-1 lg:px-16">
         <div className="relative mx-auto aspect-square w-[min(68vw,22rem)] lg:order-2 lg:w-[min(38vw,30rem)]">
           <motion.img

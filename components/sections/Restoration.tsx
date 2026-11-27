@@ -57,7 +57,7 @@ function Chokes() {
   const row = chokes.rows[i];
 
   return (
-    <div ref={ref} className="relative" style={{ height: `${chokes.rows.length * 62 + 100}vh` }}>
+    <div ref={ref} className="relative" style={{ height: `${chokes.rows.length * 50 + 90}vh` }}>
       <div className="sticky top-0 flex h-[100svh] flex-col px-6 pt-20 pb-20 sm:px-10 lg:px-16 lg:pt-24">
         <div>
           <p className="label kicker text-gold-ink">Check and choke</p>
@@ -92,9 +92,9 @@ function Chokes() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
-                className="grid gap-x-10 gap-y-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)]"
+                className="grid gap-x-10 gap-y-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)]"
               >
-                <p className="display text-[clamp(1.2rem,1.9vw,1.65rem)]">
+                <p className="display text-[clamp(1.2rem,1.9vw,1.65rem)] text-balance">
                   <span className="mr-2 text-gold-ink italic">0{row.n}</span>
                   {row.name}
                 </p>

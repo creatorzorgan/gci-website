@@ -13,15 +13,17 @@ function useBeat(progress: MotionValue<number>, a: number, b: number, edge = 0.0
 function Rise({
   progress,
   at,
+  span = 0.06,
   children,
   className,
 }: {
   progress: MotionValue<number>;
   at: number;
+  span?: number;
   children: React.ReactNode;
   className?: string;
 }) {
-  const y = useTransform(progress, [at, at + 0.06], ["105%", "0%"]);
+  const y = useTransform(progress, [at, at + span], ["105%", "0%"]);
   return (
     <span className={`block overflow-hidden pb-[0.08em] ${className ?? ""}`}>
       <motion.span style={{ y }} className="block">
@@ -38,16 +40,18 @@ function Rise({
 export default function Thesis() {
   const ref = useSectionRange<HTMLElement>("thesis");
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  // The statement rises while the chapter scrolls in, so it arrives with its paragraph.
+  const { scrollYProgress: enter } = useScroll({ target: ref, offset: ["start 0.9", "start 0.2"] });
 
-  const beatA = useBeat(p, 0.02, 0.32);
-  const beatB = useBeat(p, 0.34, 0.66);
-  const beatC = useTransform(p, [0.68, 0.72, 0.96, 1], [0, 1, 1, 0]);
+  const beatA = useTransform(p, [0, 0.29, 0.33], [1, 1, 0]);
+  const beatB = useBeat(p, 0.35, 0.66);
+  const beatC = useTransform(p, [0.67, 0.71], [0, 1]);
   const leftX = useTransform(p, [0.34, 0.42], [-48, 0]);
   const rightX = useTransform(p, [0.34, 0.42], [48, 0]);
   const [first, second] = about.headline.split(". ");
 
   return (
-    <section ref={ref} id="thesis" aria-label={about.kicker} className="relative h-[460vh]">
+    <section ref={ref} id="thesis" aria-label={about.kicker} className="relative h-[390vh]">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {/* A. The statement. */}
         <motion.div
@@ -56,8 +60,8 @@ export default function Thesis() {
         >
           <p className="label kicker text-gold-ink">{about.kicker}</p>
           <h2 className="display mt-6 max-w-[15ch] text-[clamp(1.75rem,4vw,3.8rem)]">
-            <Rise progress={p} at={0.03}>{first}.</Rise>
-            <Rise progress={p} at={0.06}>
+            <Rise progress={enter} at={0} span={0.55}>{first}.{" "}</Rise>
+            <Rise progress={enter} at={0.3} span={0.55}>
               <span className="accent">{second}</span>
             </Rise>
           </h2>

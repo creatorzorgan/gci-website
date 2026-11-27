@@ -74,7 +74,7 @@ await sleep(12000);
 
 const top = (id) => `(document.getElementById('${id}').getBoundingClientRect().top + scrollY)`;
 const span = (id) => `(document.getElementById('${id}').offsetHeight - innerHeight)`;
-const hold = (k) => `${top("councils")} + ${span("councils")} * (130/970 + ${k}*140/970)`;
+const hold = (k) => `${top("councils")} + ${span("councils")} * (110/800 + ${k}*115/800)`;
 
 const shots = MOBILE
   ? [

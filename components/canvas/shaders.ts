@@ -177,6 +177,9 @@ export const flowVertex = /* glsl */ `
   uniform float uPixelRatio;
   uniform float uActive;
   uniform float uLength;
+  /** Valves on this pipe, and how many valves come before it (two-row layout on phones). */
+  uniform float uCount;
+  uniform float uOffset;
   attribute vec3 aSeed;
   varying vec3 vColor;
   varying float vAlpha;
@@ -195,9 +198,9 @@ export const flowVertex = /* glsl */ `
     gl_Position = projectionMatrix * mv;
     gl_PointSize = (7.0 + aSeed.z * 6.0) * uPixelRatio / max(0.5, -mv.z);
 
-    // Valve k sits at x_k = (k + 0.5) / 6 along the pipe. Each closed valve upstream cleans more.
-    // Valves close in order, so the closed ones upstream of this point are the first few.
-    float upstream = floor(t * 6.0 + 0.5);
+    // Valve k sits at x_k = (k + 0.5) / uCount along this pipe. Each closed valve upstream
+    // cleans more; valves close in order, so the closed ones upstream are the first few.
+    float upstream = uOffset + floor(t * uCount + 0.5);
     float cleaned = clamp(min(upstream, uActive) / 6.0, 0.0, 1.0);
     vColor = mix(MURK, CLEAR, cleaned);
     vAlpha = 0.85 * smoothstep(0.0, 0.04, t) * smoothstep(1.0, 0.96, t);

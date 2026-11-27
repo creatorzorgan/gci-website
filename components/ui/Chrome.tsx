@@ -94,13 +94,13 @@ export default function Chrome() {
         <span className="absolute -right-px -bottom-px h-2.5 w-2.5 border-r border-b border-gold" />
       </div>
 
-      <header className="fixed inset-x-3 top-3 z-30 flex h-14 items-center justify-between gap-4 border-b border-rule bg-[rgb(10_16_30/0.82)] px-4 backdrop-blur-md sm:px-6">
+      <header className="fixed inset-x-3 top-3 z-30 flex h-14 items-center justify-between gap-4 border-b border-rule bg-[rgb(10_16_30/0.94)] px-4 backdrop-blur-md sm:px-6">
         <div className="flex min-w-0 items-center gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
-            className="group -ml-1 flex h-10 shrink-0 items-center gap-2.5 px-1 text-ink transition-colors hover:text-gold-ink"
+            className="group -ml-2 flex h-11 min-w-11 shrink-0 items-center gap-2.5 px-2 text-ink transition-colors hover:text-gold-ink"
           >
             <span aria-hidden className="flex w-5 flex-col gap-[5px]">
               <span className="h-px w-5 bg-current" />
@@ -110,7 +110,7 @@ export default function Chrome() {
             <span className="label hidden text-current lg:inline">Menu</span>
           </button>
           <span aria-hidden className="h-6 w-px bg-rule-strong" />
-          <a href="#apex" className="flex min-w-0 items-center gap-3" aria-label={`${entity.name}, back to top`}>
+          <a href="#apex" className="flex min-h-11 min-w-0 items-center gap-3" aria-label={`${entity.name}, back to top`}>
             <GciShield size={30} />
             <span className="font-classical text-[1.15rem] leading-none font-semibold tracking-[0.1em] text-ink">
               {entity.short}
@@ -133,7 +133,7 @@ export default function Chrome() {
 
       <nav
         aria-label="Briefing chapters"
-        className="fixed inset-x-3 bottom-3 z-30 grid h-14 grid-cols-[1fr_auto] items-center gap-4 border-t border-rule bg-[rgb(10_16_30/0.82)] px-4 backdrop-blur-md sm:grid-cols-[1fr_auto_1fr] sm:px-6"
+        className="fixed inset-x-3 bottom-3 z-30 grid h-14 grid-cols-[1fr_auto] items-center gap-4 border-t border-rule bg-[rgb(10_16_30/0.94)] px-4 backdrop-blur-md sm:grid-cols-[1fr_auto_1fr] sm:px-6"
       >
         <p className="label truncate text-ink">
           <span aria-hidden className="mr-2.5 inline-block h-[7px] w-[7px] rotate-45 bg-gold" />
@@ -145,7 +145,7 @@ export default function Chrome() {
             type="button"
             onClick={() => step(-1)}
             disabled={current === 0}
-            className="label px-2 py-2 text-slate transition-colors hover:text-gold-ink disabled:opacity-30"
+            className="label inline-flex min-h-11 items-center px-3 text-slate transition-colors hover:text-gold-ink disabled:opacity-30"
           >
             Prev
           </button>
@@ -155,7 +155,7 @@ export default function Chrome() {
           <button
             type="button"
             onClick={() => step(1)}
-            className="label px-2 py-2 text-slate transition-colors hover:text-gold-ink"
+            className="label inline-flex min-h-11 items-center px-3 text-slate transition-colors hover:text-gold-ink"
           >
             Next
           </button>

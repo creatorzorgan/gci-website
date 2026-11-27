@@ -248,14 +248,14 @@ export default function World() {
       m.visible = visible > 0.01;
       const heroX = narrow ? 0 : 1.62 * aspectScale;
       const short = frame.vh < 720;
-      const heroY = narrow ? (short ? 1.3 : 1.22) : 0.12;
+      const heroY = narrow ? (short ? 1.16 : 1.22) : 0.12;
       const t = s.turn * s.turn;
       m.position.set(
         heroX + (g.position.x - heroX) * t,
         heroY + (g.position.y - heroY) * t,
         1.6 * (1 - e) + 0.15,
       );
-      const base = (narrow ? (short ? 0.36 : 0.44) : 0.98 * aspectScale) * (1 - 0.72 * s.turn);
+      const base = (narrow ? (short ? 0.32 : 0.44) : 0.98 * aspectScale) * (1 - 0.72 * s.turn);
       m.scale.setScalar(base * (0.9 + 0.1 * back) * Math.max(0.001, visible));
       m.rotation.set(
         -0.9 * (1 - e) - s.py * 0.16 * (1 - calm),

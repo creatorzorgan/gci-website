@@ -34,8 +34,8 @@ export const frame = {
  * Councils section layout, in viewport heights. Shared by the DOM and the canvas.
  * An intro (the constellation), then one hold per council while the rotunda turns.
  */
-export const COUNCILS_INTRO_VH = 130;
-export const COUNCIL_VH = 140;
+export const COUNCILS_INTRO_VH = 110;
+export const COUNCIL_VH = 115;
 export const COUNCIL_COUNT = councils.length;
 export const COUNCILS_PIN_VH = COUNCILS_INTRO_VH + COUNCIL_VH * COUNCIL_COUNT;
 /** Total section height: the pinned distance plus one viewport to release the pin. */
@@ -43,7 +43,7 @@ export const COUNCILS_SECTION_VH = COUNCILS_PIN_VH + 100;
 export const COUNCILS_INTRO_FRAC = COUNCILS_INTRO_VH / COUNCILS_PIN_VH;
 export const COUNCIL_FRAC = COUNCIL_VH / COUNCILS_PIN_VH;
 /** The rotunda turns to the next alcove over this much scroll at the end of a council. */
-export const COUNCIL_TURN_VH = 34;
+export const COUNCIL_TURN_VH = 30;
 
 export function clamp01(v: number) {
   return v < 0 ? 0 : v > 1 ? 1 : v;

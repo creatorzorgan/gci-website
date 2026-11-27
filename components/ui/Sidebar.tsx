@@ -70,7 +70,7 @@ export default function Sidebar() {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="label border border-rule-strong px-3 py-1.5 text-ink transition-colors hover:border-gold hover:text-gold-ink"
+                className="label inline-flex min-h-11 items-center border border-rule-strong px-4 text-ink transition-colors hover:border-gold hover:text-gold-ink"
               >
                 Close
               </button>

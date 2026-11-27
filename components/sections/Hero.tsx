@@ -14,8 +14,8 @@ export default function Hero() {
   const cleared = useUI((s) => s.cleared);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  const exitOpacity = useTransform(scrollYProgress, [0.22, 0.6], [1, 0]);
-  const exitY = useTransform(scrollYProgress, [0.22, 0.6], [0, -40]);
+  const exitOpacity = useTransform(scrollYProgress, [0.45, 0.85], [1, 0]);
+  const exitY = useTransform(scrollYProgress, [0.45, 0.85], [0, -40]);
   const cue = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
   const rise = (delay: number) => ({
@@ -30,7 +30,7 @@ export default function Hero() {
   });
 
   return (
-    <section ref={ref} id="apex" aria-label="Global Confederation of Industries" className="relative h-[210vh]">
+    <section ref={ref} id="apex" aria-label="Global Confederation of Industries" className="relative h-[175vh]">
       <div className="sticky top-0 flex h-[100svh] flex-col justify-end px-6 pt-24 pb-24 sm:px-10 lg:justify-center lg:px-16 lg:pb-16">
         {/* Phones: the medallion sits above the text; a soft wash keeps the copy legible. */}
         <motion.div
@@ -46,7 +46,7 @@ export default function Hero() {
           <h1 className="display mt-6 text-[clamp(1.85rem,4.3vw,4.3rem)] max-lg:[@media(max-height:720px)]:mt-4 max-lg:[@media(max-height:720px)]:text-[1.7rem]">
             <span className="block overflow-hidden pb-[0.06em]">
               <motion.span {...rise(0.75)} className="block">
-                <span className="accent">{hero.headline[0]}</span>
+                <span className="accent">{hero.headline[0]}</span>{" "}
               </motion.span>
             </span>
             <span className="block overflow-hidden pb-[0.08em]">

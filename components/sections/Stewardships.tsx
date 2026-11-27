@@ -23,7 +23,7 @@ export default function Stewardships() {
 
   return (
     <section ref={ref} id="stewardships" aria-label={stewardships.headline} className="relative">
-      <div ref={stageRef} className="relative" style={{ height: `${items.length * 58 + 100}vh` }}>
+      <div ref={stageRef} className="relative" style={{ height: `${items.length * 46 + 90}vh` }}>
         <div className="sticky top-0 flex h-[100svh] flex-col px-6 pt-20 pb-20 sm:px-10 lg:px-16 lg:pt-24">
           <div className="max-w-[44rem]">
             <p className="label kicker text-gold-ink">{stewardships.kicker}</p>

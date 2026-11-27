@@ -106,7 +106,7 @@ function Rail({ active, onGo }: { active: number; onGo: (k: number) => void }) {
           onClick={() => onGo(k)}
           aria-current={k === active ? "true" : undefined}
           aria-label={`Council ${c.numeral}: ${c.name}`}
-          className="relative flex h-10 min-w-10 items-center justify-center px-1.5"
+          className="relative flex h-11 min-w-11 items-center justify-center px-1.5"
         >
           {k === active && (
             <motion.span
@@ -128,12 +128,12 @@ function Rail({ active, onGo }: { active: number; onGo: (k: number) => void }) {
 function Constellation({ live, onHover }: { live: boolean; onHover: (i: number) => void }) {
   const openDrawer = useUI((s) => s.openDrawer);
   return (
-    <div className={`absolute inset-0 ${live ? "" : "pointer-events-none"}`} aria-hidden={!live}>
+    <div className={`absolute inset-0 ${live ? "" : "pointer-events-none"}`} aria-hidden>
       {initiatives.map((it, i) => (
         <button
           key={it.n}
           type="button"
-          tabIndex={live ? 0 : -1}
+          tabIndex={-1}
           ref={(el) => {
             frame.stars[i] = el;
           }}
@@ -141,7 +141,7 @@ function Constellation({ live, onHover }: { live: boolean; onHover: (i: number) 
           onFocus={() => onHover(i)}
           onClick={() => openDrawer(it.councilIndex)}
           aria-label={`Initiative ${it.n}: ${it.name}`}
-          className="pin -mt-3 -ml-3 flex h-6 w-6 items-center justify-center"
+          className="pin -mt-5 -ml-5 flex h-10 w-10 items-center justify-center"
         >
           <span className="block h-2 w-2 rounded-full bg-gold shadow-[0_0_0_3px_rgb(184_144_44/0.18)] transition-transform hover:scale-150" />
         </button>
@@ -165,8 +165,8 @@ export default function Councils() {
     if (k !== useUI.getState().activeCouncil) setActiveCouncil(k);
   });
 
-  const introOpacity = useTransform(p, [0, 0.015, COUNCILS_INTRO_FRAC * 0.6, COUNCILS_INTRO_FRAC * 0.78], [0, 1, 1, 0]);
-  const holdOpacity = useTransform(p, [COUNCILS_INTRO_FRAC * 0.84, COUNCILS_INTRO_FRAC, 0.985, 1], [0, 1, 1, 0]);
+  const introOpacity = useTransform(p, [0, COUNCILS_INTRO_FRAC * 0.62, COUNCILS_INTRO_FRAC * 0.78], [1, 1, 0]);
+  const holdOpacity = useTransform(p, [COUNCILS_INTRO_FRAC * 0.8, COUNCILS_INTRO_FRAC * 0.94, 0.985, 1], [0, 1, 1, 0]);
   const [introLive, setIntroLive] = useState(true);
   useMotionValueEvent(introOpacity, "change", (o) => {
     if (o > 0.5 !== introLive) setIntroLive(o > 0.5);

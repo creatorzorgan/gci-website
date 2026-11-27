@@ -76,7 +76,7 @@ export function createDirective(): Directive {
 
 function boundaryWarp(y: number, top: number, vh: number) {
   const q = (y - top) / vh;
-  return smoothstep(-0.9, -0.5, q) * (1 - smoothstep(-0.3, 0.12, q));
+  return smoothstep(-0.5, -0.25, q) * (1 - smoothstep(-0.12, 0.06, q));
 }
 
 const WARP = 0.75;
@@ -116,15 +116,15 @@ export function computeDirective(d: Directive) {
     // turns the medallion edge-on and it sinks into the galaxy's core as the arms open.
     const h = sectionProgress("hero");
     const push = smoothstep(0.15, 1, h);
-    d.medal = 1 - smoothstep(0.55, 0.95, h);
-    d.medalTurn = smoothstep(0.1, 0.8, h);
+    d.medal = 1 - smoothstep(0.62, 1, h);
+    d.medalTurn = smoothstep(0.15, 0.9, h);
     d.scale = 1.1 + push * 0.4;
     d.offsetX = 1.45 - push * 0.6;
     d.offsetY = 0.15 - push * 0.15;
     d.tilt = 0.24 + push * 0.56;
     d.bright = 0.42 + 0.58 * push;
     d.ring = 0.6 * push;
-    d.labels = smoothstep(0.62, 0.8, h) * (1 - smoothstep(0.92, 1, h));
+    d.labels = smoothstep(0.55, 0.78, h) * (1 - smoothstep(0.95, 1, h));
   } else if (y < r.councils.top) {
     const t = sectionProgress("thesis");
     // Statement: galaxy to the right. Contrast: centred, split into six silos.
@@ -175,7 +175,7 @@ export function computeDirective(d: Directive) {
       d.to = k < COUNCIL_COUNT - 1 ? k + 2 : k + 1;
       d.mix = turning;
       d.turn = k + turning;
-      const build = 0.35 + 0.65 * smoothstep(0, 46, localVh);
+      const build = 0.35 + 0.65 * smoothstep(0, 40, localVh);
       for (let j = 0; j < k; j++) d.builds[j] = 1;
       d.builds[k] = build;
       if (k + 1 < COUNCIL_COUNT) d.builds[k + 1] = turning * 0.35;
